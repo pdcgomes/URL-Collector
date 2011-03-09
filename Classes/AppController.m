@@ -14,6 +14,10 @@
 #import "PTHotKey.h"
 #import "URLShortener.h"
 
+#import "URLCollectorGroup.h"
+#import "URLCollectorElement.h"
+#import "URLCollectorSource.h"
+
 @interface AppController()
 
 - (void)registerObservers;
@@ -29,11 +33,13 @@
 @implementation AppController
 
 @synthesize shorteningServices;
+@synthesize urlCollectorElements;
 
 - (void)dealloc
 {
 	[self deregisterObservers];
 	[urlShortener release];
+	[urlCollectorElements release];
 	
 	[super dealloc];
 }
@@ -41,6 +47,8 @@
 - (void)awakeFromNib
 {
 	TRACE(@"");
+	urlCollectorElements = [[NSMutableArray alloc] init];
+	
 	urlShortener = [[URLShortener alloc] initWithServiceKey:@"SAPOPuny"];
 	urlShortener.delegate = self;
 	
@@ -157,7 +165,6 @@
 - (IBAction)copy:(id)sender
 {
 	
-	
 }
 
 - (IBAction)configure:(id)sender
@@ -168,6 +175,27 @@
 - (IBAction)quit:(id)sender
 {
 	exit(0);
+}
+
+- (IBAction)addGroup:(id)sender
+{
+	TRACE(@"");
+	
+	URLCollectorGroup *group = [[URLCollectorGroup alloc] init];
+	group.name = SKStringWithFormat(@"Group #%d", [urlCollectorElements count] + 1);
+	
+	for(int i = 0; i < 10; i++) {
+		URLCollectorElement *element = [[URLCollectorElement alloc] init];
+		element.name = SKStringWithFormat(@"Child #%d", i);
+		[group add:element];
+	}
+	
+	[self willChangeValueForKey:@"urlCollectorElements"];
+	[urlCollectorElements addObject:group];
+	
+	[self didChangeValueForKey:@"urlCollectorElements"];
+	[group release];
+	
 }
 
 #pragma mark -

@@ -19,16 +19,20 @@
 	
 	IBOutlet SRRecorderControl	*pasteShortcutRecorder;
 	IBOutlet SRRecorderControl	*collectorShortcutRecorder;
-	
+
 	URLShortener				*urlShortener;
+	NSMutableArray				*urlCollectorElements;
 }
 
 @property (nonatomic, readonly) NSArray *shorteningServices;
+@property (nonatomic, readonly) NSMutableArray *urlCollectorElements;
 
 - (IBAction)collector:(id)sender;
 - (IBAction)shortenURL:(id)sender;
 - (IBAction)copy:(id)sender;
 - (IBAction)configure:(id)sender; 
 - (IBAction)quit:(id)sender;
+
+- (IBAction)addGroup:(id)sender;
 
 @end
