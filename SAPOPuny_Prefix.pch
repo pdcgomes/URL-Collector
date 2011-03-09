@@ -1,0 +1,12 @@
+//
+// Prefix header for all source files of the 'SAPOPuny' target in the 'SAPOPuny' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+	#import "Macros.h"
+	#import "Logging.h"
+	#import "Constants.h"
+	#import "MAKVONotificationCenter.h"
+	#import "Additions.h"
+#endif
