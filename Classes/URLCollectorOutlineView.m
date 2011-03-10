@@ -22,7 +22,7 @@
 {
 	[super awakeFromNib];
 	
-	[self registerForDraggedTypes:[NSArray arrayWithObjects:NSPasteboardTypeString, NSPasteboardTypeHTML, NSPasteboardTypeRTF, NSURLPboardType, nil]];
+	[self registerForDraggedTypes:[NSArray arrayWithObjects:/*NSPasteboardTypeString, NSPasteboardTypeHTML, NSPasteboardTypeRTF, */NSURLPboardType, nil]];
 }
 
 #pragma mark -

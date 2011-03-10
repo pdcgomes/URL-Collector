@@ -180,7 +180,13 @@
 {
 	TRACE(@"");
 	
-	[urlCollectorDataSource addMockData];
+	URLCollectorGroup *group = [[URLCollectorGroup alloc] init];
+	group.name = NSLocalizedString(@"New group", @"");
+	[urlCollectorDataSource addGroup:group];
+	[group release];
+
+	[urlCollectorOutlineView editColumn:0 row:[urlCollectorOutlineView numberOfRows] - 1 withEvent:nil select:YES];
+//	[urlCollectorDataSource addMockData];
 }
 
 #pragma mark -

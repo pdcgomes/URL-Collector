@@ -12,18 +12,20 @@
 @class PTHotKey;
 @class URLShortener;
 @class URLCollectorDataSource;
+@class URLCollectorOutlineView;
 
 @interface AppController : NSObject <NSOutlineViewDataSource>
 {
-	IBOutlet NSMenuItem				*collectorMenuItem;
-	IBOutlet NSMenuItem				*shortenMenuItem;
+	IBOutlet NSMenuItem					*collectorMenuItem;
+	IBOutlet NSMenuItem					*shortenMenuItem;
 	
-	IBOutlet SRRecorderControl		*pasteShortcutRecorder;
-	IBOutlet SRRecorderControl		*collectorShortcutRecorder;
+	IBOutlet SRRecorderControl			*pasteShortcutRecorder;
+	IBOutlet SRRecorderControl			*collectorShortcutRecorder;
 
-	IBOutlet URLCollectorDataSource	*urlCollectorDataSource;
+	IBOutlet URLCollectorOutlineView	*urlCollectorOutlineView;
+	IBOutlet URLCollectorDataSource		*urlCollectorDataSource;
 
-	URLShortener				*urlShortener;
+	URLShortener						*urlShortener;
 }
 
 @property (nonatomic, readonly) NSArray *shorteningServices;

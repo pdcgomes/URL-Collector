@@ -61,6 +61,7 @@ NSString *column2Identifier = @"Column2";
 		URLCollectorElement *element = [[URLCollectorElement alloc] init];
 		element.name = SKStringWithFormat(@"Child #%d", i);
 		[group add:element];
+		[element release];
 	}
 	
 	[self willChangeValueForKey:@"urlCollectorElements"];
@@ -156,8 +157,8 @@ NSString *column2Identifier = @"Column2";
 	URLCollectorGroup *destinationGroup = [item representedObject];
 	for(NSPasteboardItem *pasteboardItem in [[info draggingPasteboard] pasteboardItems]) {
 		URLCollectorElement *element = [[URLCollectorElement alloc] init];
-		element.name = SKStringWithFormat(@"From %@", [activeApp objectForKey:@"NSApplicationName"]);
-		element.data = [pasteboardItem stringForType:NSPasteboardTypeString];
+		element.name = SKStringWithFormat(@"%@ (via %@)", [pasteboardItem stringForType:@"public.url-name"], [activeApp objectForKey:@"NSApplicationName"]);
+		element.elementURL = [pasteboardItem stringForType:NSPasteboardTypeString];
 		[self addElement:element toGroup:destinationGroup atIndex:index];
 		[element release];
 	}
