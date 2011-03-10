@@ -29,6 +29,14 @@
 	[super dealloc];
 }
 
+- (id)init
+{
+	if((self = [super init])) {
+		createDate = [[NSDate date] retain];
+	}
+	return self;
+}
+
 #pragma mark -
 #pragma mark Properties
 

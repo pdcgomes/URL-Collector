@@ -11,6 +11,7 @@
 
 @implementation URLCollectorElement
 
+@synthesize data;
 @synthesize name;
 @synthesize elementURL;
 @synthesize parentGroup;
@@ -21,6 +22,7 @@
 
 - (void)dealloc
 {
+	SKSafeRelease(data);
 	SKSafeRelease(source);
 	SKSafeRelease(tags);
 	SKSafeRelease(elementURL);

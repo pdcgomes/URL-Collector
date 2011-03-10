@@ -24,13 +24,9 @@
 	IBOutlet URLCollectorDataSource	*urlCollectorDataSource;
 
 	URLShortener				*urlShortener;
-	NSMutableArray				*urlCollectorElements;
-	NSMutableArray				*selectedElements;
 }
 
 @property (nonatomic, readonly) NSArray *shorteningServices;
-@property (nonatomic, readonly) NSMutableArray *urlCollectorElements;
-@property (nonatomic, readonly) NSMutableArray *selectedElements;
 
 - (IBAction)collector:(id)sender;
 - (IBAction)shortenURL:(id)sender;

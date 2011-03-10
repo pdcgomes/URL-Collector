@@ -14,6 +14,7 @@
 
 @interface URLCollectorElement : URLCollectorNode 
 {
+	id					data;
 	NSString			*elementURL;
 	NSMutableArray		*tags;
 
@@ -23,7 +24,7 @@
 	BOOL				isUnread;
 }
 
-@property (nonatomic, copy) NSString *name;
+@property (nonatomic, retain) id data;
 @property (nonatomic, copy) NSString *elementURL;
 @property (nonatomic, retain) NSMutableArray *tags;
 

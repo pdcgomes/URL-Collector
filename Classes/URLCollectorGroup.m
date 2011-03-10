@@ -13,11 +13,13 @@
 @implementation URLCollectorGroup
 
 @synthesize groupColor;
+@synthesize groupImage;
 @synthesize parentGroup;
 
 - (void)dealloc
 {
 	SKSafeRelease(groupColor);
+	SKSafeRelease(groupImage);
 	SKSafeRelease(children);
 	
 	[super dealloc];
@@ -36,14 +38,56 @@
 
 - (void)add:(URLCollectorElement *)element
 {
+	[self add:element atIndex:-1];
+//	
+//	[element retain];	
+//	
+//	if(!children) {
+//		children = [[NSMutableArray alloc] initWithCapacity:1];
+//	}
+//
+//	if(element.parentGroup) {
+//		[element.parentGroup remove:element];
+//	}
+//	[element setParentGroup:self];
+//	
+//	[self willChangeValueForKey:@"children"];
+//	[children addObject:element];
+//	[self didChangeValueForKey:@"children"];
+//
+//	[element release];
+}
+
+- (void)add:(URLCollectorElement *)element atIndex:(NSInteger)index
+{
+	[element retain];	
+	
 	if(!children) {
 		children = [[NSMutableArray alloc] initWithCapacity:1];
+	}
+	
+	if(element.parentGroup) {
+		[element.parentGroup remove:element];
 	}
 	[element setParentGroup:self];
 	
 	[self willChangeValueForKey:@"children"];
-	[children addObject:element];
+	
+	if(index >= 0) {
+		if(index <= [children count]) {
+			[children insertObject:element atIndex:index];
+		}
+		else {
+			[[NSException exceptionWithName:@"pt.sapo.macos.urlcollector.InvalidChildIndexException" reason:@"" userInfo:nil] raise];
+		}
+	}
+	else {
+		[children addObject:element];
+	}
+	
 	[self didChangeValueForKey:@"children"];
+	
+	[element release];
 }
 
 - (void)remove:(URLCollectorElement *)element
@@ -54,6 +98,7 @@
 		[[NSException exceptionWithName:@"pt.sapo.macos.urlcollector.ChildNotFoundException" reason:@"" userInfo:nil] raise];
 	}
 	[children removeObjectAtIndex:indexOfObject];
+	[element setParentGroup:nil];
 }
 
 #pragma mark -

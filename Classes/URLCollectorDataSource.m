@@ -14,7 +14,12 @@
 NSString *column1Identifier = @"Column1";
 NSString *column2Identifier = @"Column2";
 
+#define UNCLASSIFIED_GROUP_INDEX 0
+
 @implementation URLCollectorDataSource
+
+@synthesize urlCollectorElements;
+@synthesize selectedElements;
 
 #pragma mark -
 #pragma mark Dealloc and Initialization
@@ -26,36 +31,101 @@ NSString *column2Identifier = @"Column2";
 	[super dealloc];
 }
 
-- (id)init
+//- (id)init
+//{
+//	if((self = [super init])) {
+//	}
+//	return self;
+//}
+
+- (void)awakeFromNib
 {
-	if((self = [super init])) {
-		urlCollectorElements = [[NSMutableArray alloc] initWithCapacity:1];
-		selectedElements = [[NSMutableArray alloc] init];
-	}
-	return self;
+	urlCollectorElements = [[NSMutableArray alloc] initWithCapacity:1];
+	selectedElements = [[NSMutableArray alloc] init];
+
+	URLCollectorGroup *unclassifiedGroup = [[URLCollectorGroup alloc] init];
+	unclassifiedGroup.name = NSLocalizedString(@"Unclassified", @"");
+	[self addGroup:unclassifiedGroup];
+	[unclassifiedGroup release];
 }
 
 #pragma mark -
 #pragma mark Public Methods
 
+- (void)addMockData
+{
+	URLCollectorGroup *group = [[URLCollectorGroup alloc] init];
+	group.name = SKStringWithFormat(@"Group #%d", [urlCollectorElements count] + 1);
+	
+	for(int i = 0; i < 10; i++) {
+		URLCollectorElement *element = [[URLCollectorElement alloc] init];
+		element.name = SKStringWithFormat(@"Child #%d", i);
+		[group add:element];
+	}
+	
+	[self willChangeValueForKey:@"urlCollectorElements"];
+	[urlCollectorElements addObject:group];
+	[self didChangeValueForKey:@"urlCollectorElements"];
+	[group release];
+	
+}
+
 - (void)addGroup:(URLCollectorGroup *)group
 {
+	[self willChangeValueForKey:@"urlCollectorElements"];
 	[urlCollectorElements addObject:group];
+	[self didChangeValueForKey:@"urlCollectorElements"];
+	
+}
+
+- (void)addGroup:(URLCollectorGroup *)group atIndex:(NSInteger)index
+{
+	
 }
 
 - (void)addElement:(URLCollectorElement *)element
 {
-	
+	[self willChangeValueForKey:@"urlCollectorElements"];
+	[(URLCollectorGroup *)[urlCollectorElements objectAtIndex:UNCLASSIFIED_GROUP_INDEX] add:element];
+	[self didChangeValueForKey:@"urlCollectorElements"];
 }
 
 - (void)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group
 {
+	[self addElement:element toGroup:group atIndex:-1];
+}
+
+- (void)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group atIndex:(NSInteger)index
+{
+	[self willChangeValueForKey:@"urlCollectorElements"];
 	
+	NSUInteger groupIndex = [urlCollectorElements indexOfObject:group];
+	if(NSNotFound == groupIndex) {
+		[[NSException exceptionWithName:@"pt.sapo.macos.urlcollector.GroupNotFoundException" reason:@"" userInfo:nil] raise];
+	}
+	[[urlCollectorElements objectAtIndex:groupIndex] add:element atIndex:index];
+	
+	[self didChangeValueForKey:@"urlCollectorElements"];
 }
 
 - (void)removeGroup:(URLCollectorGroup *)group
 {
+	[self removeGroup:group removeChildren:NO];
+}
+
+- (void)removeGroup:(URLCollectorGroup *)group removeChildren:(BOOL)shouldRemoveChildren
+{
+	[self willChangeValueForKey:@"urlCollectorElements"];
+	
+	if(!shouldRemoveChildren) {
+		URLCollectorGroup *unclassifiedGroup = [urlCollectorElements objectAtIndex:UNCLASSIFIED_GROUP_INDEX];
+		for(URLCollectorElement *child in group.children) {
+			[unclassifiedGroup add:child];
+		}
+	}
 	[urlCollectorElements removeObject:group];
+	
+	[self didChangeValueForKey:@"urlCollectorElements"];
 }
 
 - (void)removeElement:(URLCollectorElement *)element
@@ -74,65 +144,42 @@ NSString *column2Identifier = @"Column2";
 }
 
 #pragma mark -
-#pragma mark NSOutlineViewDataSource - Required Methods
+#pragma mark NSOutlineViewDataSource - Drag and Drop support
 
-- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
+- (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id<NSDraggingInfo>)info item:(id)item childIndex:(NSInteger)index
 {
-	return [[(URLCollectorNode *)item children] objectAtIndex:index];
-}
-
-- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
-{
-	return ![(URLCollectorNode *)item isLeafNode];
-}
-
-- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
-{
-	return [(URLCollectorNode *)item numberOfChildren];
-}
-
-- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
-{
-	if([[tableColumn identifier] isEqual:column1Identifier]) {
-		return [(URLCollectorNode *)item name];
+	TRACE(@"");
+	NSAssert([[item representedObject] isKindOfClass:[URLCollectorGroup class]], @"");
+	
+	NSDictionary *activeApp = [[NSWorkspace sharedWorkspace] activeApplication];
+	
+	URLCollectorGroup *destinationGroup = [item representedObject];
+	for(NSPasteboardItem *pasteboardItem in [[info draggingPasteboard] pasteboardItems]) {
+		URLCollectorElement *element = [[URLCollectorElement alloc] init];
+		element.name = SKStringWithFormat(@"From %@", [activeApp objectForKey:@"NSApplicationName"]);
+		element.data = [pasteboardItem stringForType:NSPasteboardTypeString];
+		[self addElement:element toGroup:destinationGroup atIndex:index];
+		[element release];
 	}
-	else if([[tableColumn identifier] isEqual:column2Identifier]) {
-		return @"";
-	}
-	return @"";
+	
+	return YES;
 }
 
-#pragma mark -
-#pragma mark NSOutlineViewDataSource - Optional Methods
+- (NSDragOperation)outlineView:(NSOutlineView *)outlineView validateDrop:(id<NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)index
+{
+	id representedObject = [item representedObject];
+	TRACE(@"Represented object <%@> :: index <%d>", representedObject, index);
 
-///* Optional Methods
-// */
-//- (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item;
-//- (id)outlineView:(NSOutlineView *)outlineView itemForPersistentObject:(id)object;
-//- (id)outlineView:(NSOutlineView *)outlineView persistentObjectForItem:(id)item;
-//
-///* Optional - Sorting Support
-// This is the indication that sorting needs to be done. Typically the data source will sort its data, reload, and adjust selections.
-// */
-//- (void)outlineView:(NSOutlineView *)outlineView sortDescriptorsDidChange:(NSArray *)oldDescriptors AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
-//
-///* Optional - Drag and Drop support
-// */
-//
-///* This method is called after it has been determined that a drag should begin, but before the drag has been started.  To refuse the drag, return NO.  To start a drag, return YES and place the drag data onto the pasteboard (data, owner, etc...).  The drag image and other drag related information will be set up and provided by the outline view once this call returns with YES.  The items array is the list of items that will be participating in the drag.
-// */
-//- (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pasteboard;
-//
-///* This method is used by NSOutlineView to determine a valid drop target. Based on the mouse position, the outline view will suggest a proposed child 'index' for the drop to happen as a child of 'item'. This method must return a value that indicates which NSDragOperation the data source will perform. The data source may "re-target" a drop, if desired, by calling setDropItem:dropChildIndex: and returning something other than NSDragOperationNone. One may choose to re-target for various reasons (eg. for better visual feedback when inserting into a sorted position). On Leopard linked applications, this method is called only when the drag position changes or the dragOperation changes (ie: a modifier key is pressed). Prior to Leopard, it would be called constantly in a timer, regardless of attribute changes.
-// */
-//- (NSDragOperation)outlineView:(NSOutlineView *)outlineView validateDrop:(id <NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)index;
-//
-///* This method is called when the mouse is released over an outline view that previously decided to allow a drop via the validateDrop method. The data source should incorporate the data from the dragging pasteboard at this time. 'index' is the location to insert the data as a child of 'item', and are the values previously set in the validateDrop: method.
-// */
-//- (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id <NSDraggingInfo>)info item:(id)item childIndex:(NSInteger)index;
-//
-///* NSOutlineView data source objects can support file promised drags via by adding  NSFilesPromisePboardType to the pasteboard in outlineView:writeItems:toPasteboard:.  NSOutlineView implements -namesOfPromisedFilesDroppedAtDestination: to return the results of this data source method.  This method should returns an array of filenames for the created files (filenames only, not full paths).  The URL represents the drop location.  For more information on file promise dragging, see documentation on the NSDraggingSource protocol and -namesOfPromisedFilesDroppedAtDestination:.
-// */
-//- (NSArray *)outlineView:(NSOutlineView *)outlineView namesOfPromisedFilesDroppedAtDestination:(NSURL *)dropDestination forDraggedItems:(NSArray *)items AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
+	BOOL isDropAllowed = [representedObject isKindOfClass:[URLCollectorGroup class]];
+	return isDropAllowed ? NSDragOperationCopy : NSDragOperationNone;
+}
+
+- (NSArray *)outlineView:(NSOutlineView *)outlineView namesOfPromisedFilesDroppedAtDestination:(NSURL *)dropDestination forDraggedItems:(NSArray *)items
+{
+	TRACE(@"");
+	
+	return nil;
+}
 
 @end
+

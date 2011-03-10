@@ -17,5 +17,7 @@
 @property (nonatomic, copy) NSString *sourceName;
 @property (nonatomic, copy) NSString *sourceURL;
 
+- (id)initWithPerson:(NSDictionary *)personInfo;
+- (id)initWithApplication:(NSDictionary *)applicationInfo;
 
 @end

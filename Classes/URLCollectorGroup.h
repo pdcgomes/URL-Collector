@@ -14,14 +14,18 @@
 @interface URLCollectorGroup : URLCollectorNode 
 {
 	NSColor				*groupColor;
+	NSImage				*groupImage;
 	
 	URLCollectorGroup	*parentGroup;
 }
 
 @property (nonatomic, retain) NSColor *groupColor;
+@property (nonatomic, retain) NSImage *groupImage;
 @property (nonatomic, assign) URLCollectorGroup *parentGroup;
 
 - (void)add:(URLCollectorElement *)element;
+- (void)add:(URLCollectorElement *)element atIndex:(NSInteger)index;
+
 - (void)remove:(URLCollectorElement *)element;
 
 @end
