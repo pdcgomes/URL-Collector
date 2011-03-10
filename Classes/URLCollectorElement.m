@@ -16,7 +16,6 @@
 @synthesize parentGroup;
 @synthesize source;
 @synthesize tags;
-@synthesize dateAdded;
 @synthesize isUnread;
 @dynamic isLeafNode;
 
@@ -24,7 +23,6 @@
 {
 	SKSafeRelease(source);
 	SKSafeRelease(tags);
-	SKSafeRelease(dateAdded);
 	SKSafeRelease(elementURL);
 	
 	[super dealloc];

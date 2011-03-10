@@ -12,15 +12,18 @@
 {
 	NSString			*nodeName;
 	URLCollectorNode	*parentNode;
+	NSMutableArray		*children;
 	BOOL				isLeafNode;
 
 	NSDate				*createDate;	
 	NSUInteger			sortOrder;
-
 }
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, assign) URLCollectorNode *parentNode;
+@property (nonatomic, retain) NSMutableArray *children;
+@property (nonatomic, readonly) NSUInteger numberOfChildren;
+
 @property (nonatomic, assign) BOOL isLeafNode;
 @property (nonatomic, retain) NSDate *createDate;
 @property (nonatomic, assign) NSUInteger sortOrder;

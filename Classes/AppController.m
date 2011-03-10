@@ -17,6 +17,7 @@
 #import "URLCollectorGroup.h"
 #import "URLCollectorElement.h"
 #import "URLCollectorSource.h"
+#import "URLCollectorDataSource.h"
 
 @interface AppController()
 
@@ -34,12 +35,16 @@
 
 @synthesize shorteningServices;
 @synthesize urlCollectorElements;
+@synthesize selectedElements;
 
 - (void)dealloc
 {
 	[self deregisterObservers];
+	
 	[urlShortener release];
 	[urlCollectorElements release];
+	[urlCollectorDataSource release];
+	[selectedElements release];
 	
 	[super dealloc];
 }
@@ -47,7 +52,9 @@
 - (void)awakeFromNib
 {
 	TRACE(@"");
+	urlCollectorDataSource = [[URLCollectorDataSource alloc] init];
 	urlCollectorElements = [[NSMutableArray alloc] init];
+	selectedElements = [[NSMutableArray alloc] init];
 	
 	urlShortener = [[URLShortener alloc] initWithServiceKey:@"SAPOPuny"];
 	urlShortener.delegate = self;

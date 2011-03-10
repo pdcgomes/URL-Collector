@@ -8,13 +8,12 @@
 
 #import "URLCollectorGroup.h"
 #import "URLCollectorElement.h"
+#import "URLCollectorNode.h"
 
 @implementation URLCollectorGroup
 
 @synthesize groupColor;
 @synthesize parentGroup;
-@synthesize children;
-@dynamic numberOfElements;
 
 - (void)dealloc
 {
@@ -26,11 +25,6 @@
 
 #pragma mark -
 #pragma mark Properties
-
-- (NSUInteger)numberOfElements
-{
-	return [children count];
-}
 
 - (BOOL)isLeafNode
 {
@@ -66,7 +60,7 @@
 #pragma mark KVO
 
 // Automatically notifies of count changes when "children" changes
-+ (NSSet *)keyPathsForValuesAffectingNumberOfElements
++ (NSSet *)keyPathsForValuesAffectingNumberOfChildren
 {
 	TRACE(@"");
 	return [NSSet setWithObject:@"children"];

@@ -20,7 +20,6 @@
 	URLCollectorGroup	*parentGroup;
 	URLCollectorSource	*source;
 	
-	NSDate				*dateAdded;
 	BOOL				isUnread;
 }
 
@@ -31,7 +30,6 @@
 @property (nonatomic, assign) URLCollectorGroup *parentGroup;
 @property (nonatomic, retain) URLCollectorSource *source;
 
-@property (nonatomic, retain) NSDate *dateAdded;
 @property (nonatomic, assign) BOOL isUnread;
 
 @end

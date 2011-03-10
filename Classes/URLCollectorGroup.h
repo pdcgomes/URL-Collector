@@ -16,15 +16,10 @@
 	NSColor				*groupColor;
 	
 	URLCollectorGroup	*parentGroup;
-	NSMutableArray		*children;
 }
 
 @property (nonatomic, retain) NSColor *groupColor;
-
 @property (nonatomic, assign) URLCollectorGroup *parentGroup;
-@property (nonatomic, retain) NSMutableArray *children;
-
-@property (nonatomic, readonly) NSUInteger numberOfElements;
 
 - (void)add:(URLCollectorElement *)element;
 - (void)remove:(URLCollectorElement *)element;

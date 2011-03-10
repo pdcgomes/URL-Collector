@@ -12,9 +12,14 @@
 
 @synthesize name = nodeName;
 @synthesize parentNode;
+@synthesize children;
 @synthesize isLeafNode;
 @synthesize createDate;
 @synthesize sortOrder;
+@dynamic numberOfChildren;
+
+#pragma mark -
+#pragma mark Dealloc and Initialization
 
 - (void)dealloc
 {
@@ -23,5 +28,14 @@
 	
 	[super dealloc];
 }
+
+#pragma mark -
+#pragma mark Properties
+
+- (NSUInteger)numberOfChildren
+{
+	return [children count];
+}
+
 
 @end
