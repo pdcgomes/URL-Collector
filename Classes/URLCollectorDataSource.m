@@ -147,8 +147,13 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 	}
 	
 	[self willChangeValueForKey:@"urlCollectorElements"];
-	[urlCollectorElements insertObject:group atIndex:index];
 	[urlCollectorElements removeObjectAtIndex:oldGroupIndex];
+	if(index < [urlCollectorElements count]) {
+		[urlCollectorElements insertObject:group atIndex:index];
+	}
+	else {
+		[urlCollectorElements addObject:group];
+	}
 	[self didChangeValueForKey:@"urlCollectorElements"];
 }
 
@@ -163,16 +168,15 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 - (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pasteboard
 {
 	TRACE(@"");
-	NSArray *indexPaths = [items valueForKey:@"indexPath"];
 	
 	// Simple check to determine whether the user has selected mixed element types (groups + children) or a single type (just groups; just children)
-	
 	NSSet *itemClasses = [NSSet setWithArray:[items valueForKeyPath:@"representedObject.class"]];
 	if([itemClasses count] > 1) {
 		WARN(@"***** NOT CURRENTLY SUPPORTING DRAGGING OF MIXED CLASSES");
 		return NO;
 	}
-	
+
+	NSArray *indexPaths = [items valueForKey:@"indexPath"];
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:indexPaths];
 	[pasteboard declareTypes:[NSArray arrayWithObject:NSPasteboardTypeURLCollectorElement] owner:self];
 	[pasteboard setData:data forType:NSPasteboardTypeURLCollectorElement];
@@ -180,13 +184,41 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 	return YES;
 }
 
+#define DRAG_TYPE_GROUP 1
+#define DRAG_TYPE_CHILD 2
 - (NSDragOperation)outlineView:(NSOutlineView *)outlineView validateDrop:(id<NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)index
 {
 	id representedObject = [item representedObject];
-	TRACE(@"Represented object <%@> :: index <%d>", representedObject, index);
+//	TRACE(@"Represented object <%@> :: index <%d>", representedObject, index);
 
-	BOOL isDropAllowed = [representedObject isKindOfClass:[URLCollectorGroup class]];
-	return isDropAllowed ? NSDragOperationCopy : NSDragOperationNone;
+	if([info draggingSource] == nil) {
+		if([representedObject isKindOfClass:[URLCollectorGroup class]]) {
+			return NSDragOperationCopy;
+		}
+		return NSDragOperationNone;
+	}
+	if([info draggingSource] != outlineView) {
+		return NSDragOperationNone;
+	}
+	
+	NSData *draggedData = [[info draggingPasteboard] dataForType:NSPasteboardTypeURLCollectorElement];
+	NSArray *draggedIndexPaths = [NSKeyedUnarchiver unarchiveObjectWithData:draggedData];
+	NSInteger dragType = [[draggedIndexPaths lastObject] length];
+	switch(dragType) {
+		case DRAG_TYPE_GROUP:
+			return (representedObject == nil ? NSDragOperationMove : NSDragOperationNone);
+			
+		case DRAG_TYPE_CHILD:
+			return ([representedObject isKindOfClass:[URLCollectorGroup class]] ? NSDragOperationMove : NSDragOperationNone);
+			
+		default:
+			WARN(@"INVALID/UNSUPPORTED DROP OPERATION!");
+			return NSDragOperationNone;
+	}
+	
+	return NSDragOperationNone;
+//	BOOL isDropAllowed = [representedObject isKindOfClass:[URLCollectorGroup class]];
+//	return isDropAllowed ? NSDragOperationCopy : NSDragOperationNone;
 }
 
 #define INDEXPATH_GROUP_POSITION	0
@@ -194,10 +226,10 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 - (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id<NSDraggingInfo>)info item:(id)item childIndex:(NSInteger)index
 {
 	TRACE(@"");
-	NSAssert([[item representedObject] isKindOfClass:[URLCollectorGroup class]], @"");
+//	NSAssert([[item representedObject] isKindOfClass:[URLCollectorGroup class]], @"");
 	
-	URLCollectorGroup *destinationGroup = [item representedObject];
 	if([info draggingSource] == nil) {
+		URLCollectorGroup *destinationGroup = [item representedObject];
 		NSDictionary *activeApp = [[NSWorkspace sharedWorkspace] activeApplication];
 		for(NSPasteboardItem *pasteboardItem in [[info draggingPasteboard] pasteboardItems]) {
 			URLCollectorElement *element = [[URLCollectorElement alloc] init];
@@ -219,17 +251,19 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 			switch([indexPath length])
 			{
 				case 2: { // Moving a child element 
+					TRACE(@"Moving children to index <%d>", index);
+					URLCollectorGroup *destinationGroup = [item representedObject];
 					URLCollectorElement *element = [sourceGroup.children objectAtIndex:[indexPath indexAtPosition:INDEXPATH_ELEMENT_POSITION]];
 					[self addElement:element toGroup:destinationGroup atIndex:index];
 					break;
 				}
 				case 1: // Moving a group element
+					TRACE(@"Moving group <%@> to index <%d>...", sourceGroup, index);
 					[self moveGroup:sourceGroup toIndex:index];
 					break;
 				default:
 					NSAssert(NO, @"Unsupported indexPath length.");
 			}
-			
 		}
 		TRACE(@"IndexPaths: %@", draggedIndexPaths);
 	}

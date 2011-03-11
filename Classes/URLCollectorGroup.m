@@ -116,19 +116,19 @@
 
 - (void)moveChild:(URLCollectorElement *)element toIndex:(NSInteger)index
 {
-	NSInteger childIndex = [children indexOfObject:element];
-	if(element.parentGroup != self || NSNotFound == childIndex) {
+	NSInteger oldChildIndex = [children indexOfObject:element];
+	if(element.parentGroup != self || NSNotFound == oldChildIndex) {
 		[[NSException exceptionWithName:@"pt.sapo.macos.urlcollector.InvalidParentException" reason:@"Attempted to move an element that's not a child of the current node" userInfo:nil] raise];
 	}
 	
-	if(index == childIndex) {
+	if(index == oldChildIndex) {
 		return;
 	}
 	
 	[element retain];
 	[self willChangeValueForKey:@"children"];
 	[children insertObject:element atIndex:index];
-	[children removeObjectAtIndex:childIndex];
+	[children removeObjectAtIndex:oldChildIndex];
 	[self didChangeValueForKey:@"children"];
 	[element release];
 }
