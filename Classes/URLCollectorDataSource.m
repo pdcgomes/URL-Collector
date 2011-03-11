@@ -250,14 +250,14 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 			
 			switch([indexPath length])
 			{
-				case 2: { // Moving a child element 
+				case DRAG_TYPE_CHILD: { // Moving a child element 
 					TRACE(@"Moving children to index <%d>", index);
 					URLCollectorGroup *destinationGroup = [item representedObject];
 					URLCollectorElement *element = [sourceGroup.children objectAtIndex:[indexPath indexAtPosition:INDEXPATH_ELEMENT_POSITION]];
 					[self addElement:element toGroup:destinationGroup atIndex:index];
 					break;
 				}
-				case 1: // Moving a group element
+				case DRAG_TYPE_GROUP: // Moving a group element
 					TRACE(@"Moving group <%@> to index <%d>...", sourceGroup, index);
 					[self moveGroup:sourceGroup toIndex:index];
 					break;
