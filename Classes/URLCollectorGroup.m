@@ -34,6 +34,27 @@
 }
 
 #pragma mark -
+#pragma mark NSCoding
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+	[super encodeWithCoder:aCoder];
+	[aCoder encodeObject:groupColor forKey:@"groupColor"];
+	[aCoder encodeObject:groupImage forKey:@"groupImage"];
+	[aCoder encodeObject:children forKey:@"children"];
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+	if((self = [super initWithCoder:aDecoder])) {
+		groupColor = [[aDecoder decodeObjectForKey:@"groupColor"] copy];
+		groupImage = [[aDecoder decodeObjectForKey:@"groupImage"] retain]; // This is probably wrong right here...
+		children = [[aDecoder decodeObjectForKey:@"children"] retain];
+	}
+	return self;
+}
+
+#pragma mark -
 #pragma mark Public Methods
 
 - (void)add:(URLCollectorElement *)element
@@ -65,8 +86,11 @@
 	if(!children) {
 		children = [[NSMutableArray alloc] initWithCapacity:1];
 	}
-	
-	if(element.parentGroup) {
+	if(element.parentGroup == self) {
+		[self moveChild:element toIndex:index];
+		return;
+	}
+	else if(element.parentGroup != nil) {
 		[element.parentGroup remove:element];
 	}
 	[element setParentGroup:self];
@@ -88,6 +112,31 @@
 	[self didChangeValueForKey:@"children"];
 	
 	[element release];
+}
+
+- (void)moveChild:(URLCollectorElement *)element toIndex:(NSInteger)index
+{
+	NSInteger childIndex = [children indexOfObject:element];
+	if(element.parentGroup != self || NSNotFound == childIndex) {
+		[[NSException exceptionWithName:@"pt.sapo.macos.urlcollector.InvalidParentException" reason:@"Attempted to move an element that's not a child of the current node" userInfo:nil] raise];
+	}
+	
+	if(index == childIndex) {
+		return;
+	}
+	
+	[element retain];
+	[self willChangeValueForKey:@"children"];
+	[children insertObject:element atIndex:index];
+	[children removeObjectAtIndex:childIndex];
+	[self didChangeValueForKey:@"children"];
+	[element release];
+}
+
+- (void)removeAllChildren
+{
+	[self.children makeObjectsPerformSelector:@selector(setParentGroup:) withObject:nil];
+	[self.children removeAllObjects];
 }
 
 - (void)remove:(URLCollectorElement *)element

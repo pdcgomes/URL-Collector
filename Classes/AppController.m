@@ -28,6 +28,7 @@
 - (void)updateMenuItems;
 
 - (BOOL)pasteboardContains:(Class)class;
+- (BOOL)hasSelectedRowsOfClass:(Class)objectClass;
 
 @end
 
@@ -121,7 +122,7 @@
 }
 
 #pragma mark -
-#pragma mark -
+#pragma mark MenuItem validation
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
@@ -135,9 +136,31 @@
 	else if([menuItem action] == @selector(shortenURL:)) {
 		return [self pasteboardContains:[NSURL class]];
 	}
+	else if([menuItem action] == @selector(removeRow:)) {
+		return [self hasSelectedRowsOfClass:[URLCollectorGroup class]] || [self hasSelectedRowsOfClass:[URLCollectorElement class]];
+	}
 	else {
 		return YES;
 	}
+}
+
+- (BOOL)hasSelectedRowsOfClass:(Class)objectClass
+{
+	NSIndexSet *selectedRowIndexes = [urlCollectorOutlineView selectedRowIndexes];
+	if([selectedRowIndexes count] == 0) {
+		return NO;
+	}
+	
+	NSUInteger index = [selectedRowIndexes firstIndex];
+	while(NSNotFound != index) {
+		id representedObject = [[urlCollectorOutlineView itemAtRow:index] representedObject];
+		if([representedObject isKindOfClass:objectClass]) {
+			return YES;
+		}
+		index = [selectedRowIndexes indexGreaterThanIndex:index];
+	}
+	
+	return NO;
 }
 
 #pragma mark -
@@ -187,6 +210,34 @@
 
 	[urlCollectorOutlineView editColumn:0 row:[urlCollectorOutlineView numberOfRows] - 1 withEvent:nil select:YES];
 //	[urlCollectorDataSource addMockData];
+}
+
+- (IBAction)removeRow:(id)sender
+{
+	NSIndexSet *selectedRowIndexes = [urlCollectorOutlineView selectedRowIndexes];
+	NSUInteger index = [selectedRowIndexes firstIndex];
+	while(NSNotFound != index) {
+		id representedObject = [[urlCollectorOutlineView itemAtRow:index] representedObject];
+		if([representedObject isKindOfClass:[URLCollectorGroup class]]) {
+			[urlCollectorDataSource removeGroup:representedObject removeChildren:NO];
+			continue;
+		}
+		if([representedObject isKindOfClass:[URLCollectorElement class]]) {
+			[urlCollectorDataSource removeElement:representedObject];
+			continue;
+		}
+		index = [selectedRowIndexes indexGreaterThanIndex:index];
+	}
+}
+
+- (IBAction)removeGroup:(id)sender
+{
+	
+}
+
+- (IBAction)removeElement:(id)sender
+{
+	TRACE(@"%@", sender);
 }
 
 #pragma mark -

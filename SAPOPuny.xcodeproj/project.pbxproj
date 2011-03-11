@@ -14,6 +14,18 @@
 		0D21C3E4132012E900A0B8BB /* PTKeyCodeTranslator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D21C3DF132012E900A0B8BB /* PTKeyCodeTranslator.m */; };
 		0D21C3E5132012E900A0B8BB /* PTKeyCombo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D21C3E1132012E900A0B8BB /* PTKeyCombo.m */; };
 		0D21C3EB1320130D00A0B8BB /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D21C3EA1320130D00A0B8BB /* Carbon.framework */; };
+		0D23F55C13210B490011B219 /* URLShortener.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23F55B13210B490011B219 /* URLShortener.m */; };
+		0D23F569132129340011B219 /* menubar-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D23F568132129340011B219 /* menubar-icon.png */; };
+		0D23F5A213212D480011B219 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23F59813212D480011B219 /* RegexKitLite.m */; };
+		0D23F5B913212FAC0011B219 /* SAPOPunyShorteningService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23F5B813212FAC0011B219 /* SAPOPunyShorteningService.m */; };
+		0D23F5C9132131620011B219 /* URLShorteningService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23F5C8132131620011B219 /* URLShorteningService.m */; };
+		0D23F8C1132795B90011B219 /* GTMGatherInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23F8A0132795B90011B219 /* GTMGatherInputStream.m */; };
+		0D23F8C2132795B90011B219 /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23F8A2132795B90011B219 /* GTMHTTPFetcher.m */; };
+		0D23F8C3132795B90011B219 /* GTMHTTPFetcherLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23F8A7132795B90011B219 /* GTMHTTPFetcherLogging.m */; };
+		0D23F8C4132795B90011B219 /* GTMHTTPFetcherService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23F8A9132795B90011B219 /* GTMHTTPFetcherService.m */; };
+		0D23F8C5132795B90011B219 /* GTMHTTPFetchHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23F8AB132795B90011B219 /* GTMHTTPFetchHistory.m */; };
+		0D23F8C6132795B90011B219 /* GTMHTTPUploadFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23F8AD132795B90011B219 /* GTMHTTPUploadFetcher.m */; };
+		0D23F8C7132795B90011B219 /* GTMMIMEDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23F8AF132795B90011B219 /* GTMMIMEDocument.m */; };
 		0D95C66F1320153A00BD2C17 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D95C66E1320153A00BD2C17 /* AppController.m */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* AppDelegate.m */; };
@@ -48,6 +60,31 @@
 		0D21C3E0132012E900A0B8BB /* PTKeyCombo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTKeyCombo.h; sourceTree = "<group>"; };
 		0D21C3E1132012E900A0B8BB /* PTKeyCombo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTKeyCombo.m; sourceTree = "<group>"; };
 		0D21C3EA1320130D00A0B8BB /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		0D23F4961320F8E30011B219 /* Logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logging.h; sourceTree = "<group>"; };
+		0D23F4971320F8E30011B219 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
+		0D23F55A13210B490011B219 /* URLShortener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLShortener.h; sourceTree = "<group>"; };
+		0D23F55B13210B490011B219 /* URLShortener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLShortener.m; sourceTree = "<group>"; };
+		0D23F568132129340011B219 /* menubar-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon.png"; sourceTree = "<group>"; };
+		0D23F59613212D480011B219 /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
+		0D23F59813212D480011B219 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
+		0D23F5B713212FAC0011B219 /* SAPOPunyShorteningService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAPOPunyShorteningService.h; sourceTree = "<group>"; };
+		0D23F5B813212FAC0011B219 /* SAPOPunyShorteningService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAPOPunyShorteningService.m; sourceTree = "<group>"; };
+		0D23F5C7132131620011B219 /* URLShorteningService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLShorteningService.h; sourceTree = "<group>"; };
+		0D23F5C8132131620011B219 /* URLShorteningService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLShorteningService.m; sourceTree = "<group>"; };
+		0D23F89F132795B90011B219 /* GTMGatherInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGatherInputStream.h; sourceTree = "<group>"; };
+		0D23F8A0132795B90011B219 /* GTMGatherInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGatherInputStream.m; sourceTree = "<group>"; };
+		0D23F8A1132795B90011B219 /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
+		0D23F8A2132795B90011B219 /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcher.m; sourceTree = "<group>"; };
+		0D23F8A6132795B90011B219 /* GTMHTTPFetcherLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcherLogging.h; sourceTree = "<group>"; };
+		0D23F8A7132795B90011B219 /* GTMHTTPFetcherLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcherLogging.m; sourceTree = "<group>"; };
+		0D23F8A8132795B90011B219 /* GTMHTTPFetcherService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcherService.h; sourceTree = "<group>"; };
+		0D23F8A9132795B90011B219 /* GTMHTTPFetcherService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcherService.m; sourceTree = "<group>"; };
+		0D23F8AA132795B90011B219 /* GTMHTTPFetchHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetchHistory.h; sourceTree = "<group>"; };
+		0D23F8AB132795B90011B219 /* GTMHTTPFetchHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetchHistory.m; sourceTree = "<group>"; };
+		0D23F8AC132795B90011B219 /* GTMHTTPUploadFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPUploadFetcher.h; sourceTree = "<group>"; };
+		0D23F8AD132795B90011B219 /* GTMHTTPUploadFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPUploadFetcher.m; sourceTree = "<group>"; };
+		0D23F8AE132795B90011B219 /* GTMMIMEDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMMIMEDocument.h; sourceTree = "<group>"; };
+		0D23F8AF132795B90011B219 /* GTMMIMEDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMMIMEDocument.m; sourceTree = "<group>"; };
 		0D95C66D1320153A00BD2C17 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		0D95C66E1320153A00BD2C17 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -59,7 +96,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		8D1107310486CEB800E47090 /* SAPOPuny-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SAPOPuny-Info.plist"; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SAPOPuny.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SAPOPuny.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -80,10 +117,9 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				256AC3D80F4B6AC300CF3369 /* AppDelegate.h */,
-				256AC3D90F4B6AC300CF3369 /* AppDelegate.m */,
-				0D95C66D1320153A00BD2C17 /* AppController.h */,
-				0D95C66E1320153A00BD2C17 /* AppController.m */,
+				0D23F55913210B320011B219 /* PunyURL */,
+				0D23F48A1320F8AC0011B219 /* Common */,
+				0D23F4891320F8A60011B219 /* Application */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -107,6 +143,8 @@
 		0D21C3D8132012E900A0B8BB /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				0D23F89B132795B90011B219 /* gtm-http-fetcher */,
+				0D23F58B13212D480011B219 /* RegexKitLite */,
 				0D21C3D9132012E900A0B8BB /* HotKey */,
 			);
 			path = Vendor;
@@ -125,6 +163,85 @@
 				0D21C3E1132012E900A0B8BB /* PTKeyCombo.m */,
 			);
 			path = HotKey;
+			sourceTree = "<group>";
+		};
+		0D23F4891320F8A60011B219 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				256AC3D80F4B6AC300CF3369 /* AppDelegate.h */,
+				256AC3D90F4B6AC300CF3369 /* AppDelegate.m */,
+				0D95C66D1320153A00BD2C17 /* AppController.h */,
+				0D95C66E1320153A00BD2C17 /* AppController.m */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		0D23F48A1320F8AC0011B219 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				0D23F4961320F8E30011B219 /* Logging.h */,
+				0D23F4971320F8E30011B219 /* Macros.h */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		0D23F536132108DB0011B219 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				0D23F568132129340011B219 /* menubar-icon.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		0D23F55913210B320011B219 /* PunyURL */ = {
+			isa = PBXGroup;
+			children = (
+				0D23F55A13210B490011B219 /* URLShortener.h */,
+				0D23F55B13210B490011B219 /* URLShortener.m */,
+				0D23F5B713212FAC0011B219 /* SAPOPunyShorteningService.h */,
+				0D23F5B813212FAC0011B219 /* SAPOPunyShorteningService.m */,
+				0D23F5C7132131620011B219 /* URLShorteningService.h */,
+				0D23F5C8132131620011B219 /* URLShorteningService.m */,
+			);
+			name = PunyURL;
+			sourceTree = "<group>";
+		};
+		0D23F58B13212D480011B219 /* RegexKitLite */ = {
+			isa = PBXGroup;
+			children = (
+				0D23F59613212D480011B219 /* RegexKitLite.h */,
+				0D23F59813212D480011B219 /* RegexKitLite.m */,
+			);
+			path = RegexKitLite;
+			sourceTree = "<group>";
+		};
+		0D23F89B132795B90011B219 /* gtm-http-fetcher */ = {
+			isa = PBXGroup;
+			children = (
+				0D23F89E132795B90011B219 /* Source */,
+			);
+			path = "gtm-http-fetcher";
+			sourceTree = "<group>";
+		};
+		0D23F89E132795B90011B219 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				0D23F89F132795B90011B219 /* GTMGatherInputStream.h */,
+				0D23F8A0132795B90011B219 /* GTMGatherInputStream.m */,
+				0D23F8A1132795B90011B219 /* GTMHTTPFetcher.h */,
+				0D23F8A2132795B90011B219 /* GTMHTTPFetcher.m */,
+				0D23F8A6132795B90011B219 /* GTMHTTPFetcherLogging.h */,
+				0D23F8A7132795B90011B219 /* GTMHTTPFetcherLogging.m */,
+				0D23F8A8132795B90011B219 /* GTMHTTPFetcherService.h */,
+				0D23F8A9132795B90011B219 /* GTMHTTPFetcherService.m */,
+				0D23F8AA132795B90011B219 /* GTMHTTPFetchHistory.h */,
+				0D23F8AB132795B90011B219 /* GTMHTTPFetchHistory.m */,
+				0D23F8AC132795B90011B219 /* GTMHTTPUploadFetcher.h */,
+				0D23F8AD132795B90011B219 /* GTMHTTPUploadFetcher.m */,
+				0D23F8AE132795B90011B219 /* GTMMIMEDocument.h */,
+				0D23F8AF132795B90011B219 /* GTMMIMEDocument.m */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
@@ -179,8 +296,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0D23F536132108DB0011B219 /* Images */,
 				0D21C35F13200CFE00A0B8BB /* NIB */,
-				8D1107310486CEB800E47090 /* SAPOPuny-Info.plist */,
+				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
 			name = Resources;
@@ -249,6 +367,7 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
+				0D23F569132129340011B219 /* menubar-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +385,17 @@
 				0D21C3E4132012E900A0B8BB /* PTKeyCodeTranslator.m in Sources */,
 				0D21C3E5132012E900A0B8BB /* PTKeyCombo.m in Sources */,
 				0D95C66F1320153A00BD2C17 /* AppController.m in Sources */,
+				0D23F55C13210B490011B219 /* URLShortener.m in Sources */,
+				0D23F5A213212D480011B219 /* RegexKitLite.m in Sources */,
+				0D23F5B913212FAC0011B219 /* SAPOPunyShorteningService.m in Sources */,
+				0D23F5C9132131620011B219 /* URLShorteningService.m in Sources */,
+				0D23F8C1132795B90011B219 /* GTMGatherInputStream.m in Sources */,
+				0D23F8C2132795B90011B219 /* GTMHTTPFetcher.m in Sources */,
+				0D23F8C3132795B90011B219 /* GTMHTTPFetcherLogging.m in Sources */,
+				0D23F8C4132795B90011B219 /* GTMHTTPFetcherService.m in Sources */,
+				0D23F8C5132795B90011B219 /* GTMHTTPFetchHistory.m in Sources */,
+				0D23F8C6132795B90011B219 /* GTMHTTPUploadFetcher.m in Sources */,
+				0D23F8C7132795B90011B219 /* GTMMIMEDocument.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,7 +436,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SAPOPuny_Prefix.pch;
-				INFOPLIST_FILE = "SAPOPuny-Info.plist";
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = SAPOPuny;
 			};
@@ -324,7 +454,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SAPOPuny_Prefix.pch;
-				INFOPLIST_FILE = "SAPOPuny-Info.plist";
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = SAPOPuny;
 			};
@@ -339,6 +469,12 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-DLOG_LEVEL=0",
+					"-DDEBUGLOG",
+					"-DDEBUG",
+				);
+				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
 			};

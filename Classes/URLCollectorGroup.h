@@ -11,7 +11,7 @@
 
 @class URLCollectorElement;
 
-@interface URLCollectorGroup : URLCollectorNode 
+@interface URLCollectorGroup : URLCollectorNode
 {
 	NSColor				*groupColor;
 	NSImage				*groupImage;
@@ -26,6 +26,9 @@
 - (void)add:(URLCollectorElement *)element;
 - (void)add:(URLCollectorElement *)element atIndex:(NSInteger)index;
 
+- (void)removeAllChildren;
 - (void)remove:(URLCollectorElement *)element;
+
+- (void)moveChild:(URLCollectorElement *)element toIndex:(NSInteger)index;
 
 @end

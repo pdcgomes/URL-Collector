@@ -14,6 +14,8 @@
 NSString *column1Identifier = @"Column1";
 NSString *column2Identifier = @"Column2";
 
+NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLCollectorElement";
+
 #define UNCLASSIFIED_GROUP_INDEX 0
 
 @implementation URLCollectorDataSource
@@ -31,20 +33,13 @@ NSString *column2Identifier = @"Column2";
 	[super dealloc];
 }
 
-//- (id)init
-//{
-//	if((self = [super init])) {
-//	}
-//	return self;
-//}
-
 - (void)awakeFromNib
 {
 	urlCollectorElements = [[NSMutableArray alloc] initWithCapacity:1];
 	selectedElements = [[NSMutableArray alloc] init];
 
 	URLCollectorGroup *unclassifiedGroup = [[URLCollectorGroup alloc] init];
-	unclassifiedGroup.name = NSLocalizedString(@"Unclassified", @"");
+	unclassifiedGroup.name = NSLocalizedString(@"Inbox", @"");
 	[self addGroup:unclassifiedGroup];
 	[unclassifiedGroup release];
 }
@@ -120,9 +115,12 @@ NSString *column2Identifier = @"Column2";
 	
 	if(!shouldRemoveChildren) {
 		URLCollectorGroup *unclassifiedGroup = [urlCollectorElements objectAtIndex:UNCLASSIFIED_GROUP_INDEX];
-		for(URLCollectorElement *child in group.children) {
+		NSArray *groupChildren = [[NSArray alloc] initWithArray:group.children];
+		[group removeAllChildren];
+		for(URLCollectorElement *child in groupChildren) {
 			[unclassifiedGroup add:child];
 		}
+		[groupChildren release];
 	}
 	[urlCollectorElements removeObject:group];
 	
@@ -131,12 +129,27 @@ NSString *column2Identifier = @"Column2";
 
 - (void)removeElement:(URLCollectorElement *)element
 {
-	
+	[self willChangeValueForKey:@"urlCollectorElements"];
+	[element.parentGroup remove:element];
+	[self didChangeValueForKey:@"urlCollectorElements"];
 }
 
 - (void)removeElement:(URLCollectorElement *)element fromGroup:(URLCollectorGroup *)group
 {
 	
+}
+
+- (void)moveGroup:(URLCollectorGroup *)group toIndex:(NSInteger)index
+{
+	NSInteger oldGroupIndex = [urlCollectorElements indexOfObject:group];
+	if(oldGroupIndex == index) {
+		return;
+	}
+	
+	[self willChangeValueForKey:@"urlCollectorElements"];
+	[urlCollectorElements insertObject:group atIndex:index];
+	[urlCollectorElements removeObjectAtIndex:oldGroupIndex];
+	[self didChangeValueForKey:@"urlCollectorElements"];
 }
 
 - (void)moveElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group
@@ -147,21 +160,22 @@ NSString *column2Identifier = @"Column2";
 #pragma mark -
 #pragma mark NSOutlineViewDataSource - Drag and Drop support
 
-- (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id<NSDraggingInfo>)info item:(id)item childIndex:(NSInteger)index
+- (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pasteboard
 {
 	TRACE(@"");
-	NSAssert([[item representedObject] isKindOfClass:[URLCollectorGroup class]], @"");
+	NSArray *indexPaths = [items valueForKey:@"indexPath"];
 	
-	NSDictionary *activeApp = [[NSWorkspace sharedWorkspace] activeApplication];
+	// Simple check to determine whether the user has selected mixed element types (groups + children) or a single type (just groups; just children)
 	
-	URLCollectorGroup *destinationGroup = [item representedObject];
-	for(NSPasteboardItem *pasteboardItem in [[info draggingPasteboard] pasteboardItems]) {
-		URLCollectorElement *element = [[URLCollectorElement alloc] init];
-		element.name = SKStringWithFormat(@"%@ (via %@)", [pasteboardItem stringForType:@"public.url-name"], [activeApp objectForKey:@"NSApplicationName"]);
-		element.elementURL = [pasteboardItem stringForType:NSPasteboardTypeString];
-		[self addElement:element toGroup:destinationGroup atIndex:index];
-		[element release];
+	NSSet *itemClasses = [NSSet setWithArray:[items valueForKeyPath:@"representedObject.class"]];
+	if([itemClasses count] > 1) {
+		WARN(@"***** NOT CURRENTLY SUPPORTING DRAGGING OF MIXED CLASSES");
+		return NO;
 	}
+	
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:indexPaths];
+	[pasteboard declareTypes:[NSArray arrayWithObject:NSPasteboardTypeURLCollectorElement] owner:self];
+	[pasteboard setData:data forType:NSPasteboardTypeURLCollectorElement];
 	
 	return YES;
 }
@@ -173,6 +187,54 @@ NSString *column2Identifier = @"Column2";
 
 	BOOL isDropAllowed = [representedObject isKindOfClass:[URLCollectorGroup class]];
 	return isDropAllowed ? NSDragOperationCopy : NSDragOperationNone;
+}
+
+#define INDEXPATH_GROUP_POSITION	0
+#define INDEXPATH_ELEMENT_POSITION	1
+- (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id<NSDraggingInfo>)info item:(id)item childIndex:(NSInteger)index
+{
+	TRACE(@"");
+	NSAssert([[item representedObject] isKindOfClass:[URLCollectorGroup class]], @"");
+	
+	URLCollectorGroup *destinationGroup = [item representedObject];
+	if([info draggingSource] == nil) {
+		NSDictionary *activeApp = [[NSWorkspace sharedWorkspace] activeApplication];
+		for(NSPasteboardItem *pasteboardItem in [[info draggingPasteboard] pasteboardItems]) {
+			URLCollectorElement *element = [[URLCollectorElement alloc] init];
+			element.name = SKStringWithFormat(@"%@ (via %@)", [pasteboardItem stringForType:@"public.url-name"], [activeApp objectForKey:@"NSApplicationName"]);
+			element.elementURL = [pasteboardItem stringForType:NSPasteboardTypeString];
+			[self addElement:element toGroup:destinationGroup atIndex:index];
+			[element release];
+		}
+	}
+	else if([info draggingSource] == outlineView) {
+		NSData *draggedData = [[info draggingPasteboard] dataForType:NSPasteboardTypeURLCollectorElement];
+		NSArray *draggedIndexPaths = [NSKeyedUnarchiver unarchiveObjectWithData:draggedData];
+		
+		NSEnumerator *enumerator = [draggedIndexPaths reverseObjectEnumerator];
+		NSIndexPath *indexPath = nil;
+		while(indexPath = [enumerator nextObject]) {
+			URLCollectorGroup *sourceGroup = [urlCollectorElements objectAtIndex:[indexPath indexAtPosition:INDEXPATH_GROUP_POSITION]];
+			
+			switch([indexPath length])
+			{
+				case 2: { // Moving a child element 
+					URLCollectorElement *element = [sourceGroup.children objectAtIndex:[indexPath indexAtPosition:INDEXPATH_ELEMENT_POSITION]];
+					[self addElement:element toGroup:destinationGroup atIndex:index];
+					break;
+				}
+				case 1: // Moving a group element
+					[self moveGroup:sourceGroup toIndex:index];
+					break;
+				default:
+					NSAssert(NO, @"Unsupported indexPath length.");
+			}
+			
+		}
+		TRACE(@"IndexPaths: %@", draggedIndexPaths);
+	}
+	
+	return YES;
 }
 
 - (NSArray *)outlineView:(NSOutlineView *)outlineView namesOfPromisedFilesDroppedAtDestination:(NSURL *)dropDestination forDraggedItems:(NSArray *)items

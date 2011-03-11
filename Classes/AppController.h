@@ -37,5 +37,6 @@
 - (IBAction)quit:(id)sender;
 
 - (IBAction)addGroup:(id)sender;
+- (IBAction)removeRow:(id)sender;
 
 @end

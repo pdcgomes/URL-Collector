@@ -8,12 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface URLCollectorNode : NSObject 
+@interface URLCollectorNode : NSObject <NSCoding>
 {
 	NSString			*nodeName;
 	URLCollectorNode	*parentNode;
 	NSMutableArray		*children;
 	BOOL				isLeafNode;
+	BOOL				isLocked;
 
 	NSDate				*createDate;	
 	NSUInteger			sortOrder;
@@ -25,6 +26,7 @@
 @property (nonatomic, readonly) NSUInteger numberOfChildren;
 
 @property (nonatomic, assign) BOOL isLeafNode;
+@property (nonatomic, assign) BOOL isLocked;
 @property (nonatomic, retain) NSDate *createDate;
 @property (nonatomic, assign) NSUInteger sortOrder;
 

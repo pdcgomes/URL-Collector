@@ -12,13 +12,14 @@
 @implementation URLCollectorElement
 
 @synthesize data;
-@synthesize name;
 @synthesize elementURL;
 @synthesize parentGroup;
 @synthesize source;
 @synthesize tags;
 @synthesize isUnread;
-@dynamic isLeafNode;
+
+#pragma mark -
+#pragma mark Dealloc and Initialization
 
 - (void)dealloc
 {
@@ -28,6 +29,34 @@
 	SKSafeRelease(elementURL);
 	
 	[super dealloc];
+}
+
+#pragma mark -
+#pragma mark NSCoding
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+	[super encodeWithCoder:aCoder];
+	
+	[aCoder encodeObject:data forKey:@"data"];
+	[aCoder encodeObject:elementURL forKey:@"elementURL"];
+//	[aCoder encodeObject:parentGroup forKey:@"parentGroup"];
+	[aCoder encodeObject:source forKey:@"source"];
+	[aCoder encodeObject:tags forKey:@"tags"];
+	[aCoder encodeBool:isUnread forKey:@"isUnread"];
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+	if((self = [super initWithCoder:aDecoder])) {
+		data = [[aDecoder decodeObjectForKey:@"data"] retain];
+		elementURL = [[aDecoder decodeObjectForKey:@"elementURL"] copy];
+//		parentGroup = [aDecoder decodeObjectForKey:@"parentGroup"]; // This is probably wrong right here...
+		source = [[aDecoder decodeObjectForKey:@"source"] retain];
+		tags = [[aDecoder decodeObjectForKey:@"tags"] retain];
+		isUnread = [aDecoder decodeBoolForKey:@"isUnread"];
+	}
+	return self;
 }
 
 #pragma mark -

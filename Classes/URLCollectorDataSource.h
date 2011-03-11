@@ -30,15 +30,18 @@
 - (void)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group atIndex:(NSInteger)index;
 
 - (void)removeGroup:(URLCollectorGroup *)group;
-- (void)removeGroup:(URLCollectorGroup *)group removeChildren:(BOOL)shouldRemoveChildren;
+- (void)removeGroup:(URLCollectorGroup *)group removeChildren:(BOOL)shouldRemoveChildren; // If shouldRemoveChildren == NO, child elements are moved to the default "Inbox" group automatically
 
 - (void)removeElement:(URLCollectorElement *)element;
 - (void)removeElement:(URLCollectorElement *)element fromGroup:(URLCollectorGroup *)group;
 
+- (void)moveGroup:(URLCollectorGroup *)group toIndex:(NSInteger)index;
 - (void)moveElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group;
 
 @end
 
 extern NSString *column1Identifier;
 extern NSString *column2Identifier;
+
+extern NSString *const NSPasteboardTypeURLCollectorElement;
 
