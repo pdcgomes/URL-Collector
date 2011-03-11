@@ -114,21 +114,40 @@
 	[element release];
 }
 
-- (void)moveChild:(URLCollectorElement *)element toIndex:(NSInteger)index
+- (void)moveChild:(URLCollectorElement *)element toIndex:(NSInteger)newIndex
 {
-	NSInteger oldChildIndex = [children indexOfObject:element];
-	if(element.parentGroup != self || NSNotFound == oldChildIndex) {
+	NSInteger oldIndex = [children indexOfObject:element];
+	if(element.parentGroup != self || NSNotFound == oldIndex) {
 		[[NSException exceptionWithName:@"pt.sapo.macos.urlcollector.InvalidParentException" reason:@"Attempted to move an element that's not a child of the current node" userInfo:nil] raise];
 	}
 	
-	if(index == oldChildIndex) {
+	if(newIndex == oldIndex) {
 		return;
 	}
 	
 	[element retain];
 	[self willChangeValueForKey:@"children"];
-	[children insertObject:element atIndex:index];
-	[children removeObjectAtIndex:oldChildIndex];
+	
+	if(newIndex == 0) {
+		[children removeObjectAtIndex:oldIndex];
+		[children insertObject:element atIndex:newIndex];
+	}
+	else if(newIndex > oldIndex) {
+		[children insertObject:element atIndex:newIndex];
+		[children removeObjectAtIndex:oldIndex];
+	}
+	else {
+		[children removeObjectAtIndex:oldIndex];
+		[children insertObject:element atIndex:newIndex];
+	}
+
+// #1
+//	[children removeObjectAtIndex:oldIndex];
+//	[children insertObject:element atIndex:newIndex];
+	
+// #2
+//	[children insertObject:element atIndex:index];
+//	[children removeObjectAtIndex:oldChildIndex];
 	[self didChangeValueForKey:@"children"];
 	[element release];
 }

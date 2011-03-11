@@ -139,22 +139,44 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 	
 }
 
-- (void)moveGroup:(URLCollectorGroup *)group toIndex:(NSInteger)index
+- (void)moveGroup:(URLCollectorGroup *)group toIndex:(NSInteger)newIndex
 {
-	NSInteger oldGroupIndex = [urlCollectorElements indexOfObject:group];
-	if(oldGroupIndex == index) {
+	NSInteger oldIndex = [urlCollectorElements indexOfObject:group];
+	if(oldIndex == newIndex) {
 		return;
 	}
 	
 	[self willChangeValueForKey:@"urlCollectorElements"];
-	[urlCollectorElements removeObjectAtIndex:oldGroupIndex];
-	if(index < [urlCollectorElements count]) {
-		[urlCollectorElements insertObject:group atIndex:index];
+	
+	if(newIndex == 0) {
+		[urlCollectorElements removeObjectAtIndex:oldIndex];
+		[urlCollectorElements insertObject:group atIndex:newIndex];
+	}
+	else if(newIndex > oldIndex) {
+		if(newIndex >= [urlCollectorElements count]) {
+			[urlCollectorElements addObject:group];
+		}
+		else {
+			[urlCollectorElements insertObject:group atIndex:newIndex];
+		}
+		[urlCollectorElements removeObjectAtIndex:oldIndex];
 	}
 	else {
-		[urlCollectorElements addObject:group];
+		[urlCollectorElements removeObjectAtIndex:oldIndex];
+		[urlCollectorElements insertObject:group atIndex:newIndex];
 	}
 	[self didChangeValueForKey:@"urlCollectorElements"];
+	
+//	[self willChangeValueForKey:@"urlCollectorElements"];
+//	[urlCollectorElements removeObjectAtIndex:oldGroupIndex];
+//	if(index < [urlCollectorElements count]) {
+//		[urlCollectorElements insertObject:group atIndex:index];
+//	}
+//	else {
+//		[urlCollectorElements addObject:group];
+//	}
+//	[self didChangeValueForKey:@"urlCollectorElements"];
+	
 }
 
 - (void)moveElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group
@@ -181,6 +203,7 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 	[pasteboard declareTypes:[NSArray arrayWithObject:NSPasteboardTypeURLCollectorElement] owner:self];
 	[pasteboard setData:data forType:NSPasteboardTypeURLCollectorElement];
 	
+	[outlineView deselectAll:nil];
 	return YES;
 }
 
@@ -200,6 +223,11 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 	if([info draggingSource] != outlineView) {
 		return NSDragOperationNone;
 	}
+	
+//	if([info draggingDestinationWindow] != [outlineView window]) {
+//		TRACE(@"DRAGGED OUTSIDE THE WINDOW");
+//		return NSDragOperationDelete;
+//	}
 	
 	NSData *draggedData = [[info draggingPasteboard] dataForType:NSPasteboardTypeURLCollectorElement];
 	NSArray *draggedIndexPaths = [NSKeyedUnarchiver unarchiveObjectWithData:draggedData];
@@ -248,22 +276,25 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 		while(indexPath = [enumerator nextObject]) {
 			URLCollectorGroup *sourceGroup = [urlCollectorElements objectAtIndex:[indexPath indexAtPosition:INDEXPATH_GROUP_POSITION]];
 			
-			switch([indexPath length])
-			{
-				case DRAG_TYPE_CHILD: { // Moving a child element 
+			switch([indexPath length]) {
+				case DRAG_TYPE_CHILD: {
 					TRACE(@"Moving children to index <%d>", index);
 					URLCollectorGroup *destinationGroup = [item representedObject];
 					URLCollectorElement *element = [sourceGroup.children objectAtIndex:[indexPath indexAtPosition:INDEXPATH_ELEMENT_POSITION]];
 					[self addElement:element toGroup:destinationGroup atIndex:index];
 					break;
 				}
-				case DRAG_TYPE_GROUP: // Moving a group element
+				case DRAG_TYPE_GROUP:
 					TRACE(@"Moving group <%@> to index <%d>...", sourceGroup, index);
 					[self moveGroup:sourceGroup toIndex:index];
 					break;
 				default:
 					NSAssert(NO, @"Unsupported indexPath length.");
 			}
+			 // !!! IMPORTANT !!! 
+			 // since we're inserting the elements in reverse order, we need to adjust the insertion index at every iteration
+			 // this is to ensure that the elements preserve the original order
+			index = MAX(0, index-1);
 		}
 		TRACE(@"IndexPaths: %@", draggedIndexPaths);
 	}
