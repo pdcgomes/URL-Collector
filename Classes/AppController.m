@@ -215,19 +215,20 @@
 - (IBAction)removeRow:(id)sender
 {
 	NSIndexSet *selectedRowIndexes = [urlCollectorOutlineView selectedRowIndexes];
-	NSUInteger index = [selectedRowIndexes firstIndex];
+	TRACE(@"Removing selected row indexes: %@", selectedRowIndexes);
+	
+	NSInteger index = [selectedRowIndexes lastIndex];
 	while(NSNotFound != index) {
 		id representedObject = [[urlCollectorOutlineView itemAtRow:index] representedObject];
 		if([representedObject isKindOfClass:[URLCollectorGroup class]]) {
 			[urlCollectorDataSource removeGroup:representedObject removeChildren:NO];
-			continue;
 		}
-		if([representedObject isKindOfClass:[URLCollectorElement class]]) {
+		else if([representedObject isKindOfClass:[URLCollectorElement class]]) {
 			[urlCollectorDataSource removeElement:representedObject];
-			continue;
 		}
-		index = [selectedRowIndexes indexGreaterThanIndex:index];
+		index = [selectedRowIndexes indexLessThanIndex:index];
 	}
+	[urlCollectorOutlineView deselectAll:self];
 }
 
 - (IBAction)removeGroup:(id)sender
