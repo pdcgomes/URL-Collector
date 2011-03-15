@@ -25,8 +25,6 @@
 @property (nonatomic, retain) NSMutableArray *urlCollectorElements;
 @property (nonatomic, retain) NSMutableArray *selectedElements;
 
-- (void)addMockData;
-
 - (void)addGroup:(URLCollectorGroup *)group;
 - (void)addGroup:(URLCollectorGroup *)group atIndex:(NSInteger)index;
 

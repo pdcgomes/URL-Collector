@@ -133,24 +133,6 @@ static NSString *defaultSeralizationPath(void)
 #pragma mark -
 #pragma mark Public Methods
 
-- (void)addMockData
-{
-	URLCollectorGroup *group = [[URLCollectorGroup alloc] init];
-	group.name = SKStringWithFormat(@"Group #%d", [urlCollectorElements count] + 1);
-	
-	for(int i = 0; i < 10; i++) {
-		URLCollectorElement *element = [[URLCollectorElement alloc] init];
-		element.name = SKStringWithFormat(@"Child #%d", i);
-		[group add:element];
-		[element release];
-	}
-	
-	[self willChangeValueForKey:@"urlCollectorElements"];
-	[urlCollectorElements addObject:group];
-	[self didChangeValueForKey:@"urlCollectorElements"];
-	[group release];
-}
-
 - (void)addGroup:(URLCollectorGroup *)group
 {
 	[self willChangeValueForKey:@"urlCollectorElements"];
