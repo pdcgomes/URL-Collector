@@ -197,7 +197,7 @@ static NSString *defaultSeralizationPath(void)
 - (void)removeElement:(URLCollectorElement *)element
 {
 	[self willChangeValueForKey:@"urlCollectorElements"];
-	[element.parentGroup remove:element];
+	[(URLCollectorGroup *)element.parent remove:element];
 	[self didChangeValueForKey:@"urlCollectorElements"];
 }
 

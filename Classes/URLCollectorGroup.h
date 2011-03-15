@@ -16,12 +16,12 @@
 	NSColor				*groupColor;
 	NSImage				*groupImage;
 	
-	URLCollectorGroup	*parentGroup;
+//	URLCollectorGroup	*parentGroup;
 }
 
 @property (nonatomic, retain) NSColor *groupColor;
 @property (nonatomic, retain) NSImage *groupImage;
-@property (nonatomic, assign) URLCollectorGroup *parentGroup;
+//@property (nonatomic, assign) URLCollectorGroup *parentGroup;
 
 - (void)add:(URLCollectorElement *)element;
 - (void)add:(URLCollectorElement *)element atIndex:(NSInteger)index;

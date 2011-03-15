@@ -14,13 +14,13 @@
 
 @synthesize groupColor;
 @synthesize groupImage;
-@synthesize parentGroup;
+//@synthesize parentGroup;
 
 - (void)dealloc
 {
 	SKSafeRelease(groupColor);
 	SKSafeRelease(groupImage);
-	SKSafeRelease(children);
+//	SKSafeRelease(children);
 	
 	[super dealloc];
 }
@@ -67,14 +67,14 @@
 	if(!children) {
 		children = [[NSMutableArray alloc] initWithCapacity:1];
 	}
-	if(element.parentGroup == self) {
+	if(element.parent == self) {
 		[self moveChild:element toIndex:index];
 		return;
 	}
-	else if(element.parentGroup != nil) {
-		[element.parentGroup remove:element];
+	else if(element.parent != nil) {
+		[(URLCollectorGroup *)element.parent remove:element];
 	}
-	[element setParentGroup:self];
+	[element setParent:self];
 	
 	[self willChangeValueForKey:@"children"];
 	
@@ -100,7 +100,7 @@
 - (void)moveChild:(URLCollectorElement *)element toIndex:(NSInteger)newIndex
 {
 	NSInteger oldIndex = [children indexOfObject:element];
-	if(element.parentGroup != self || NSNotFound == oldIndex) {
+	if(element.parent != self || NSNotFound == oldIndex) {
 		[[NSException exceptionWithName:@"pt.sapo.macos.urlcollector.InvalidParentNodeException" reason:@"Attempted to move an element that's not a child of the current node" userInfo:nil] raise];
 	}
 	
@@ -131,7 +131,7 @@
 
 - (void)removeAllChildren
 {
-	[self.children makeObjectsPerformSelector:@selector(setParentGroup:) withObject:nil];
+	[self.children makeObjectsPerformSelector:@selector(setParent:) withObject:nil];
 	[self.children removeAllObjects];
 }
 
@@ -143,7 +143,7 @@
 		[[NSException exceptionWithName:@"pt.sapo.macos.urlcollector.ChildNotFoundException" reason:@"" userInfo:nil] raise];
 	}
 	[children removeObjectAtIndex:indexOfObject];
-	[element setParentGroup:nil];
+	[element setParent:nil];
 }
 
 #pragma mark -

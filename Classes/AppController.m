@@ -139,6 +139,9 @@
 	else if([menuItem action] == @selector(removeRow:)) {
 		return [self hasSelectedRowsOfClass:[URLCollectorGroup class]] || [self hasSelectedRowsOfClass:[URLCollectorElement class]];
 	}
+	else if([menuItem action] == @selector(moveToGroup:)) {
+		return [self hasSelectedRowsOfClass:[URLCollectorElement class]] && ![self hasSelectedRowsOfClass:[URLCollectorGroup class]];
+	}
 	else {
 		return YES;
 	}
@@ -241,6 +244,20 @@
 	TRACE(@"%@", sender);
 }
 
+- (IBAction)moveToGroup:(id)sender
+{
+	URLCollectorGroup *destinationGroup = [sender representedObject];
+	NSIndexSet *selectedRowIndexes = [urlCollectorOutlineView selectedRowIndexes];
+	NSInteger index = [selectedRowIndexes lastIndex];
+	while(NSNotFound != index) {
+		id representedObject = [[urlCollectorOutlineView itemAtRow:index] representedObject];
+		NSAssert([representedObject isKindOfClass:[URLCollectorElement class]], SKStringWithFormat(@"Attempting to move an unsupported type <%@> to a group. This is unsupported.", representedObject));
+		
+		[urlCollectorDataSource addElement:representedObject toGroup:destinationGroup];
+		index = [selectedRowIndexes indexLessThanIndex:index];
+	}
+}
+
 #pragma mark -
 #pragma mark Properties
 
@@ -255,6 +272,7 @@
 - (void)registerObservers
 {
 	[[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:UserDefaults_ShorteningService selector:@selector(shorteningServiceChanged:ofObject:change:userInfo:) userInfo:nil options:0];
+	[urlCollectorDataSource addObserver:self forKeyPath:@"urlCollectorElements" selector:@selector(dataSourceChanged:ofObject:change:userInfo:) userInfo:nil options:0];
 }
 
 - (void)deregisterObservers
@@ -313,6 +331,21 @@
 	
 	urlShortener = [[URLShortener alloc] initWithServiceKey:@"SAPOPuny"];
 	urlShortener.delegate = self;
+}
+
+- (void)dataSourceChanged:(NSString *)keyPath ofObject:(id)target change:(NSDictionary *)change userInfo:(id)userInfo
+{
+	// Reload contextual menu items
+	
+	TRACE(@"Reloading 'Move to group' contextual menu...");
+	[groupsSubmenu removeAllItems];
+	for(URLCollectorGroup *group in urlCollectorDataSource.urlCollectorElements) {
+		NSMenuItem *groupMenuItem = [[NSMenuItem alloc] initWithTitle:group.name action:@selector(moveToGroup:) keyEquivalent:@""];
+		[groupMenuItem setTarget:self];
+		[groupMenuItem setRepresentedObject:group];
+		[groupsSubmenu addItem:groupMenuItem];
+		[groupMenuItem release];
+	}
 }
 
 @end

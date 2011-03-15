@@ -18,6 +18,7 @@
 {
 	IBOutlet NSMenuItem					*collectorMenuItem;
 	IBOutlet NSMenuItem					*shortenMenuItem;
+	IBOutlet NSMenu						*groupsSubmenu;
 	
 	IBOutlet SRRecorderControl			*pasteShortcutRecorder;
 	IBOutlet SRRecorderControl			*collectorShortcutRecorder;
@@ -38,5 +39,6 @@
 
 - (IBAction)addGroup:(id)sender;
 - (IBAction)removeRow:(id)sender;
+- (IBAction)moveToGroup:(id)sender;
 
 @end
