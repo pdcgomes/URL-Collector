@@ -32,9 +32,10 @@
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObject:databaseFilePath forKey:UserDefaults_URLCollectorDatabasePath]];
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification 
+- (void)dealloc
 {
-	// Setup the global hotkey handler
+	[statusItem release];
+	[super dealloc];
 }
 
 - (void)awakeFromNib
@@ -43,6 +44,11 @@
 	[statusItem setImage:NSIMAGE(@"menubar-icon")];
 	[statusItem setHighlightMode:YES];
 	[statusItem setMenu:statusMenu];
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification 
+{
+	// Setup the global hotkey handler
 }
 
 @end

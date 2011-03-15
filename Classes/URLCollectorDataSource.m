@@ -11,6 +11,8 @@
 #import "URLCollectorElement.h"
 #import "URLCollectorNode.h"
 
+#import "URLCollectorContextRecognizer.h"
+
 #import "SKManagedObjectContextManager.h"
 
 NSString *column1Identifier = @"Column1";
@@ -329,8 +331,6 @@ static NSString *defaultSeralizationPath(void)
 	}
 	
 	return NSDragOperationNone;
-//	BOOL isDropAllowed = [representedObject isKindOfClass:[URLCollectorGroup class]];
-//	return isDropAllowed ? NSDragOperationCopy : NSDragOperationNone;
 }
 
 #define INDEXPATH_GROUP_POSITION	0
@@ -338,7 +338,6 @@ static NSString *defaultSeralizationPath(void)
 - (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id<NSDraggingInfo>)info item:(id)item childIndex:(NSInteger)index
 {
 	TRACE(@"");
-//	NSAssert([[item representedObject] isKindOfClass:[URLCollectorGroup class]], @"");
 	
 	if([info draggingSource] == nil) {
 		URLCollectorGroup *destinationGroup = [item representedObject];
@@ -372,6 +371,7 @@ static NSString *defaultSeralizationPath(void)
 					TRACE(@"Moving group <%@> to index <%d>...", sourceGroup, index);
 					[self moveGroup:sourceGroup toIndex:index];
 					break;
+					
 				default:
 					NSAssert(NO, @"Unsupported indexPath length.");
 			}
@@ -412,12 +412,22 @@ static NSString *defaultSeralizationPath(void)
 	return [NSSet setWithObject:@"urlCollectorElements"];
 }
 
-
 - (void)urlCollectorElementsChanged:(NSString *)keyPath ofObject:(id)target change:(NSDictionary *)change userInfo:(id)userInfo
 {
 	TRACE(@"");
 	hasPendingChanges = YES;
 	[self saveChanges];
+}
+
+#pragma mark -
+#pragma mark Application Notifications
+
+- (void)applicationWillTerminate:(NSNotification *)notification
+{
+	TRACE(@"***** SAVING CHANGES BEFORE APPLICATION TERMINATION...");
+	if(hasPendingChanges) {
+		[self saveChangesInternal];
+	}
 }
 
 @end

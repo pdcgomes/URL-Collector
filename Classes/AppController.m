@@ -25,7 +25,7 @@
 - (void)deregisterObservers;
 
 - (void)presentWindow:(NSWindow *)window;
-- (void)updateMenuItems;
+- (void)updateStatusBarMenuItems;
 
 - (BOOL)pasteboardContains:(Class)class;
 - (BOOL)hasSelectedRowsOfClass:(Class)objectClass;
@@ -55,7 +55,7 @@
 	[pasteShortcutRecorder setDelegate:self];
 	
 	[self registerObservers];
-	[self updateMenuItems];
+	[self updateStatusBarMenuItems];
 }
 
 #pragma mark -
@@ -95,7 +95,7 @@
 	[[PTHotKeyCenter sharedCenter] registerHotKey:hotKey];
 	[hotKey release];
 	
-	[self updateMenuItems];
+	[self updateStatusBarMenuItems];
 }
 
 #pragma mark -
@@ -199,7 +199,7 @@
 
 - (IBAction)quit:(id)sender
 {
-	exit(0);
+	[NSApp terminate:self];
 }
 
 - (IBAction)addGroup:(id)sender
@@ -212,7 +212,6 @@
 	[group release];
 
 	[urlCollectorOutlineView editColumn:0 row:[urlCollectorOutlineView numberOfRows] - 1 withEvent:nil select:YES];
-//	[urlCollectorDataSource addMockData];
 }
 
 - (IBAction)removeRow:(id)sender
@@ -234,16 +233,6 @@
 	[urlCollectorOutlineView deselectAll:self];
 }
 
-- (IBAction)removeGroup:(id)sender
-{
-	
-}
-
-- (IBAction)removeElement:(id)sender
-{
-	TRACE(@"%@", sender);
-}
-
 - (IBAction)moveToGroup:(id)sender
 {
 	URLCollectorGroup *destinationGroup = [sender representedObject];
@@ -256,6 +245,10 @@
 		[urlCollectorDataSource addElement:representedObject toGroup:destinationGroup];
 		index = [selectedRowIndexes indexLessThanIndex:index];
 	}
+	[urlCollectorOutlineView deselectAll:self];
+	
+	NSInteger groupIndex = [urlCollectorDataSource.urlCollectorElements indexOfObject:destinationGroup];
+	[urlCollectorOutlineView expandItem:[urlCollectorOutlineView itemAtRow:groupIndex]];
 }
 
 #pragma mark -
@@ -289,7 +282,7 @@
 	[window makeKeyAndOrderFront:self];
 }
 
-- (void)updateMenuItems
+- (void)updateStatusBarMenuItems
 {
 	if([collectorShortcutRecorder keyChars]) {
 		[collectorMenuItem setKeyEquivalent:[collectorShortcutRecorder keyChars]];
