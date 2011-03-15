@@ -7,8 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "URLCollectorContextContentProvider.h"
 
-@interface AddressBookContextContentProvider : NSObject 
+@interface AddressBookContextContentProvider : URLCollectorContextContentProvider
 {
 
 }

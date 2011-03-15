@@ -34,7 +34,7 @@
 		0D2304F9132FD1B10011B219 /* SKManagedObjectContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304D4132FD1B10011B219 /* SKManagedObjectContextManager.m */; };
 		0D2304FA132FD1B10011B219 /* URLCollectorGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304D8132FD1B10011B219 /* URLCollectorGroup.m */; };
 		0D2304FB132FD1B10011B219 /* URLCollectorElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304DA132FD1B10011B219 /* URLCollectorElement.m */; };
-		0D2304FC132FD1B10011B219 /* URLCollectorSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304DC132FD1B10011B219 /* URLCollectorSource.m */; };
+		0D2304FC132FD1B10011B219 /* URLCollectorContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304DC132FD1B10011B219 /* URLCollectorContext.m */; };
 		0D2304FD132FD1B10011B219 /* URLCollectorNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304DE132FD1B10011B219 /* URLCollectorNode.m */; };
 		0D2304FE132FD1B10011B219 /* URLCollectorContextRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304E2132FD1B10011B219 /* URLCollectorContextRecognizer.m */; };
 		0D2304FF132FD1B10011B219 /* URLCollectorDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304E5132FD1B10011B219 /* URLCollectorDatabase.m */; };
@@ -54,6 +54,9 @@
 		0D23056C132FD69C0011B219 /* XcodeContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23056B132FD69C0011B219 /* XcodeContextContentProvider.m */; };
 		0D23056F132FD6A20011B219 /* MailContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23056E132FD6A20011B219 /* MailContextContentProvider.m */; };
 		0D230572132FD6B40011B219 /* SafariContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D230571132FD6B40011B219 /* SafariContextContentProvider.m */; };
+		0D23059A132FDC7F0011B219 /* URLCollectorContextIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D230599132FDC7F0011B219 /* URLCollectorContextIdentity.m */; };
+		0D2305A4132FE0F70011B219 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D2305A3132FE0F70011B219 /* ScriptingBridge.framework */; };
+		0D2305B4132FE25D0011B219 /* URLCollectorContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2305B3132FE25D0011B219 /* URLCollectorContextContentProvider.m */; };
 		0D23F569132129340011B219 /* menubar-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D23F568132129340011B219 /* menubar-icon.png */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -141,8 +144,8 @@
 		0D2304D8132FD1B10011B219 /* URLCollectorGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorGroup.m; sourceTree = "<group>"; };
 		0D2304D9132FD1B10011B219 /* URLCollectorElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorElement.h; sourceTree = "<group>"; };
 		0D2304DA132FD1B10011B219 /* URLCollectorElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorElement.m; sourceTree = "<group>"; };
-		0D2304DB132FD1B10011B219 /* URLCollectorSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorSource.h; sourceTree = "<group>"; };
-		0D2304DC132FD1B10011B219 /* URLCollectorSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorSource.m; sourceTree = "<group>"; };
+		0D2304DB132FD1B10011B219 /* URLCollectorContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorContext.h; sourceTree = "<group>"; };
+		0D2304DC132FD1B10011B219 /* URLCollectorContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorContext.m; sourceTree = "<group>"; };
 		0D2304DD132FD1B10011B219 /* URLCollectorNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorNode.h; sourceTree = "<group>"; };
 		0D2304DE132FD1B10011B219 /* URLCollectorNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorNode.m; sourceTree = "<group>"; };
 		0D2304E1132FD1B10011B219 /* URLCollectorContextRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorContextRecognizer.h; sourceTree = "<group>"; };
@@ -177,6 +180,11 @@
 		0D23056E132FD6A20011B219 /* MailContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MailContextContentProvider.m; sourceTree = "<group>"; };
 		0D230570132FD6B40011B219 /* SafariContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafariContextContentProvider.h; sourceTree = "<group>"; };
 		0D230571132FD6B40011B219 /* SafariContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SafariContextContentProvider.m; sourceTree = "<group>"; };
+		0D230598132FDC7F0011B219 /* URLCollectorContextIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorContextIdentity.h; sourceTree = "<group>"; };
+		0D230599132FDC7F0011B219 /* URLCollectorContextIdentity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorContextIdentity.m; sourceTree = "<group>"; };
+		0D2305A3132FE0F70011B219 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
+		0D2305B2132FE25D0011B219 /* URLCollectorContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorContextContentProvider.h; sourceTree = "<group>"; };
+		0D2305B3132FE25D0011B219 /* URLCollectorContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorContextContentProvider.m; sourceTree = "<group>"; };
 		0D23F568132129340011B219 /* menubar-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon.png"; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -198,6 +206,7 @@
 				0D21C3C61320129400A0B8BB /* ShortcutRecorder.framework in Frameworks */,
 				0D21C3EB1320130D00A0B8BB /* Carbon.framework in Frameworks */,
 				0D230506132FD1C10011B219 /* BWToolkitFramework.framework in Frameworks */,
+				0D2305A4132FE0F70011B219 /* ScriptingBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,12 +419,14 @@
 		0D2304D6132FD1B10011B219 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				0D2304D7132FD1B10011B219 /* URLCollectorGroup.h */,
-				0D2304D8132FD1B10011B219 /* URLCollectorGroup.m */,
+				0D2304DB132FD1B10011B219 /* URLCollectorContext.h */,
+				0D2304DC132FD1B10011B219 /* URLCollectorContext.m */,
+				0D230598132FDC7F0011B219 /* URLCollectorContextIdentity.h */,
+				0D230599132FDC7F0011B219 /* URLCollectorContextIdentity.m */,
 				0D2304D9132FD1B10011B219 /* URLCollectorElement.h */,
 				0D2304DA132FD1B10011B219 /* URLCollectorElement.m */,
-				0D2304DB132FD1B10011B219 /* URLCollectorSource.h */,
-				0D2304DC132FD1B10011B219 /* URLCollectorSource.m */,
+				0D2304D7132FD1B10011B219 /* URLCollectorGroup.h */,
+				0D2304D8132FD1B10011B219 /* URLCollectorGroup.m */,
 				0D2304DD132FD1B10011B219 /* URLCollectorNode.h */,
 				0D2304DE132FD1B10011B219 /* URLCollectorNode.m */,
 			);
@@ -507,6 +518,8 @@
 				0D23056E132FD6A20011B219 /* MailContextContentProvider.m */,
 				0D230570132FD6B40011B219 /* SafariContextContentProvider.h */,
 				0D230571132FD6B40011B219 /* SafariContextContentProvider.m */,
+				0D2305B2132FE25D0011B219 /* URLCollectorContextContentProvider.h */,
+				0D2305B3132FE25D0011B219 /* URLCollectorContextContentProvider.m */,
 				0D23056A132FD69C0011B219 /* XcodeContextContentProvider.h */,
 				0D23056B132FD69C0011B219 /* XcodeContextContentProvider.m */,
 			);
@@ -526,6 +539,7 @@
 			children = (
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				0D21C3EA1320130D00A0B8BB /* Carbon.framework */,
+				0D2305A3132FE0F70011B219 /* ScriptingBridge.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -682,7 +696,7 @@
 				0D2304F9132FD1B10011B219 /* SKManagedObjectContextManager.m in Sources */,
 				0D2304FA132FD1B10011B219 /* URLCollectorGroup.m in Sources */,
 				0D2304FB132FD1B10011B219 /* URLCollectorElement.m in Sources */,
-				0D2304FC132FD1B10011B219 /* URLCollectorSource.m in Sources */,
+				0D2304FC132FD1B10011B219 /* URLCollectorContext.m in Sources */,
 				0D2304FD132FD1B10011B219 /* URLCollectorNode.m in Sources */,
 				0D2304FE132FD1B10011B219 /* URLCollectorContextRecognizer.m in Sources */,
 				0D2304FF132FD1B10011B219 /* URLCollectorDatabase.m in Sources */,
@@ -700,6 +714,8 @@
 				0D23056C132FD69C0011B219 /* XcodeContextContentProvider.m in Sources */,
 				0D23056F132FD6A20011B219 /* MailContextContentProvider.m in Sources */,
 				0D230572132FD6B40011B219 /* SafariContextContentProvider.m in Sources */,
+				0D23059A132FDC7F0011B219 /* URLCollectorContextIdentity.m in Sources */,
+				0D2305B4132FE25D0011B219 /* URLCollectorContextContentProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

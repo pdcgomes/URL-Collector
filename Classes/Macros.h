@@ -48,6 +48,11 @@ _ivar_name_ = [_new_var_name_ retain]
 #define ONE_MONTH  (30.5 * ONE_DAY)
 #define ONE_YEAR   (365.0 * ONE_DAY)
 
+/// Timing macros
+/// Adapted from: Stephan Burlot (http://blog.coriolis.ch/2009/01/05/macros-for-xcode/)
+
+#define START_TIMER NSTimeInterval start = [NSDate timeIntervalSinceReferenceDate];
+#define END_TIMER(msg) 	NSTimeInterval stop = [NSDate timeIntervalSinceReferenceDate]; TRACE(@"%@ Time = %f", msg, stop-start);
 
 /// This macro implements the various methods needed to make a safe singleton.
 //

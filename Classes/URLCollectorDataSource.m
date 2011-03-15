@@ -342,6 +342,9 @@ static NSString *defaultSeralizationPath(void)
 	if([info draggingSource] == nil) {
 		URLCollectorGroup *destinationGroup = [item representedObject];
 		NSDictionary *activeApp = [[NSWorkspace sharedWorkspace] activeApplication];
+		
+		[[URLCollectorContextRecognizer sharedInstance] guessContextFromActiveApplication];
+		
 		for(NSPasteboardItem *pasteboardItem in [[info draggingPasteboard] pasteboardItems]) {
 			URLCollectorElement *element = [[URLCollectorElement alloc] init];
 			element.name = SKStringWithFormat(@"%@ (via %@)", [pasteboardItem stringForType:@"public.url-name"], [activeApp objectForKey:@"NSApplicationName"]);

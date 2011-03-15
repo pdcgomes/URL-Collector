@@ -20,7 +20,7 @@
 
 @interface URLCollectorContextRecognizer(Private)
 
-- (Class)contextRecognizerClassForBundleIdentifier:(NSString *)bundleIdentifier;
+- (Class)contextContentProviderClassForBundleIdentifier:(NSString *)bundleIdentifier;
 - (BOOL)isRecognizedApplication:(NSString *)bundleIdentifier;
 
 @end
@@ -50,12 +50,18 @@ SK_OBJECT_SINGLETON_BOILERPLATE(URLCollectorContextRecognizer, sharedInstance);
 
 - (NSDictionary *)guessContextFromActiveApplication
 {
-	return [self guessContextWithApplication:[[NSWorkspace sharedWorkspace] activeApplication]];
+	return [self guessContextFromApplication:[[NSWorkspace sharedWorkspace] activeApplication]];
 }
 
-- (NSDictionary *)guessContextWithApplication:(NSDictionary *)applicationInfo
+- (NSDictionary *)guessContextFromApplication:(NSDictionary *)applicationInfo
 {
+	NSAssert([applicationInfo containsKey:@"NSApplicationBundleIdentifier"], @"Missing <NSApplicationBundleIdentifier> key from applicationInfo dictionary!");
+			  
+	Class contentProviderClass = [self contextContentProviderClassForBundleIdentifier:[applicationInfo objectForKey:@"NSApplicationBundleIdentifier"]];
 	
+	URLCollectorContextContentProvider *contentProvider = [[contentProviderClass alloc] init];
+	[contentProvider extractContent];
+	[contentProvider release];
 	//NSString *bundleIdentifier = [applicationInfo objectForKey:@"NSApplicationBundleIdentifier"];
 	return nil;
 }
@@ -66,7 +72,7 @@ SK_OBJECT_SINGLETON_BOILERPLATE(URLCollectorContextRecognizer, sharedInstance);
 - (BOOL)isRecognizedApplication:(NSString *)bundleIdentifier
 {
 	if(supportedApplications == nil) {
-		supportedApplications = [[NSDictionary alloc] initWithObjectsAndKeys: // Replace objects with the appropriate classes (when they're available)
+		supportedApplications = [[NSDictionary alloc] initWithObjectsAndKeys:
 								 // Apple applications
 								 [AddressBookContextContentProvider class],	@"com.apple.AddressBook",
 								 [iCalContextContentProvider class],		@"com.apple.iCal",
@@ -81,13 +87,13 @@ SK_OBJECT_SINGLETON_BOILERPLATE(URLCollectorContextRecognizer, sharedInstance);
 	return [supportedApplications containsKey:bundleIdentifier];
 }
 
-- (Class)contextRecognizerClassForBundleIdentifier:(NSString *)bundleIdentifier
+- (Class)contextContentProviderClassForBundleIdentifier:(NSString *)bundleIdentifier
 {
 	if([self isRecognizedApplication:bundleIdentifier]) {
 		return [supportedApplications objectForKey:bundleIdentifier];
 	}
 	else {
-		return [GenericContextContentProvider class]; // Replace with actual class
+		return [GenericContextContentProvider class];
 	}
 }
 

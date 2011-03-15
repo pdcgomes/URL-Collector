@@ -7,9 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "URLCollectorContextContentProvider.h"
 
-
-@interface iCalContextContentProvider : NSObject {
+@interface iCalContextContentProvider : URLCollectorContextContentProvider
+{
 
 }
 

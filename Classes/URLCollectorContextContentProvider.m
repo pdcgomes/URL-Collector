@@ -1,17 +1,19 @@
 //
-//  SafariContextContentProvider.h
+//  URLCollectorContextContentProvider.m
 //  SAPOPuny
 //
 //  Created by Pedro Gomes on 3/15/11.
 //  Copyright 2011 SAPO. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "URLCollectorContextContentProvider.h"
 
-@interface SafariContextContentProvider : URLCollectorContextContentProvider
-{
 
+@implementation URLCollectorContextContentProvider
+
+- (NSDictionary *)extractContent
+{
+	return nil;
 }
 
 @end

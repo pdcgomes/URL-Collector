@@ -7,10 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "URLCollectorContextContentProvider.h"
 
+@class AdiumApplication;
 
-@interface AdiumContextContentProvider : NSObject {
-
+@interface AdiumContextContentProvider : URLCollectorContextContentProvider 
+{
+	AdiumApplication	*application;
 }
 
 @end

@@ -7,9 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "URLCollectorContextContentProvider.h"
 
-
-@interface GenericContextContentProvider : NSObject {
+@interface GenericContextContentProvider : URLCollectorContextContentProvider
+{
 
 }
 

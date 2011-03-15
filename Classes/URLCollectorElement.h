@@ -10,7 +10,7 @@
 #import "URLCollectorNode.h"
 
 @class URLCollectorGroup;
-@class URLCollectorSource;
+@class URLCollectorContext;
 
 @interface URLCollectorElement : URLCollectorNode 
 {
@@ -19,7 +19,7 @@
 	NSMutableArray		*tags;
 
 	URLCollectorGroup	*parentGroup;
-	URLCollectorSource	*source;
+	URLCollectorContext	*source;
 	
 	BOOL				isUnread;
 }
@@ -29,7 +29,7 @@
 @property (nonatomic, retain) NSMutableArray *tags;
 
 @property (nonatomic, assign) URLCollectorGroup *parentGroup;
-@property (nonatomic, retain) URLCollectorSource *source;
+@property (nonatomic, retain) URLCollectorContext *source;
 
 @property (nonatomic, assign) BOOL isUnread;
 

@@ -16,7 +16,7 @@
 
 #import "URLCollectorGroup.h"
 #import "URLCollectorElement.h"
-#import "URLCollectorSource.h"
+#import "URLCollectorContext.h"
 #import "URLCollectorDataSource.h"
 
 @interface AppController()

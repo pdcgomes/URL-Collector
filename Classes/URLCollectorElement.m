@@ -7,7 +7,7 @@
 //
 
 #import "URLCollectorElement.h"
-#import "URLCollectorSource.h"
+#import "URLCollectorContext.h"
 
 @implementation URLCollectorElement
 

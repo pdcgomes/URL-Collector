@@ -20,6 +20,6 @@
 - (void)stopAutomaticContextRecognition;
 
 - (NSDictionary *)guessContextFromActiveApplication;
-- (NSDictionary *)guessContextWithApplication:(NSDictionary *)applicationInfo;
+- (NSDictionary *)guessContextFromApplication:(NSDictionary *)applicationInfo;
 
 @end
