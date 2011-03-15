@@ -51,13 +51,6 @@
 		isa = PBXCodeSenseManager;
 		indexTemplatePath = "";
 	};
-	0D95C66D1320153A00BD2C17 /* AppController.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1220, 1290}}";
-			sepNavSelRange = "{201, 0}";
-			sepNavVisRange = "{0, 201}";
-		};
-	};
 	0D95C6701320154800BD2C17 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 089C165DFE840E0CC02AAC07 /* English */;
@@ -67,20 +60,6 @@
 		rType = 0;
 		vrLen = 45;
 		vrLoc = 0;
-	};
-	256AC3D80F4B6AC300CF3369 /* AppDelegate.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1220, 1290}}";
-			sepNavSelRange = "{233, 0}";
-			sepNavVisRange = "{0, 296}";
-		};
-	};
-	256AC3D90F4B6AC300CF3369 /* AppDelegate.m */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1220, 1290}}";
-			sepNavSelRange = "{186, 0}";
-			sepNavVisRange = "{0, 411}";
-		};
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = Debug;
@@ -152,11 +131,11 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 321485833;
-			PBXWorkspaceStateSaveDate = 321485833;
+			PBXPerProjectTemplateStateSaveDate = 321901306;
+			PBXWorkspaceStateSaveDate = 321901306;
 		};
 		perUserProjectItems = {
-			0D95C6701320154800BD2C17 /* PBXTextBookmark */ = 0D95C6701320154800BD2C17 /* PBXTextBookmark */;
+			0D95C6701320154800BD2C17 = 0D95C6701320154800BD2C17 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 0D21C35B13200CE300A0B8BB /* Source Control */;
 		userBuildSettings = {
