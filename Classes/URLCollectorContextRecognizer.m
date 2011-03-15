@@ -9,13 +9,14 @@
 #import "URLCollectorContextRecognizer.h"
 #import "SKObjectSingleton.h"
 
-#import "AddressBook.h"
-#import "Adium.h"
-#import "iCal.h"
-#import "iChat.h"
-#import "Mail.h"
-#import "Safari.h"
-#import "Xcode.h"
+#import "AddressBookContextContentProvider.h"
+#import "AdiumContextContentProvider.h"
+#import "GenericContextContentProvider.h"
+#import "iCalContextContentProvider.h"
+#import "iChatContextContentProvider.h"
+#import "MailContextContentProvider.h"
+#import "SafariContextContentProvider.h"
+#import "XcodeContextContentProvider.h"
 
 @interface URLCollectorContextRecognizer(Private)
 
@@ -67,14 +68,14 @@ SK_OBJECT_SINGLETON_BOILERPLATE(URLCollectorContextRecognizer, sharedInstance);
 	if(supportedApplications == nil) {
 		supportedApplications = [[NSDictionary alloc] initWithObjectsAndKeys: // Replace objects with the appropriate classes (when they're available)
 								 // Apple applications
-								 @"AddressBookContextRecognizer",	@"com.apple.AddressBook",
-								 @"iCalContextRecognizer",			@"com.apple.iCal",
-								 @"iChatContextRecognizer",			@"com.apple.iChat",
-								 @"MailContextRecognizer",			@"com.apple.mail",
-								 @"SafariContextRecognizer",		@"com.apple.Safari",
-								 @"XcodeContextRecognizer",			@"com.apple.Xcode",
+								 [AddressBookContextContentProvider class],	@"com.apple.AddressBook",
+								 [iCalContextContentProvider class],		@"com.apple.iCal",
+								 [iChatContextContentProvider class],		@"com.apple.iChat",
+								 [MailContextContentProvider class],		@"com.apple.mail",
+								 [SafariContextContentProvider class],		@"com.apple.Safari",
+								 [XcodeContextContentProvider class],		@"com.apple.Xcode",
 								 // Non-apple
-								 @"AdiumContextRecognizer",			@"com.adiumX.adiumX",
+								 [AdiumContextContentProvider class],		@"com.adiumX.adiumX",
 								 nil];
 	}
 	return [supportedApplications containsKey:bundleIdentifier];
@@ -83,10 +84,10 @@ SK_OBJECT_SINGLETON_BOILERPLATE(URLCollectorContextRecognizer, sharedInstance);
 - (Class)contextRecognizerClassForBundleIdentifier:(NSString *)bundleIdentifier
 {
 	if([self isRecognizedApplication:bundleIdentifier]) {
-		return NSClassFromString([supportedApplications objectForKey:bundleIdentifier]);
+		return [supportedApplications objectForKey:bundleIdentifier];
 	}
 	else {
-		return NSClassFromString(@"DefaultContextRecognizer"); // Replace with actual class
+		return [GenericContextContentProvider class]; // Replace with actual class
 	}
 }
 

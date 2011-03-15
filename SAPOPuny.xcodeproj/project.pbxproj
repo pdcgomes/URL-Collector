@@ -46,6 +46,14 @@
 		0D230506132FD1C10011B219 /* BWToolkitFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D230505132FD1C10011B219 /* BWToolkitFramework.framework */; };
 		0D230507132FD1C80011B219 /* BWToolkitFramework.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0D230505132FD1C10011B219 /* BWToolkitFramework.framework */; };
 		0D23050D132FD1EB0011B219 /* URLCollector.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 0D23050C132FD1EB0011B219 /* URLCollector.xcdatamodel */; };
+		0D23054A132FD5160011B219 /* AddressBookContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D230549132FD5160011B219 /* AddressBookContextContentProvider.m */; };
+		0D230559132FD5430011B219 /* AdiumContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D230558132FD5430011B219 /* AdiumContextContentProvider.m */; };
+		0D230561132FD59D0011B219 /* GenericContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D230560132FD59D0011B219 /* GenericContextContentProvider.m */; };
+		0D230566132FD68F0011B219 /* iChatContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D230565132FD68F0011B219 /* iChatContextContentProvider.m */; };
+		0D230569132FD6970011B219 /* iCalContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D230568132FD6970011B219 /* iCalContextContentProvider.m */; };
+		0D23056C132FD69C0011B219 /* XcodeContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23056B132FD69C0011B219 /* XcodeContextContentProvider.m */; };
+		0D23056F132FD6A20011B219 /* MailContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23056E132FD6A20011B219 /* MailContextContentProvider.m */; };
+		0D230572132FD6B40011B219 /* SafariContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D230571132FD6B40011B219 /* SafariContextContentProvider.m */; };
 		0D23F569132129340011B219 /* menubar-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D23F568132129340011B219 /* menubar-icon.png */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -153,6 +161,22 @@
 		0D2304F2132FD1B10011B219 /* URLCollectorOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorOutlineView.m; sourceTree = "<group>"; };
 		0D230505132FD1C10011B219 /* BWToolkitFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BWToolkitFramework.framework; path = Library/Frameworks/BWToolkitFramework.framework; sourceTree = SDKROOT; };
 		0D23050C132FD1EB0011B219 /* URLCollector.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = URLCollector.xcdatamodel; sourceTree = "<group>"; };
+		0D230548132FD5160011B219 /* AddressBookContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressBookContextContentProvider.h; sourceTree = "<group>"; };
+		0D230549132FD5160011B219 /* AddressBookContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressBookContextContentProvider.m; sourceTree = "<group>"; };
+		0D230557132FD5430011B219 /* AdiumContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdiumContextContentProvider.h; sourceTree = "<group>"; };
+		0D230558132FD5430011B219 /* AdiumContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdiumContextContentProvider.m; sourceTree = "<group>"; };
+		0D23055F132FD59D0011B219 /* GenericContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericContextContentProvider.h; sourceTree = "<group>"; };
+		0D230560132FD59D0011B219 /* GenericContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericContextContentProvider.m; sourceTree = "<group>"; };
+		0D230564132FD68F0011B219 /* iChatContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iChatContextContentProvider.h; sourceTree = "<group>"; };
+		0D230565132FD68F0011B219 /* iChatContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iChatContextContentProvider.m; sourceTree = "<group>"; };
+		0D230567132FD6970011B219 /* iCalContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCalContextContentProvider.h; sourceTree = "<group>"; };
+		0D230568132FD6970011B219 /* iCalContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCalContextContentProvider.m; sourceTree = "<group>"; };
+		0D23056A132FD69C0011B219 /* XcodeContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XcodeContextContentProvider.h; sourceTree = "<group>"; };
+		0D23056B132FD69C0011B219 /* XcodeContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XcodeContextContentProvider.m; sourceTree = "<group>"; };
+		0D23056D132FD6A20011B219 /* MailContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MailContextContentProvider.h; sourceTree = "<group>"; };
+		0D23056E132FD6A20011B219 /* MailContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MailContextContentProvider.m; sourceTree = "<group>"; };
+		0D230570132FD6B40011B219 /* SafariContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafariContextContentProvider.h; sourceTree = "<group>"; };
+		0D230571132FD6B40011B219 /* SafariContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SafariContextContentProvider.m; sourceTree = "<group>"; };
 		0D23F568132129340011B219 /* menubar-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon.png"; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -412,6 +436,7 @@
 		0D2304E0132FD1B10011B219 /* Context Recognizer */ = {
 			isa = PBXGroup;
 			children = (
+				0D230547132FD5060011B219 /* Content Providers */,
 				0D2304E1132FD1B10011B219 /* URLCollectorContextRecognizer.h */,
 				0D2304E2132FD1B10011B219 /* URLCollectorContextRecognizer.m */,
 			);
@@ -463,6 +488,29 @@
 				0D23050C132FD1EB0011B219 /* URLCollector.xcdatamodel */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		0D230547132FD5060011B219 /* Content Providers */ = {
+			isa = PBXGroup;
+			children = (
+				0D230548132FD5160011B219 /* AddressBookContextContentProvider.h */,
+				0D230549132FD5160011B219 /* AddressBookContextContentProvider.m */,
+				0D230557132FD5430011B219 /* AdiumContextContentProvider.h */,
+				0D230558132FD5430011B219 /* AdiumContextContentProvider.m */,
+				0D23055F132FD59D0011B219 /* GenericContextContentProvider.h */,
+				0D230560132FD59D0011B219 /* GenericContextContentProvider.m */,
+				0D230567132FD6970011B219 /* iCalContextContentProvider.h */,
+				0D230568132FD6970011B219 /* iCalContextContentProvider.m */,
+				0D230564132FD68F0011B219 /* iChatContextContentProvider.h */,
+				0D230565132FD68F0011B219 /* iChatContextContentProvider.m */,
+				0D23056D132FD6A20011B219 /* MailContextContentProvider.h */,
+				0D23056E132FD6A20011B219 /* MailContextContentProvider.m */,
+				0D230570132FD6B40011B219 /* SafariContextContentProvider.h */,
+				0D230571132FD6B40011B219 /* SafariContextContentProvider.m */,
+				0D23056A132FD69C0011B219 /* XcodeContextContentProvider.h */,
+				0D23056B132FD69C0011B219 /* XcodeContextContentProvider.m */,
+			);
+			name = "Content Providers";
 			sourceTree = "<group>";
 		};
 		0D23F536132108DB0011B219 /* Images */ = {
@@ -644,6 +692,14 @@
 				0D230503132FD1B10011B219 /* URLShorteningService.m in Sources */,
 				0D230504132FD1B10011B219 /* URLCollectorOutlineView.m in Sources */,
 				0D23050D132FD1EB0011B219 /* URLCollector.xcdatamodel in Sources */,
+				0D23054A132FD5160011B219 /* AddressBookContextContentProvider.m in Sources */,
+				0D230559132FD5430011B219 /* AdiumContextContentProvider.m in Sources */,
+				0D230561132FD59D0011B219 /* GenericContextContentProvider.m in Sources */,
+				0D230566132FD68F0011B219 /* iChatContextContentProvider.m in Sources */,
+				0D230569132FD6970011B219 /* iCalContextContentProvider.m in Sources */,
+				0D23056C132FD69C0011B219 /* XcodeContextContentProvider.m in Sources */,
+				0D23056F132FD6A20011B219 /* MailContextContentProvider.m in Sources */,
+				0D230572132FD6B40011B219 /* SafariContextContentProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
