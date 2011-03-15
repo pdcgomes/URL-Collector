@@ -11,7 +11,7 @@
 @implementation URLCollectorNode
 
 @synthesize name = nodeName;
-@synthesize parentNode;
+@synthesize parent;
 @synthesize children;
 @synthesize isLeafNode;
 @synthesize isLocked;
@@ -45,7 +45,6 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
 	[aCoder encodeObject:nodeName forKey:@"nodeName"];
-	[aCoder encodeObject:parentNode forKey:@"parentNode"];
 	[aCoder encodeObject:children forKey:@"children"];
 	[aCoder encodeBool:isLeafNode forKey:@"isLeafNode"];
 	[aCoder encodeBool:isLocked forKey:@"isLocked"];
@@ -57,8 +56,11 @@
 {
 	if((self = [super init])) {
 		nodeName = [[aDecoder decodeObjectForKey:@"nodeName"] copy];
-		parentNode = [[aDecoder decodeObjectForKey:@"parentNode"] retain]; // This is probably wrong right here...
 		children = [[aDecoder decodeObjectForKey:@"children"] retain];
+		for(URLCollectorNode *child in children) {
+			[child setParent:self];
+		}
+		
 		isLeafNode = [aDecoder decodeBoolForKey:@"isLeafNode"];
 		isLocked = [aDecoder decodeBoolForKey:@"isLocked"];
 		createDate = [[aDecoder decodeObjectForKey:@"createDate"] retain];
@@ -74,6 +76,5 @@
 {
 	return [children count];
 }
-
 
 @end

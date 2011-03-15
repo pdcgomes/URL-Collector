@@ -8,4 +8,13 @@
 
 #import "Constants.h"
 
-NSString *UserDefaults_ShorteningService = @"shorteningService";
+NSString *UserDefaults_ShorteningService			= @"shorteningService";
+NSString *UserDefaults_URLCollectorDatabasePath		= @"URLCollectorDatabasePath";
+
+NSString *URLCollectorDatabaseFileName				= @"URLCollectorDatabase.db";
+
+// Functtions
+NSString *defaultURLCollectorGroupName(void)
+{
+	return NSLocalizedString(@"Inbox", @"");
+}

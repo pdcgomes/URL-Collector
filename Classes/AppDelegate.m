@@ -27,6 +27,9 @@
 	else {
 		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObject:[shorteningServices objectAtIndex:0] forKey:@"shorteningService"]];
 	}
+	
+	NSString *databaseFilePath = [[[NSBundle mainBundle] applicationSupportPath] stringByAppendingPathComponent:URLCollectorDatabaseFileName];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObject:databaseFilePath forKey:UserDefaults_URLCollectorDatabasePath]];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification 

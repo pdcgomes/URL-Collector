@@ -41,15 +41,13 @@
 	[super encodeWithCoder:aCoder];
 	[aCoder encodeObject:groupColor forKey:@"groupColor"];
 	[aCoder encodeObject:groupImage forKey:@"groupImage"];
-	[aCoder encodeObject:children forKey:@"children"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	if((self = [super initWithCoder:aDecoder])) {
 		groupColor = [[aDecoder decodeObjectForKey:@"groupColor"] copy];
-		groupImage = [[aDecoder decodeObjectForKey:@"groupImage"] retain]; // This is probably wrong right here...
-		children = [[aDecoder decodeObjectForKey:@"children"] retain];
+		groupImage = [[aDecoder decodeObjectForKey:@"groupImage"] retain];
 	}
 	return self;
 }
@@ -60,23 +58,6 @@
 - (void)add:(URLCollectorElement *)element
 {
 	[self add:element atIndex:-1];
-//	
-//	[element retain];	
-//	
-//	if(!children) {
-//		children = [[NSMutableArray alloc] initWithCapacity:1];
-//	}
-//
-//	if(element.parentGroup) {
-//		[element.parentGroup remove:element];
-//	}
-//	[element setParentGroup:self];
-//	
-//	[self willChangeValueForKey:@"children"];
-//	[children addObject:element];
-//	[self didChangeValueForKey:@"children"];
-//
-//	[element release];
 }
 
 - (void)add:(URLCollectorElement *)element atIndex:(NSInteger)index
@@ -100,6 +81,7 @@
 	if(index >= 0) {
 		if(index <= [children count]) {
 			[children insertObject:element atIndex:index];
+			[element setSortOrder:index];
 		}
 		else {
 			[[NSException exceptionWithName:@"pt.sapo.macos.urlcollector.InvalidChildIndexException" reason:@"" userInfo:nil] raise];
@@ -107,6 +89,7 @@
 	}
 	else {
 		[children addObject:element];
+		element.sortOrder = [children count] - 1;
 	}
 	
 	[self didChangeValueForKey:@"children"];
@@ -118,7 +101,7 @@
 {
 	NSInteger oldIndex = [children indexOfObject:element];
 	if(element.parentGroup != self || NSNotFound == oldIndex) {
-		[[NSException exceptionWithName:@"pt.sapo.macos.urlcollector.InvalidParentException" reason:@"Attempted to move an element that's not a child of the current node" userInfo:nil] raise];
+		[[NSException exceptionWithName:@"pt.sapo.macos.urlcollector.InvalidParentNodeException" reason:@"Attempted to move an element that's not a child of the current node" userInfo:nil] raise];
 	}
 	
 	if(newIndex == oldIndex) {
@@ -140,14 +123,8 @@
 		[children removeObjectAtIndex:oldIndex];
 		[children insertObject:element atIndex:newIndex];
 	}
+	element.sortOrder = newIndex;
 
-// #1
-//	[children removeObjectAtIndex:oldIndex];
-//	[children insertObject:element atIndex:newIndex];
-	
-// #2
-//	[children insertObject:element atIndex:index];
-//	[children removeObjectAtIndex:oldChildIndex];
 	[self didChangeValueForKey:@"children"];
 	[element release];
 }
@@ -175,7 +152,6 @@
 // Automatically notifies of count changes when "children" changes
 + (NSSet *)keyPathsForValuesAffectingNumberOfChildren
 {
-	TRACE(@"");
 	return [NSSet setWithObject:@"children"];
 }
 

@@ -8,3 +8,4 @@
  */
 
 #import "NSDictionary+Additions.h"
+#import "NSBundle+Additions.h"

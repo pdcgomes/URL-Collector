@@ -11,7 +11,7 @@
 @interface URLCollectorNode : NSObject <NSCoding>
 {
 	NSString			*nodeName;
-	URLCollectorNode	*parentNode;
+	URLCollectorNode	*parent;
 	NSMutableArray		*children;
 	BOOL				isLeafNode;
 	BOOL				isLocked;
@@ -21,7 +21,7 @@
 }
 
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic, assign) URLCollectorNode *parentNode;
+@property (nonatomic, assign) URLCollectorNode *parent;
 @property (nonatomic, retain) NSMutableArray *children;
 @property (nonatomic, readonly) NSUInteger numberOfChildren;
 

@@ -13,10 +13,15 @@
 
 @interface URLCollectorDataSource : NSObject <NSOutlineViewDataSource>
 {
+	NSManagedObjectContext		*managedObjectContext;
+	
 	NSMutableArray				*urlCollectorElements;
 	NSMutableArray				*selectedElements;
+	
+	BOOL						hasPendingChanges;
 }
 
+@property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSMutableArray *urlCollectorElements;
 @property (nonatomic, retain) NSMutableArray *selectedElements;
 
@@ -37,6 +42,8 @@
 
 - (void)moveGroup:(URLCollectorGroup *)group toIndex:(NSInteger)index;
 - (void)moveElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group;
+
+- (void)saveChanges;
 
 @end
 

@@ -9,3 +9,9 @@
 #import <Cocoa/Cocoa.h>
 
 extern NSString *UserDefaults_ShorteningService;
+extern NSString *UserDefaults_URLCollectorDatabasePath;
+
+NSString *URLCollectorDatabaseFileName;
+
+// Functions
+NSString *defaultURLCollectorGroupName(void);
