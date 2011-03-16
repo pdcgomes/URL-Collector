@@ -340,7 +340,7 @@ static NSString *defaultSeralizationPath(void)
 			WARN(@"INVALID/UNSUPPORTED DROP OPERATION!");
 			return NSDragOperationNone;
 	}
-	<
+
 	return NSDragOperationNone;
 }
 
