@@ -10,7 +10,7 @@
 
 @class URLCollectorContextIdentity;
 
-@interface URLCollectorContext : NSObject 
+@interface URLCollectorContext : NSObject <NSCoding>
 {	
 	NSString	*contextName;	// Name that uniquely identifies this context
 	NSString	*contextURL;	// Reference URL to this context
@@ -30,6 +30,8 @@
 @property (nonatomic, readonly) NSString *applicationName;
 @property (nonatomic, readonly) NSString *applicationBundleIdentifier;
 @property (nonatomic, readonly) NSImage *applicationIcon;
+
+@property (nonatomic, readonly) NSString *contextInfoLine;
 
 - (id)initWithIdentity:(NSDictionary *)identityInfo fromApplication:(NSDictionary *)applicationInfo;
 

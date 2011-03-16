@@ -14,7 +14,7 @@
 @class URLCollectorDataSource;
 @class URLCollectorOutlineView;
 
-@interface AppController : NSObject <NSOutlineViewDataSource>
+@interface AppController : NSObject <NSOutlineViewDelegate>
 {
 	IBOutlet NSMenuItem					*collectorMenuItem;
 	IBOutlet NSMenuItem					*shortenMenuItem;
@@ -27,6 +27,8 @@
 	IBOutlet URLCollectorDataSource		*urlCollectorDataSource;
 
 	URLShortener						*urlShortener;
+	
+	NSMutableDictionary					*cachedOutlineViewRowHeights;
 }
 
 @property (nonatomic, readonly) NSArray *shorteningServices;

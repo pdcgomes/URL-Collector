@@ -7,6 +7,8 @@
 //
 
 #import "URLCollectorContextRecognizer.h"
+#import "URLCollectorContext.h"
+
 #import "SKObjectSingleton.h"
 
 #import "AddressBookContextContentProvider.h"
@@ -17,6 +19,11 @@
 #import "MailContextContentProvider.h"
 #import "SafariContextContentProvider.h"
 #import "XcodeContextContentProvider.h"
+
+// TODO
+// Add Skype
+// Add Firefox
+// ...
 
 @interface URLCollectorContextRecognizer(Private)
 
@@ -48,22 +55,22 @@ SK_OBJECT_SINGLETON_BOILERPLATE(URLCollectorContextRecognizer, sharedInstance);
 	
 }
 
-- (NSDictionary *)guessContextFromActiveApplication
+- (URLCollectorContext *)guessContextFromActiveApplication
 {
 	return [self guessContextFromApplication:[[NSWorkspace sharedWorkspace] activeApplication]];
 }
 
-- (NSDictionary *)guessContextFromApplication:(NSDictionary *)applicationInfo
+- (URLCollectorContext *)guessContextFromApplication:(NSDictionary *)applicationInfo
 {
 	NSAssert([applicationInfo containsKey:@"NSApplicationBundleIdentifier"], @"Missing <NSApplicationBundleIdentifier> key from applicationInfo dictionary!");
 			  
 	Class contentProviderClass = [self contextContentProviderClassForBundleIdentifier:[applicationInfo objectForKey:@"NSApplicationBundleIdentifier"]];
 	
 	URLCollectorContextContentProvider *contentProvider = [[contentProviderClass alloc] init];
-	[contentProvider extractContent];
+	NSDictionary *contextDict = [contentProvider extractContent];
 	[contentProvider release];
-	//NSString *bundleIdentifier = [applicationInfo objectForKey:@"NSApplicationBundleIdentifier"];
-	return nil;
+	
+	return [[[URLCollectorContext alloc] initWithIdentity:contextDict fromApplication:applicationInfo] autorelease];
 }
 
 #pragma mark -

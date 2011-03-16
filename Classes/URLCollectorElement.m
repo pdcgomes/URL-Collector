@@ -12,9 +12,10 @@
 @implementation URLCollectorElement
 
 @synthesize data;
-@synthesize elementURL;
+@synthesize URL;
+@synthesize URLName;
 @synthesize parentGroup;
-@synthesize source;
+@synthesize context;
 @synthesize tags;
 @synthesize isUnread;
 
@@ -24,9 +25,10 @@
 - (void)dealloc
 {
 	SKSafeRelease(data);
-	SKSafeRelease(source);
+	SKSafeRelease(context);
 	SKSafeRelease(tags);
-	SKSafeRelease(elementURL);
+	SKSafeRelease(URL);
+	SKSafeRelease(URLName);
 	
 	[super dealloc];
 }
@@ -39,22 +41,24 @@
 	[super encodeWithCoder:aCoder];
 	
 	[aCoder encodeObject:data forKey:@"data"];
-	[aCoder encodeObject:elementURL forKey:@"elementURL"];
-//	[aCoder encodeObject:parentGroup forKey:@"parentGroup"];
-	[aCoder encodeObject:source forKey:@"source"];
+	[aCoder encodeObject:URL forKey:@"URL"];
+	[aCoder encodeObject:URLName forKey:@"URLName"];
+	[aCoder encodeObject:context forKey:@"source"];
 	[aCoder encodeObject:tags forKey:@"tags"];
 	[aCoder encodeBool:isUnread forKey:@"isUnread"];
+	[aCoder encodeObject:context forKey:@"context"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	if((self = [super initWithCoder:aDecoder])) {
-		data = [[aDecoder decodeObjectForKey:@"data"] retain];
-		elementURL = [[aDecoder decodeObjectForKey:@"elementURL"] copy];
-//		parentGroup = [aDecoder decodeObjectForKey:@"parentGroup"]; // This is probably wrong right here...
-		source = [[aDecoder decodeObjectForKey:@"source"] retain];
-		tags = [[aDecoder decodeObjectForKey:@"tags"] retain];
-		isUnread = [aDecoder decodeBoolForKey:@"isUnread"];
+		data		= [[aDecoder decodeObjectForKey:@"data"] retain];
+		URL			= [[aDecoder decodeObjectForKey:@"URL"] copy];
+		URLName		= [[aDecoder decodeObjectForKey:@"URLName"] copy];	
+		context		= [[aDecoder decodeObjectForKey:@"source"] retain];
+		tags		= [[aDecoder decodeObjectForKey:@"tags"] retain];
+		isUnread	= [aDecoder decodeBoolForKey:@"isUnread"];
+		context		= [aDecoder decodeObjectForKey:@"context"];
 	}
 	return self;
 }
@@ -65,6 +69,12 @@
 - (BOOL)isLeafNode
 {
 	return YES;
+}
+
+- (NSString *)name
+{
+	return SKStringWithFormat(@"%@\n"
+							  @"%@", URL, [self.context contextInfoLine]);
 }
 
 @end

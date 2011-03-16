@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class URLCollectorContext;
+
 @interface URLCollectorContextRecognizer : NSObject 
 {
 	NSDictionary	*supportedApplications;
@@ -19,7 +21,7 @@
 - (void)startAutomaticContextRecognition;
 - (void)stopAutomaticContextRecognition;
 
-- (NSDictionary *)guessContextFromActiveApplication;
-- (NSDictionary *)guessContextFromApplication:(NSDictionary *)applicationInfo;
+- (URLCollectorContext *)guessContextFromActiveApplication;
+- (URLCollectorContext *)guessContextFromApplication:(NSDictionary *)applicationInfo;
 
 @end

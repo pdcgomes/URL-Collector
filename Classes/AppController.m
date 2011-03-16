@@ -41,6 +41,7 @@
 	[self deregisterObservers];
 	
 	[urlShortener release];
+	[cachedOutlineViewRowHeights release];
 	
 	[super dealloc];
 }
@@ -51,6 +52,8 @@
 	
 	urlShortener = [[URLShortener alloc] initWithServiceKey:@"SAPOPuny"];
 	urlShortener.delegate = self;
+	
+	cachedOutlineViewRowHeights = [[NSMutableDictionary alloc] initWithCapacity:10];
 	
 	[pasteShortcutRecorder setDelegate:self];
 	
@@ -303,6 +306,33 @@
 	NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
 	[pasteboard clearContents];
 	[pasteboard writeObjects:[NSArray arrayWithObject:[NSURL URLWithString:shortURL]]];
+}
+
+#pragma mark -
+#pragma mark NSOutlineViewDelegate
+
+#define DEFAULT_ROW_HEIGHT_CACHE_SIZE	50
+#define DEFAULT_GROUP_ROW_HEIGHT		20.0
+#define DEFAULT_ELEMENT_ROW_HEIGHT		50.0
+- (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id)item
+{
+	NSIndexPath *itemIndexPath = [item indexPath];
+	NSNumber *rowHeight = [cachedOutlineViewRowHeights objectForKey:itemIndexPath];
+	if(rowHeight) {
+		return [rowHeight floatValue];
+	}
+	
+	if([cachedOutlineViewRowHeights count] >= DEFAULT_ROW_HEIGHT_CACHE_SIZE) {
+		[cachedOutlineViewRowHeights removeAllObjects];
+	}
+	if([[item representedObject] isKindOfClass:[URLCollectorElement class]]) {
+		rowHeight = [NSNumber numberWithFloat:DEFAULT_ELEMENT_ROW_HEIGHT];
+	}
+	else {
+		rowHeight = [NSNumber numberWithFloat:DEFAULT_GROUP_ROW_HEIGHT];
+	}
+	[cachedOutlineViewRowHeights setObject:rowHeight forKey:itemIndexPath];
+	return [rowHeight floatValue];
 }
 
 #pragma mark -

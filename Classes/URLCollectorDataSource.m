@@ -50,10 +50,12 @@ static NSString *defaultSeralizationPath(void)
 
 - (void)dealloc
 {
+	[operationQueue cancelAllOperations];
 	[self deregisterObservers];
 	
 	[urlCollectorElements release];
 	[selectedElements release];
+	[operationQueue release];
 	[super dealloc];
 }
 
@@ -85,6 +87,8 @@ static NSString *defaultSeralizationPath(void)
 		[inboxGroup release];
 	}
 	selectedElements = [[NSMutableArray alloc] init];
+	operationQueue = [[NSOperationQueue alloc] init];
+	[operationQueue setMaxConcurrentOperationCount:5];
 }
 
 - (void)initializePersistentStoreIfNeeded
@@ -214,6 +218,9 @@ static NSString *defaultSeralizationPath(void)
 	if(oldIndex == newIndex) {
 		return;
 	}
+//	if(newIndex < 0) {
+//		newIndex = [urlCollectorElements count] - 1;
+//	}
 	
 	[self willChangeValueForKey:@"urlCollectorElements"];
 	
@@ -297,6 +304,10 @@ static NSString *defaultSeralizationPath(void)
 #define DRAG_TYPE_CHILD 2
 - (NSDragOperation)outlineView:(NSOutlineView *)outlineView validateDrop:(id<NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)index
 {
+	if(index < 0) {
+		return NSDragOperationNone;
+	}
+	
 	id representedObject = [item representedObject];
 //	TRACE(@"Represented object <%@> :: index <%d>", representedObject, index);
 
@@ -329,7 +340,7 @@ static NSString *defaultSeralizationPath(void)
 			WARN(@"INVALID/UNSUPPORTED DROP OPERATION!");
 			return NSDragOperationNone;
 	}
-	
+	<
 	return NSDragOperationNone;
 }
 
@@ -341,17 +352,36 @@ static NSString *defaultSeralizationPath(void)
 	
 	if([info draggingSource] == nil) {
 		URLCollectorGroup *destinationGroup = [item representedObject];
+
 		NSDictionary *activeApp = [[NSWorkspace sharedWorkspace] activeApplication];
-		
-		[[URLCollectorContextRecognizer sharedInstance] guessContextFromActiveApplication];
-		
+
+		NSMutableArray *elements = [[NSMutableArray alloc] init];
 		for(NSPasteboardItem *pasteboardItem in [[info draggingPasteboard] pasteboardItems]) {
 			URLCollectorElement *element = [[URLCollectorElement alloc] init];
-			element.name = SKStringWithFormat(@"%@ (via %@)", [pasteboardItem stringForType:@"public.url-name"], [activeApp objectForKey:@"NSApplicationName"]);
-			element.elementURL = [pasteboardItem stringForType:NSPasteboardTypeString];
+			element.URL = [pasteboardItem stringForType:NSPasteboardTypeString];
+			element.URLName = [pasteboardItem stringForType:@"public.url-name"];
 			[self addElement:element toGroup:destinationGroup atIndex:index];
+			[elements addObject:element];
 			[element release];
 		}
+
+		// TODO: rethink this approach...
+		void (^fetchContextBlock)(void) = ^{
+			URLCollectorContext *context = [[[URLCollectorContextRecognizer sharedInstance] guessContextFromApplication:activeApp] retain];
+			[elements makeObjectsPerformSelector:@selector(setContext:) withObject:context];
+			[context release];
+			
+			[outlineView reloadData]; // kind of bruteforce, but should be enough for now
+		};
+		
+		NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+		[operation addExecutionBlock:fetchContextBlock];
+		[operationQueue addOperation:operation];
+		[operation release];
+		// END TODO
+		[elements release];
+		
+//		[context release];
 	}
 	else if([info draggingSource] == outlineView) {
 		NSData *draggedData = [[info draggingPasteboard] dataForType:NSPasteboardTypeURLCollectorElement];

@@ -15,21 +15,23 @@
 @interface URLCollectorElement : URLCollectorNode 
 {
 	id					data;
-	NSString			*elementURL;
+	NSString			*URL;
+	NSString			*URLName;
 	NSMutableArray		*tags;
 
 	URLCollectorGroup	*parentGroup;
-	URLCollectorContext	*source;
+	URLCollectorContext	*context;
 	
 	BOOL				isUnread;
 }
 
 @property (nonatomic, retain) id data;
-@property (nonatomic, copy) NSString *elementURL;
+@property (nonatomic, copy) NSString *URL;
+@property (nonatomic, copy) NSString *URLName;
 @property (nonatomic, retain) NSMutableArray *tags;
 
 @property (nonatomic, assign) URLCollectorGroup *parentGroup;
-@property (nonatomic, retain) URLCollectorContext *source;
+@property (nonatomic, retain) URLCollectorContext *context;
 
 @property (nonatomic, assign) BOOL isUnread;
 

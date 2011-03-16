@@ -38,8 +38,11 @@
 		return nil;
 	}
 
-	AdiumChat *chat = [application activeChat];
-	SBElementArray *chatContacts = [chat contacts];
+	AdiumChat *adiumChat = [application activeChat];
+	AdiumAccount *adiumAccount = [adiumChat account];
+	AdiumService *adiumService = [adiumAccount service];
+	
+	SBElementArray *chatContacts = [adiumChat contacts];
 
 	AdiumContact *adiumContact = [chatContacts lastObject];
 	TRACE(@"Grabbed identity from adiumContact <%@>", adiumContact);
@@ -50,6 +53,8 @@
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			[adiumContact displayName], @"identityName",
 			[adiumContact name],		@"identityEmailAddress",
+			[adiumAccount name],		@"account",
+			[adiumService name],		@"serviceName",
 			nil];
 }
 

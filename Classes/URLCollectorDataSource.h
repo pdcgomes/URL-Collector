@@ -19,6 +19,8 @@
 	NSMutableArray				*selectedElements;
 	
 	BOOL						hasPendingChanges;
+	
+	NSOperationQueue			*operationQueue;
 }
 
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
