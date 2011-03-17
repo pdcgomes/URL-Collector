@@ -90,8 +90,10 @@
 
 - (NSString *)contextInfoLine
 {
-	return SKStringWithFormat(@"Sent by %@ (via %@)", contextName, [self applicationName]);
-	return nil;
+	return [contextName length] > 0 ?  
+	SKStringWithFormat(@"Sent by %@ (via %@)", contextName, [self applicationName]) :
+	SKStringWithFormat(@"(via %@)", [self applicationName]);
+
 }
 
 @end

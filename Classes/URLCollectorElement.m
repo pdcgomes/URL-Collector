@@ -64,6 +64,21 @@
 }
 
 #pragma mark -
+#pragma mark NSObject
+
+- (BOOL)isEqual:(id)object
+{
+	return 
+	[object isKindOfClass:[self class]] && 
+	[[(URLCollectorElement *)object URL] isEqual:[self URL]];
+}
+
+- (NSUInteger)hash
+{
+	return [self.URL hash];
+}
+
+#pragma mark -
 #pragma mark Properties
 
 - (BOOL)isLeafNode

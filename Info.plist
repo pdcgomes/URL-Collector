@@ -34,12 +34,19 @@
 	<array>
 		<dict>
 			<key>NSMessage</key>
-			<string></string>
+			<string>sendToPuny</string>
+			<key>NSPortName</key>
+			<string>Puny</string>
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string></string>
+				<string>Send to SAPO Puny</string>
 			</dict>
+			<key>Send Types</key>
+			<array>
+				<string>NSStringPboardType</string>
+				<string>NSURLPboardType</string>
+			</array>
 		</dict>
 	</array>
 	<key>ShorteningServices</key>

@@ -31,11 +31,17 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 - (void)initializePersistentStoreIfNeeded;
 - (void)loadPersistedGroups;
 
+- (void)rebuildElementIndex;
+- (void)indexElement:(URLCollectorElement *)element;
+- (void)removeElementFromIndex:(URLCollectorElement *)element;
+- (BOOL)elementIsIndexed:(URLCollectorElement *)element;
+
 @end
 
 @implementation URLCollectorDataSource
 
 @synthesize managedObjectContext;
+@synthesize outlineView = outlineView_;
 @synthesize urlCollectorElements;
 @synthesize selectedElements;
 
@@ -52,6 +58,8 @@ static NSString *defaultSeralizationPath(void)
 {
 	[operationQueue cancelAllOperations];
 	[self deregisterObservers];
+
+	outlineView_ = nil;
 	
 	[urlCollectorElements release];
 	[selectedElements release];
@@ -86,6 +94,8 @@ static NSString *defaultSeralizationPath(void)
 		[self addGroup:inboxGroup];
 		[inboxGroup release];
 	}
+	[self rebuildElementIndex];
+	
 	selectedElements = [[NSMutableArray alloc] init];
 	operationQueue = [[NSOperationQueue alloc] init];
 	[operationQueue setMaxConcurrentOperationCount:5];
@@ -137,7 +147,83 @@ static NSString *defaultSeralizationPath(void)
 }
 
 #pragma mark -
+#pragma mark Index/Cache management
+
+- (void)rebuildElementIndex
+{
+	if(elementIndex != nil) {
+		[elementIndex removeAllObjects];
+	}
+	else {
+		elementIndex = [[NSMutableDictionary alloc] init];
+	}
+	
+	for(URLCollectorGroup *group in urlCollectorElements) {
+		for(URLCollectorElement *element in group.children) {
+			[self indexElement:element];
+		}
+	}
+}
+
+- (void)indexElement:(URLCollectorElement *)element
+{
+	TRACE(@"");
+	NSUInteger groupIndex = [urlCollectorElements indexOfObject:element.parent];
+	NSUInteger theElementIndex = [[[urlCollectorElements objectAtIndex:groupIndex] children] indexOfObject:element];
+	
+	NSUInteger indexes[2] = {groupIndex, theElementIndex};
+	NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+	
+	[elementIndex setObject:indexPath forKey:element.URL];
+}
+
+- (void)removeElementFromIndex:(URLCollectorElement *)element
+{
+	TRACE(@"");
+	[elementIndex removeObjectForKey:element.URL];
+}
+
+- (BOOL)elementIsIndexed:(URLCollectorElement *)element
+{
+	return [elementIndex containsKey:element.URL];
+}
+
+#pragma mark -
 #pragma mark Public Methods
+
+- (void)addURLToInbox:(NSString *)URL
+{
+	URLCollectorGroup *inboxGroup = [urlCollectorElements objectAtIndex:0];
+	[self addURL:URL toGroup:inboxGroup];
+}
+
+- (void)addURL:(NSString *)URL toGroup:(URLCollectorGroup *)destinationGroup
+{
+	NSDictionary *activeApp = [[NSWorkspace sharedWorkspace] activeApplication];
+	
+	NSMutableArray *elements = [[NSMutableArray alloc] init];
+	URLCollectorElement *element = [[URLCollectorElement alloc] init];
+	element.URL = URL;
+	[self addElement:element toGroup:destinationGroup];
+	[elements addObject:element];
+	[element release];
+	
+	// TODO: rethink this approach...
+	void (^fetchContextBlock)(void) = ^{
+		URLCollectorContext *context = [[[URLCollectorContextRecognizer sharedInstance] guessContextFromApplication:activeApp] retain];
+		[elements makeObjectsPerformSelector:@selector(setContext:) withObject:context];
+		[context release];
+		
+	//	[self.outlineView reloadData];
+	};
+	
+	NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+	[operation addExecutionBlock:fetchContextBlock];
+	[operationQueue addOperation:operation];
+	[operation release];
+	// END TODO
+	[elements release];
+}
 
 - (void)addGroup:(URLCollectorGroup *)group
 {
@@ -166,6 +252,10 @@ static NSString *defaultSeralizationPath(void)
 
 - (void)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group atIndex:(NSInteger)index
 {
+	if([self elementIsIndexed:element] && element.parent == nil) { // If parent != nil, it's safe to assume that this is just a move operation
+		INFO(@"TODO: warn user that he attempted to insert an item with a duplicate URL...");
+		return;
+	}
 	[self willChangeValueForKey:@"urlCollectorElements"];
 	
 	NSUInteger groupIndex = [urlCollectorElements indexOfObject:group];
@@ -175,6 +265,7 @@ static NSString *defaultSeralizationPath(void)
 	[[urlCollectorElements objectAtIndex:groupIndex] add:element atIndex:index];
 	
 	[self didChangeValueForKey:@"urlCollectorElements"];
+	[self indexElement:element];
 }
 
 - (void)removeGroup:(URLCollectorGroup *)group
@@ -191,7 +282,7 @@ static NSString *defaultSeralizationPath(void)
 		NSArray *groupChildren = [[NSArray alloc] initWithArray:group.children];
 		[group removeAllChildren];
 		for(URLCollectorElement *child in groupChildren) {
-			[inboxGroup add:child];
+			[self addElement:child toGroup:inboxGroup];
 		}
 		[groupChildren release];
 	}
@@ -205,6 +296,8 @@ static NSString *defaultSeralizationPath(void)
 	[self willChangeValueForKey:@"urlCollectorElements"];
 	[(URLCollectorGroup *)element.parent remove:element];
 	[self didChangeValueForKey:@"urlCollectorElements"];
+
+	[self removeElementFromIndex:element];
 }
 
 - (void)removeElement:(URLCollectorElement *)element fromGroup:(URLCollectorGroup *)group
@@ -398,6 +491,7 @@ static NSString *defaultSeralizationPath(void)
 					URLCollectorGroup *destinationGroup = [item representedObject];
 					URLCollectorElement *element = [sourceGroup.children objectAtIndex:[indexPath indexAtPosition:INDEXPATH_ELEMENT_POSITION]];
 					[self addElement:element toGroup:destinationGroup atIndex:index];
+					[outlineView reloadItem:item];
 					break;
 				}
 				case DRAG_TYPE_GROUP:

@@ -13,10 +13,13 @@
 
 @interface URLCollectorDataSource : NSObject <NSOutlineViewDataSource>
 {
+	NSOutlineView				*outlineView_; // weak reference
 	NSManagedObjectContext		*managedObjectContext;
 	
 	NSMutableArray				*urlCollectorElements;
 	NSMutableArray				*selectedElements;
+	
+	NSMutableDictionary			*elementIndex; // URL -> IndexPath
 	
 	BOOL						hasPendingChanges;
 	
@@ -24,8 +27,12 @@
 }
 
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, assign) NSOutlineView *outlineView;
 @property (nonatomic, retain) NSMutableArray *urlCollectorElements;
 @property (nonatomic, retain) NSMutableArray *selectedElements;
+
+- (void)addURLToInbox:(NSString *)URL;
+- (void)addURL:(NSString *)URL toGroup:(URLCollectorGroup *)group;
 
 - (void)addGroup:(URLCollectorGroup *)group;
 - (void)addGroup:(URLCollectorGroup *)group atIndex:(NSInteger)index;

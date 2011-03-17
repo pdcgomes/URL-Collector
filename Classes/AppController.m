@@ -18,6 +18,7 @@
 #import "URLCollectorElement.h"
 #import "URLCollectorContext.h"
 #import "URLCollectorDataSource.h"
+#import "URLCollectorOutlineView.h"
 
 @interface AppController()
 
@@ -27,6 +28,7 @@
 - (void)presentWindow:(NSWindow *)window;
 - (void)updateStatusBarMenuItems;
 
+- (void)collectURLFromPasteboard:(NSPasteboard *)pasteboard;
 - (BOOL)pasteboardContains:(Class)class;
 - (BOOL)hasSelectedRowsOfClass:(Class)objectClass;
 
@@ -55,10 +57,24 @@
 	
 	cachedOutlineViewRowHeights = [[NSMutableDictionary alloc] initWithCapacity:10];
 	
+	[urlCollectorDataSource setOutlineView:urlCollectorOutlineView];
 	[pasteShortcutRecorder setDelegate:self];
 	
 	[self registerObservers];
 	[self updateStatusBarMenuItems];
+
+//	NSRegisterServicesProvider(self, @"ServiceProviderPort");
+	[NSApp setServicesProvider:self];
+	NSUpdateDynamicServices();
+}
+
+#pragma mark -
+#pragma mark ServicesProvider
+
+- (void)sendToPuny:(NSPasteboard *)pasteboard userData:(NSString *)userData error:(NSString **)error
+{
+	TRACE(@"");
+	[self collectURLFromPasteboard:pasteboard];
 }
 
 #pragma mark -
@@ -80,6 +96,10 @@
 	if(aRecorder == pasteShortcutRecorder) {
 		hotKeyID = @"PasteHotKey";
 		hotKeyAction = @selector(pasteHotKeyPressed:);
+	}
+	else if(aRecorder == collectShortcutRecorder) {
+		hotKeyID = @"CollectURLHotKey";
+		hotKeyAction = @selector(collectURLHotKeyPressed:);
 	}
 	else {
 		hotKeyID = @"CollectorHotKey";
@@ -124,6 +144,14 @@
 	}
 }
 
+- (void)collectURLHotKeyPressed:(PTHotKey *)hotKey
+{
+	TRACE(@"");
+	if([self pasteboardContains:[NSURL class]]) {
+		[self collectURL:self];
+	}
+}
+
 #pragma mark -
 #pragma mark MenuItem validation
 
@@ -135,6 +163,9 @@
 	}
 	else if([menuItem action] == @selector(copy:)) {
 		return NO;
+	}
+	else if([menuItem action] == @selector(collectURL:)) {
+		return [self pasteboardContains:[NSURL class]];
 	}
 	else if([menuItem action] == @selector(shortenURL:)) {
 		return [self pasteboardContains:[NSURL class]];
@@ -188,6 +219,11 @@
 			[urlShortener shortenURL:theURL];
 		}
 	}
+}
+
+- (IBAction)collectURL:(id)sender
+{
+	[self collectURLFromPasteboard:[NSPasteboard generalPasteboard]];
 }
 
 - (IBAction)copy:(id)sender
@@ -251,7 +287,10 @@
 	[urlCollectorOutlineView deselectAll:self];
 	
 	NSInteger groupIndex = [urlCollectorDataSource.urlCollectorElements indexOfObject:destinationGroup];
-	[urlCollectorOutlineView expandItem:[urlCollectorOutlineView itemAtRow:groupIndex]];
+	id groupItem = [urlCollectorOutlineView itemAtRow:groupIndex];
+	if(![urlCollectorOutlineView isItemExpanded:groupItem]) {
+		[urlCollectorOutlineView expandItem:[urlCollectorOutlineView itemAtRow:groupIndex]];
+	}
 }
 
 #pragma mark -
@@ -291,7 +330,10 @@
 		[collectorMenuItem setKeyEquivalent:[collectorShortcutRecorder keyChars]];
 		[collectorMenuItem setKeyEquivalentModifierMask:[collectorShortcutRecorder keyCombo].flags];
 	}
-	
+	if([collectShortcutRecorder keyChars]) {
+		[collectMenuItem setKeyEquivalent:[collectShortcutRecorder keyChars]];
+		[collectMenuItem setKeyEquivalentModifierMask:[collectShortcutRecorder keyCombo].flags];
+	}
 	if([pasteShortcutRecorder keyChars]) {
 		[shortenMenuItem setKeyEquivalent:[pasteShortcutRecorder keyCharsIgnoringModifiers]];
 		[shortenMenuItem setKeyEquivalentModifierMask:[pasteShortcutRecorder keyCombo].flags];
@@ -337,6 +379,18 @@
 
 #pragma mark -
 #pragma mark Helper Methods
+
+- (void)collectURLFromPasteboard:(NSPasteboard *)pasteboard
+{
+	NSArray *items = [pasteboard readObjectsForClasses:[NSArray arrayWithObject:[NSURL class]] options:nil];
+	TRACE(@"Pasteboard items of type <NSURL>: %@", items);
+	if([items count] > 0) {
+		NSString *theURL = [[items objectAtIndex:0] absoluteString];
+		if([URLShortener isValidURL:theURL]) {
+			[urlCollectorDataSource addURLToInbox:theURL];
+		}
+	}
+}
 
 - (BOOL)pasteboardContains:(Class)class
 {

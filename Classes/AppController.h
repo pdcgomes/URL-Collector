@@ -17,11 +17,13 @@
 @interface AppController : NSObject <NSOutlineViewDelegate>
 {
 	IBOutlet NSMenuItem					*collectorMenuItem;
+	IBOutlet NSMenuItem					*collectMenuItem;
 	IBOutlet NSMenuItem					*shortenMenuItem;
 	IBOutlet NSMenu						*groupsSubmenu;
 	
 	IBOutlet SRRecorderControl			*pasteShortcutRecorder;
 	IBOutlet SRRecorderControl			*collectorShortcutRecorder;
+	IBOutlet SRRecorderControl			*collectShortcutRecorder;
 
 	IBOutlet URLCollectorOutlineView	*urlCollectorOutlineView;
 	IBOutlet URLCollectorDataSource		*urlCollectorDataSource;
@@ -35,6 +37,7 @@
 
 - (IBAction)collector:(id)sender;
 - (IBAction)shortenURL:(id)sender;
+- (IBAction)collectURL:(id)sender;
 - (IBAction)copy:(id)sender;
 - (IBAction)configure:(id)sender; 
 - (IBAction)quit:(id)sender;
@@ -42,5 +45,7 @@
 - (IBAction)addGroup:(id)sender;
 - (IBAction)removeRow:(id)sender;
 - (IBAction)moveToGroup:(id)sender;
+
+- (void)sendToPuny:(NSPasteboard *)pboard userData:(NSString *)userData error:(NSString **)error;
 
 @end
