@@ -313,6 +313,7 @@
 - (void)deregisterObservers
 {
 	[[NSUserDefaults standardUserDefaults] removeObserver:self keyPath:UserDefaults_ShorteningService selector:@selector(shorteningServiceChanged:ofObject:change:userInfo:)];
+	[urlCollectorDataSource removeObserver:self keyPath:@"urlCollectorElements" selector:@selector(dataSourceChanged:ofObject:change:userInfo:)];
 }
 
 - (void)presentWindow:(NSWindow *)window
@@ -423,6 +424,11 @@
 		[groupsSubmenu addItem:groupMenuItem];
 		[groupMenuItem release];
 	}
+}
+
+- (void)pasteboardChangeCountUpdated:(NSString *)keyPath ofObject:(id)target change:(NSDictionary *)change userInfo:(id)userInfo
+{
+	TRACE(@"");
 }
 
 @end

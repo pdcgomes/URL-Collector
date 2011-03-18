@@ -37,7 +37,6 @@
 		0D2304FC132FD1B10011B219 /* URLCollectorContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304DC132FD1B10011B219 /* URLCollectorContext.m */; };
 		0D2304FD132FD1B10011B219 /* URLCollectorNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304DE132FD1B10011B219 /* URLCollectorNode.m */; };
 		0D2304FE132FD1B10011B219 /* URLCollectorContextRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304E2132FD1B10011B219 /* URLCollectorContextRecognizer.m */; };
-		0D2304FF132FD1B10011B219 /* URLCollectorDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304E5132FD1B10011B219 /* URLCollectorDatabase.m */; };
 		0D230500132FD1B10011B219 /* URLCollectorDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304E7132FD1B10011B219 /* URLCollectorDataSource.m */; };
 		0D230501132FD1B10011B219 /* SAPOPunyShorteningService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304EB132FD1B10011B219 /* SAPOPunyShorteningService.m */; };
 		0D230502132FD1B10011B219 /* URLShortener.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2304ED132FD1B10011B219 /* URLShortener.m */; };
@@ -57,7 +56,10 @@
 		0D23059A132FDC7F0011B219 /* URLCollectorContextIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D230599132FDC7F0011B219 /* URLCollectorContextIdentity.m */; };
 		0D2305A4132FE0F70011B219 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D2305A3132FE0F70011B219 /* ScriptingBridge.framework */; };
 		0D2305B4132FE25D0011B219 /* URLCollectorContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2305B3132FE25D0011B219 /* URLCollectorContextContentProvider.m */; };
+		0D230D1C133280870011B219 /* GTMFileSystemKQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D230D1B133280870011B219 /* GTMFileSystemKQueue.m */; };
 		0D23F569132129340011B219 /* menubar-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D23F568132129340011B219 /* menubar-icon.png */; };
+		0D8BCEDA1332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */; };
+		0D8BCEDF1332A3750079E647 /* URLCollectorDatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8BCEDE1332A3750079E647 /* URLCollectorDatabaseManager.m */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -150,8 +152,6 @@
 		0D2304DE132FD1B10011B219 /* URLCollectorNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorNode.m; sourceTree = "<group>"; };
 		0D2304E1132FD1B10011B219 /* URLCollectorContextRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorContextRecognizer.h; sourceTree = "<group>"; };
 		0D2304E2132FD1B10011B219 /* URLCollectorContextRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorContextRecognizer.m; sourceTree = "<group>"; };
-		0D2304E4132FD1B10011B219 /* URLCollectorDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorDatabase.h; sourceTree = "<group>"; };
-		0D2304E5132FD1B10011B219 /* URLCollectorDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorDatabase.m; sourceTree = "<group>"; };
 		0D2304E6132FD1B10011B219 /* URLCollectorDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorDataSource.h; sourceTree = "<group>"; };
 		0D2304E7132FD1B10011B219 /* URLCollectorDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorDataSource.m; sourceTree = "<group>"; };
 		0D2304EA132FD1B10011B219 /* SAPOPunyShorteningService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAPOPunyShorteningService.h; sourceTree = "<group>"; };
@@ -185,7 +185,15 @@
 		0D2305A3132FE0F70011B219 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		0D2305B2132FE25D0011B219 /* URLCollectorContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorContextContentProvider.h; sourceTree = "<group>"; };
 		0D2305B3132FE25D0011B219 /* URLCollectorContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorContextContentProvider.m; sourceTree = "<group>"; };
+		0D230D1A133280870011B219 /* GTMFileSystemKQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMFileSystemKQueue.h; sourceTree = "<group>"; };
+		0D230D1B133280870011B219 /* GTMFileSystemKQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFileSystemKQueue.m; sourceTree = "<group>"; };
+		0D230D21133280D30011B219 /* GTMDebugSelectorValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDebugSelectorValidation.h; sourceTree = "<group>"; };
+		0D230D22133280D30011B219 /* GTMTypeCasting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMTypeCasting.h; sourceTree = "<group>"; };
 		0D23F568132129340011B219 /* menubar-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon.png"; sourceTree = "<group>"; };
+		0D8BCED81332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorDatabaseSynchronizer.h; sourceTree = "<group>"; };
+		0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorDatabaseSynchronizer.m; sourceTree = "<group>"; };
+		0D8BCEDD1332A3750079E647 /* URLCollectorDatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorDatabaseManager.h; sourceTree = "<group>"; };
+		0D8BCEDE1332A3750079E647 /* URLCollectorDatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorDatabaseManager.m; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -259,6 +267,7 @@
 		0D230439132FCD370011B219 /* GTM */ = {
 			isa = PBXGroup;
 			children = (
+				0D230D20133280D30011B219 /* DebugUtils */,
 				0D23043A132FCD370011B219 /* Foundation */,
 				0D23043E132FCD370011B219 /* GTMDefines.h */,
 			);
@@ -268,6 +277,8 @@
 		0D23043A132FCD370011B219 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				0D230D1A133280870011B219 /* GTMFileSystemKQueue.h */,
+				0D230D1B133280870011B219 /* GTMFileSystemKQueue.m */,
 				0D23043B132FCD370011B219 /* GTMGarbageCollection.h */,
 				0D23043C132FCD370011B219 /* GTMNSString+URLArguments.h */,
 				0D23043D132FCD370011B219 /* GTMNSString+URLArguments.m */,
@@ -457,8 +468,10 @@
 		0D2304E3132FD1B10011B219 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				0D2304E4132FD1B10011B219 /* URLCollectorDatabase.h */,
-				0D2304E5132FD1B10011B219 /* URLCollectorDatabase.m */,
+				0D8BCED81332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.h */,
+				0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */,
+				0D8BCEDD1332A3750079E647 /* URLCollectorDatabaseManager.h */,
+				0D8BCEDE1332A3750079E647 /* URLCollectorDatabaseManager.m */,
 			);
 			name = Persistence;
 			sourceTree = "<group>";
@@ -525,6 +538,16 @@
 			);
 			name = "Content Providers";
 			sourceTree = "<group>";
+		};
+		0D230D20133280D30011B219 /* DebugUtils */ = {
+			isa = PBXGroup;
+			children = (
+				0D230D21133280D30011B219 /* GTMDebugSelectorValidation.h */,
+				0D230D22133280D30011B219 /* GTMTypeCasting.h */,
+			);
+			name = DebugUtils;
+			path = ../../Projects/SAPOPuny/Vendor/GTM/DebugUtils;
+			sourceTree = SOURCE_ROOT;
 		};
 		0D23F536132108DB0011B219 /* Images */ = {
 			isa = PBXGroup;
@@ -699,7 +722,6 @@
 				0D2304FC132FD1B10011B219 /* URLCollectorContext.m in Sources */,
 				0D2304FD132FD1B10011B219 /* URLCollectorNode.m in Sources */,
 				0D2304FE132FD1B10011B219 /* URLCollectorContextRecognizer.m in Sources */,
-				0D2304FF132FD1B10011B219 /* URLCollectorDatabase.m in Sources */,
 				0D230500132FD1B10011B219 /* URLCollectorDataSource.m in Sources */,
 				0D230501132FD1B10011B219 /* SAPOPunyShorteningService.m in Sources */,
 				0D230502132FD1B10011B219 /* URLShortener.m in Sources */,
@@ -716,6 +738,9 @@
 				0D230572132FD6B40011B219 /* SafariContextContentProvider.m in Sources */,
 				0D23059A132FDC7F0011B219 /* URLCollectorContextIdentity.m in Sources */,
 				0D2305B4132FE25D0011B219 /* URLCollectorContextContentProvider.m in Sources */,
+				0D230D1C133280870011B219 /* GTMFileSystemKQueue.m in Sources */,
+				0D8BCEDA1332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m in Sources */,
+				0D8BCEDF1332A3750079E647 /* URLCollectorDatabaseManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

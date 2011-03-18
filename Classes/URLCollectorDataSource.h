@@ -10,10 +10,11 @@
 
 @class URLCollectorGroup;
 @class URLCollectorElement;
+@class URLCollectorDatabaseManager;
 
 @interface URLCollectorDataSource : NSObject <NSOutlineViewDataSource>
 {
-	NSOutlineView				*outlineView_; // weak reference
+	__weak NSOutlineView		*outlineView_; // weak reference
 	NSManagedObjectContext		*managedObjectContext;
 	
 	NSMutableArray				*urlCollectorElements;
@@ -24,6 +25,7 @@
 	BOOL						hasPendingChanges;
 	
 	NSOperationQueue			*operationQueue;
+	URLCollectorDatabaseManager *databaseManager;
 }
 
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;

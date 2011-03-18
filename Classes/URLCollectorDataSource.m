@@ -12,6 +12,7 @@
 #import "URLCollectorNode.h"
 
 #import "URLCollectorContextRecognizer.h"
+#import "URLCollectorDatabaseManager.h"
 
 #import "SKManagedObjectContextManager.h"
 
@@ -28,6 +29,7 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 - (void)registerObservers;
 - (void)deregisterObservers;
 
+- (void)initializeDatabaseIfNeeded;
 - (void)initializePersistentStoreIfNeeded;
 - (void)loadPersistedGroups;
 
@@ -35,6 +37,9 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 - (void)indexElement:(URLCollectorElement *)element;
 - (void)removeElementFromIndex:(URLCollectorElement *)element;
 - (BOOL)elementIsIndexed:(URLCollectorElement *)element;
+
+- (void)saveChangesInternal;
+- (void)reloadLocalDatabase;
 
 @end
 
@@ -60,7 +65,8 @@ static NSString *defaultSeralizationPath(void)
 	[self deregisterObservers];
 
 	outlineView_ = nil;
-	
+
+	[databaseManager release];
 	[urlCollectorElements release];
 	[selectedElements release];
 	[operationQueue release];
@@ -69,32 +75,9 @@ static NSString *defaultSeralizationPath(void)
 
 - (void)awakeFromNib
 {
-	NSArray *unarchivedObjects =  nil;
-	@try {
-		unarchivedObjects = [NSKeyedUnarchiver unarchiveObjectWithFile:defaultSeralizationPath()];
-	}
-	@catch (NSException *e) {
-		WARN(@"Caught exception while trying to unarchive database. Database file is possibly corrupted.");
-		if([[NSFileManager defaultManager] fileExistsAtPath:defaultSeralizationPath()]) {
-			[[NSFileManager defaultManager] removeItemAtPath:defaultSeralizationPath() error:nil];
-		}
-	}
-	
 	[self registerObservers];
-	
-	if(unarchivedObjects) {
-		[self willChangeValueForKey:@"urlCollectorElements"];
-		urlCollectorElements = [[NSMutableArray alloc] initWithArray:unarchivedObjects];
-		[self didChangeValueForKey:@"urlCollectorElements"];
-	}
-	else {
-		urlCollectorElements = [[NSMutableArray alloc] initWithCapacity:1];
-		URLCollectorGroup *inboxGroup = [[URLCollectorGroup alloc] init];
-		inboxGroup.name = defaultURLCollectorGroupName();
-		[self addGroup:inboxGroup];
-		[inboxGroup release];
-	}
-	[self rebuildElementIndex];
+	[self initializeDatabaseIfNeeded];
+//	[self reloadLocalDatabase];
 	
 	selectedElements = [[NSMutableArray alloc] init];
 	operationQueue = [[NSOperationQueue alloc] init];
@@ -118,6 +101,14 @@ static NSString *defaultSeralizationPath(void)
 		[persistentStoreCoordinator setMetadata:metadata forPersistentStore:persistentStore];
 		[metadata release];
 	}
+}
+
+- (void)initializeDatabaseIfNeeded
+{
+	if(!databaseManager) {
+		databaseManager = [[URLCollectorDatabaseManager alloc] initWithDatabaseFilePath:defaultSeralizationPath()];
+	}
+	[self reloadLocalDatabase];
 }
 
 - (void)loadPersistedGroups
@@ -171,8 +162,9 @@ static NSString *defaultSeralizationPath(void)
 	NSUInteger groupIndex = [urlCollectorElements indexOfObject:element.parent];
 	NSUInteger theElementIndex = [[[urlCollectorElements objectAtIndex:groupIndex] children] indexOfObject:element];
 	
-	NSUInteger indexes[2] = {groupIndex, theElementIndex};
-	NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+//	NSUInteger indexes[2] = {groupIndex, theElementIndex};
+//	NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+	NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:(NSUInteger[2]){groupIndex, theElementIndex} length:2];
 	
 	[elementIndex setObject:indexPath forKey:element.URL];
 }
@@ -346,7 +338,7 @@ static NSString *defaultSeralizationPath(void)
 
 - (void)saveChanges
 {
-	if([[[SKManagedObjectContextManager sharedInstance] defaultManagedObjectContext] hasChanges] || hasPendingChanges) {
+	if(/*[[[SKManagedObjectContextManager sharedInstance] defaultManagedObjectContext] hasChanges] || */hasPendingChanges) {
 		TRACE(@"***** SCHEDULING NEXT SAVE....");
 		[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(saveChangesInternal) object:nil];
 		[self performSelector:@selector(saveChangesInternal) withObject:nil afterDelay:DEFAULT_SAVE_DELAY];
@@ -357,17 +349,30 @@ static NSString *defaultSeralizationPath(void)
 }
 
 #pragma mark -
-#pragma mark Private Methods
+#pragma mark Private Methods - Database and sync
 
 - (void)saveChangesInternal
 {
 	TRACE(@"***** SAVING CHANGES TO DISK...");
-	[[SKManagedObjectContextManager sharedInstance] save];
-	
-	BOOL success = [NSKeyedArchiver archiveRootObject:urlCollectorElements toFile:defaultSeralizationPath()];
-	TRACE(@"Archive success: %d", success);
-	
+	[databaseManager saveData:urlCollectorElements];
 	hasPendingChanges = NO;
+}
+
+- (void)reloadLocalDatabase
+{
+	NSArray *storedData = [databaseManager loadData];
+	if(!storedData) {
+		ERROR(@"Unable to load data");
+		return; // TODO: handle error
+	}
+	if(urlCollectorElements) {
+		[urlCollectorElements removeAllObjects];
+	}
+	
+	[self willChangeValueForKey:@"urlCollectorElements"];
+	urlCollectorElements = [[NSMutableArray alloc] initWithArray:storedData];
+	[self didChangeValueForKey:@"urlCollectorElements"];
+	[self rebuildElementIndex];	
 }
 
 #pragma mark -
