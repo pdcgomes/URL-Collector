@@ -14,11 +14,11 @@
 @synthesize contextURL;
 @synthesize contextIdentity;
 @synthesize contextApplication;
+@synthesize interaction;
 
 @dynamic applicationName;
 @dynamic applicationBundleIdentifier;
 @dynamic applicationIcon;
-
 
 #pragma mark -
 #pragma mark Dealloc and Initialization
@@ -29,6 +29,7 @@
 	SKSafeRelease(contextURL);
 	SKSafeRelease(contextIdentity);
 	SKSafeRelease(contextApplication);
+	SKSafeRelease(interaction);
 	
 	[super dealloc];
 }
@@ -37,6 +38,14 @@
 {
 	if((self = [super init])) {
 		contextName = [[identityInfo objectForKey:@"identityName"] copy];
+		
+		NSMutableString *interactionString = [[NSMutableString alloc] initWithString:@""];
+		[interactionString appendString:[identityInfo objectForKey:@"interactionType"]];
+		if([interactionString length] > 0 && [[identityInfo objectForKey:@"interactionPreposition"] length] > 0) {
+			[interactionString appendFormat:@" %@", [identityInfo objectForKey:@"interactionPreposition"]];
+		}
+		interaction = [[NSString alloc] initWithString:interactionString];
+		[interactionString release];
 		
 		NSMutableDictionary *tmpApplicationInfo = [[NSMutableDictionary alloc] initWithDictionary:applicationInfo];
 		[tmpApplicationInfo removeObjectForKey:@"NSWorkspaceApplicationKey"];
@@ -55,13 +64,16 @@
 	[aCoder encodeObject:contextURL forKey:@"contextURL"];
 	//	[aCoder encodeObject:contextIdentity forKey:@"contextIdentity"];
 	[aCoder encodeObject:contextApplication forKey:@"contextApplication"];
+	[aCoder encodeObject:interaction forKey:@"interaction"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	if((self = [super init])) {
-		contextName = [[aDecoder decodeObjectForKey:@"contextName"] copy];
-		contextURL	= [[aDecoder decodeObjectForKey:@"contextURL"] copy];
+		contextName		= [[aDecoder decodeObjectForKey:@"contextName"] copy];
+		contextURL		= [[aDecoder decodeObjectForKey:@"contextURL"] copy];
+		interaction		= [[aDecoder decodeObjectForKey:@"interaction"] copy];
+		
 		//		contextIdentity = [[aDecoder decodeObjectForKey:@""] retain];
 		contextApplication = [[aDecoder decodeObjectForKey:@"contextApplication"] retain];
 	}
@@ -91,9 +103,8 @@
 - (NSString *)contextInfoLine
 {
 	return [contextName length] > 0 ?  
-	SKStringWithFormat(@"Sent by %@ (via %@)", contextName, [self applicationName]) :
+	SKStringWithFormat(@"%@ %@ (via %@)", interaction, contextName, [self applicationName]) :
 	SKStringWithFormat(@"(via %@)", [self applicationName]);
-
 }
 
 @end

@@ -35,7 +35,7 @@
 	GTMFileSystemKQueue									*databaseFileWatcher;
 	NSObject<URLCollectorDatabaseManagerDelegate>		*delegate;
 
-//	NSUInteger	state;
+	NSInteger	state;
 	BOOL		syncEnabled;
 }
 
@@ -48,6 +48,7 @@
 - (NSArray *)loadData;
 - (void)saveData:(NSArray *)data;
 
+- (void)performSyncIfNeeded;
 //- (void)loadDataAsync;
 //- (void)saveDataAsync(id)data;
 //

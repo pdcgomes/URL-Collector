@@ -55,6 +55,8 @@
 			[adiumContact name],		@"identityEmailAddress",
 			[adiumAccount name],		@"account",
 			[adiumService name],		@"serviceName",
+			@"Chat",					@"interactionType",
+			@"with",					@"interactionPreposition",
 			nil];
 }
 

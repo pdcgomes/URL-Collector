@@ -24,7 +24,7 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 #define INBOX_GROUP_INDEX	0
 #define DEFAULT_SAVE_DELAY	2.0
 
-@interface URLCollectorDataSource()
+@interface URLCollectorDataSource() <URLCollectorDatabaseManagerDelegate>
 
 - (void)registerObservers;
 - (void)deregisterObservers;
@@ -107,8 +107,10 @@ static NSString *defaultSeralizationPath(void)
 {
 	if(!databaseManager) {
 		databaseManager = [[URLCollectorDatabaseManager alloc] initWithDatabaseFilePath:defaultSeralizationPath()];
+		databaseManager.delegate = self;
 	}
 	[self reloadLocalDatabase];
+	[databaseManager performSyncIfNeeded];
 }
 
 - (void)loadPersistedGroups
@@ -365,14 +367,20 @@ static NSString *defaultSeralizationPath(void)
 		ERROR(@"Unable to load data");
 		return; // TODO: handle error
 	}
+
+	// It may be better to just stop observing the appropriate element instead of 
+	// unregistering all observers
+	[self deregisterObservers];
+	
+	[self willChangeValueForKey:@"urlCollectorElements"];
 	if(urlCollectorElements) {
 		[urlCollectorElements removeAllObjects];
 	}
-	
-	[self willChangeValueForKey:@"urlCollectorElements"];
 	urlCollectorElements = [[NSMutableArray alloc] initWithArray:storedData];
 	[self didChangeValueForKey:@"urlCollectorElements"];
-	[self rebuildElementIndex];	
+	[self rebuildElementIndex];
+	
+	[self registerObservers];
 }
 
 #pragma mark -
@@ -523,6 +531,14 @@ static NSString *defaultSeralizationPath(void)
 	TRACE(@"");
 	
 	return nil;
+}
+
+#pragma mark -
+#pragma mark URLCollectorDatabaseManagerDelegate
+
+- (void)databaseManagerDidFinishSyncing:(URLCollectorDatabaseManager *)database
+{
+	[self reloadLocalDatabase];
 }
 
 #pragma mark -

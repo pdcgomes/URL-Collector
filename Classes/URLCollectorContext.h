@@ -16,12 +16,14 @@
 	NSString	*contextURL;	// Reference URL to this context
 	NSImage		*contextImage;	// Image representation for the context
 	
+	NSString	*interaction;
 	URLCollectorContextIdentity	*contextIdentity; // The generic identity that provided the context (i.e., address book contact, twitter, generic person; blog, website, etc.)
 	NSDictionary				*contextApplication; // Information for the application that provided this context
 }
 
 @property (nonatomic, readonly) NSString *contextName;
 @property (nonatomic, readonly) NSString *contextURL;
+@property (nonatomic, readonly) NSString *interaction;
 
 @property (nonatomic, readonly) URLCollectorContextIdentity *contextIdentity;
 @property (nonatomic, readonly) NSDictionary *contextApplication;

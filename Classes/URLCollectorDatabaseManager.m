@@ -8,19 +8,38 @@
 
 #import "URLCollectorDatabaseManager.h"
 #import "URLCollectorGroup.h"
+#import "URLCollectorElement.h"
 #import "SKObjectSingleton.h"
 #import "GTMFileSystemKQueue.h"
+
+#define ASSERT_STATE(expectedState) do {\
+NSAssert(state == expectedState, SKStringWithFormat(@"URLCollectorDatabaseManager :: invalid or unexpected state. Expected: <%d> Actual: <%d>", expectedState, state));\
+}\
+while(0)
 
 static NSString *defaultSyncPath(void) 
 {
 	return [NSHomeDirectory() stringByAppendingPathComponent:@"Dropbox"];
 }
 
+static NSString *defaultSyncDatabasePath(void)
+{
+	return [defaultSyncPath() stringByAppendingPathComponent:@".urlcollector/database.db"];
+}
+
+enum {
+	kURLCollectorDatabaseManagerStateIsIdle = 0,
+	kURLCollectorDatabaseManagerStateIsLoading,
+	kURLCollectorDatabaseManagerStateIsSaving,
+	kURLCollectorDatabaseManagerStateIsSyncing,
+};
+
 @interface URLCollectorDatabaseManager(Private)
 
 - (void)saveDatabaseToSyncFolder;
 - (void)startWatchingSyncFolderForChanges;
 - (void)stopWatchingSyncFolderForChanges;
+- (void)mergeChanges;
 
 @end
 
@@ -48,6 +67,7 @@ static NSString *defaultSyncPath(void)
 	if((self = [super init])) {
 		databaseFilePath = [theDatabaseFilePath copy];
 		syncEnabled = YES;
+		state = kURLCollectorDatabaseManagerStateIsIdle;
 	}
 	return self;
 }
@@ -57,9 +77,13 @@ static NSString *defaultSyncPath(void)
 
 - (NSArray *)loadData
 {
-	NSArray *unarchivedObjects =  nil;
+	ASSERT_STATE(kURLCollectorDatabaseManagerStateIsIdle);
+	state = kURLCollectorDatabaseManagerStateIsLoading;
+	
+	
+	NSArray *loadedObjects =  nil;
 	@try {
-		unarchivedObjects = [NSKeyedUnarchiver unarchiveObjectWithFile:databaseFilePath];
+		loadedObjects = [NSKeyedUnarchiver unarchiveObjectWithFile:databaseFilePath];
 	}
 	@catch (NSException *e) {
 		WARN(@"Caught exception while trying to unarchive database. Database file is possibly corrupted.");
@@ -67,27 +91,42 @@ static NSString *defaultSyncPath(void)
 			[[NSFileManager defaultManager] removeItemAtPath:databaseFilePath error:nil];
 		}
 	}
-	
-	if(unarchivedObjects) {
-		return unarchivedObjects;
-	}
-	else {
+	if(!loadedObjects) {
 		URLCollectorGroup *inboxGroup = [[URLCollectorGroup alloc] init];
 		inboxGroup.name = defaultURLCollectorGroupName();
-		NSArray *defaultObject = [NSArray arrayWithObject:inboxGroup];
+		loadedObjects = [NSArray arrayWithObject:inboxGroup];
 		[inboxGroup release];
-		return defaultObject;
 	}
+	
+	state = kURLCollectorDatabaseManagerStateIsIdle;
+	return loadedObjects;
 }
 
 - (void)saveData:(NSArray *)data
 {
+	ASSERT_STATE(kURLCollectorDatabaseManagerStateIsIdle);
+
 	TRACE(@"***** SAVING CHANGES TO DISK...");
+	state = kURLCollectorDatabaseManagerStateIsSaving;
+	
 	BOOL success = [NSKeyedArchiver archiveRootObject:data toFile:databaseFilePath];
 	if(success) {
 		[self saveDatabaseToSyncFolder];
 	}
+	state = kURLCollectorDatabaseManagerStateIsIdle;
 	TRACE(@"Save success: %d", success);
+}
+
+- (void)performSyncIfNeeded
+{
+	if(![[NSFileManager defaultManager] fileExistsAtPath:defaultSyncDatabasePath()] ||
+	   [[NSFileManager defaultManager] contentsEqualAtPath:databaseFilePath andPath:defaultSyncDatabasePath()]) {
+		return;
+	}
+	
+	[self stopWatchingSyncFolderForChanges];
+	[self mergeChanges];
+	[self startWatchingSyncFolderForChanges];
 }
 
 #pragma mark -
@@ -110,7 +149,7 @@ static NSString *defaultSyncPath(void)
 	NSString *syncDatabaseFolderPath = [defaultSyncPath() stringByAppendingPathComponent:@".urlcollector"]; 
 	
 	isDirectory = NO;
-	if(![fileManager fileExistsAtPath:[defaultSyncPath() stringByAppendingPathComponent:@".urlcollector"]]) {
+	if(![fileManager fileExistsAtPath:syncDatabaseFolderPath]) {
 		if(![fileManager createDirectoryAtPath:syncDatabaseFolderPath withIntermediateDirectories:NO attributes:nil error:&error]) {
 			ERROR(@"Unable to create the sync database folder with error <%@>", error);
 			return;
@@ -154,10 +193,50 @@ static NSString *defaultSyncPath(void)
 	databaseFileWatcher = nil;
 }
 
+// Note: this is as simple as it can be, and *very* flawed
+// It's only a proof of concept.
 - (void)databaseFileChanged:(GTMFileSystemKQueue *)fskq events:(GTMFileSystemKQueueEvents)events
 {
+	[self stopWatchingSyncFolderForChanges];
+	[self mergeChanges];
+	[self startWatchingSyncFolderForChanges];
+}
+
+- (void)mergeChanges
+{
+	ASSERT_STATE(kURLCollectorDatabaseManagerStateIsIdle);
+
 	TRACE(@"Detected a change in the sync folder database file!");
-	// TODO: merge changes into local database and reload it
+	state = kURLCollectorDatabaseManagerStateIsSyncing;
+	
+	if([self.delegate respondsToSelector:@selector(databaseManagerWillStartSyncing:)]) {
+		[self.delegate databaseManagerWillStartSyncing:self];
+	}
+	
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSString *syncedDatabasePath = [defaultSyncPath() stringByAppendingPathComponent:@".urlcollector/database.db"];
+	
+	NSError *error = nil;
+	if(![fileManager removeItemAtPath:databaseFilePath error:&error]) {
+		ERROR(@"Unable to remove database file with error <%@>", error);
+		goto HandleError;
+	}
+	
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.5]];
+	if(![fileManager copyItemAtPath:syncedDatabasePath toPath:databaseFilePath error:&error]) {
+		ERROR(@"Unable to copy updated sync database with error <%@>!", error);
+		goto HandleError;
+	}
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.5]];
+	TRACE(@"Notifying delegate...");
+	
+	state = kURLCollectorDatabaseManagerStateIsIdle;
+	if([self.delegate respondsToSelector:@selector(databaseManagerDidFinishSyncing:)]) {
+		[self.delegate databaseManagerDidFinishSyncing:self];
+	}
+	
+	HandleError:
+	state = kURLCollectorDatabaseManagerStateIsIdle;
 }
 
 @end
