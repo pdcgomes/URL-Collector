@@ -23,11 +23,11 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="372"/>
-			<integer value="29"/>
-			<integer value="686"/>
+			<integer value="674"/>
 			<integer value="553"/>
-			<integer value="565"/>
+			<integer value="372"/>
+			<integer value="566"/>
+			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1416,6 +1416,14 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="NSMenuItem" id="167200955">
 						<reference key="NSMenu" ref="78611606"/>
+						<string key="NSTitle">Open</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="35465992"/>
+						<reference key="NSMixedImage" ref="502551668"/>
+					</object>
+					<object class="NSMenuItem" id="822806555">
+						<reference key="NSMenu" ref="78611606"/>
 						<string key="NSTitle">Delete</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -1729,8 +1737,8 @@
 											<double key="NSIntercellSpacingWidth">2</double>
 											<double key="NSIntercellSpacingHeight">3</double>
 											<object class="NSColor" key="NSBackgroundColor">
-												<int key="NSColorSpace">4</int>
-												<bytes key="NSWhite">MCAwLjc1AA</bytes>
+												<int key="NSColorSpace">2</int>
+												<bytes key="NSRGB">MC4yMzEzNzI1NjUgMC4yMzEzNzI1NjUgMC4yMzEzNzI1NjUgMC44AA</bytes>
 											</object>
 											<object class="NSColor" key="NSGridColor">
 												<int key="NSColorSpace">6</int>
@@ -1757,7 +1765,7 @@
 									<reference key="NSNextKeyView" ref="526448049"/>
 									<reference key="NSDocView" ref="526448049"/>
 									<reference key="NSBGColor" ref="78464538"/>
-									<int key="NScvFlags">4</int>
+									<int key="NScvFlags">2</int>
 								</object>
 								<object class="NSScroller" id="407370936">
 									<reference key="NSNextResponder" ref="208282152"/>
@@ -1931,10 +1939,6 @@
 				<string key="NSTreeContentCountKey">numberOfChildren</string>
 			</object>
 			<object class="NSUserDefaultsController" id="163449757">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>collectHotKey</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
@@ -2943,14 +2947,6 @@
 					<int key="connectionID">682</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">removeRow:</string>
-						<reference key="source" ref="12593596"/>
-						<reference key="destination" ref="167200955"/>
-					</object>
-					<int key="connectionID">683</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">groupsSubmenu</string>
 						<reference key="source" ref="12593596"/>
@@ -3017,6 +3013,30 @@
 						<reference key="destination" ref="207005026"/>
 					</object>
 					<int key="connectionID">704</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">removeRow:</string>
+						<reference key="source" ref="12593596"/>
+						<reference key="destination" ref="822806555"/>
+					</object>
+					<int key="connectionID">706</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">open:</string>
+						<reference key="source" ref="12593596"/>
+						<reference key="destination" ref="167200955"/>
+					</object>
+					<int key="connectionID">707</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="972006081"/>
+						<reference key="destination" ref="12593596"/>
+					</object>
+					<int key="connectionID">711</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -4349,6 +4369,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="167200955"/>
 							<reference ref="260342863"/>
+							<reference ref="822806555"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Collector contextual menu</string>
@@ -4407,6 +4428,11 @@
 						<int key="objectID">700</int>
 						<reference key="object" ref="886087464"/>
 						<reference key="parent" ref="511946961"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">705</int>
+						<reference key="object" ref="822806555"/>
+						<reference key="parent" ref="78611606"/>
 					</object>
 				</object>
 			</object>
@@ -4687,6 +4713,7 @@
 					<string>632.CustomClassName</string>
 					<string>632.IBPluginDependency</string>
 					<string>634.IBPluginDependency</string>
+					<string>637.CustomClassName</string>
 					<string>637.IBPluginDependency</string>
 					<string>638.IBPluginDependency</string>
 					<string>643.IBPluginDependency</string>
@@ -4706,6 +4733,7 @@
 					<string>694.IBPluginDependency</string>
 					<string>695.IBPluginDependency</string>
 					<string>700.IBPluginDependency</string>
+					<string>705.IBPluginDependency</string>
 					<string>72.IBPluginDependency</string>
 					<string>72.ImportedFromIB2</string>
 					<string>73.IBPluginDependency</string>
@@ -4991,9 +5019,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{913, 528}, {480, 270}}</string>
+					<string>{{1091, 589}, {480, 270}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{913, 528}, {480, 270}}</string>
+					<string>{{1091, 589}, {480, 270}}</string>
 					<boolean value="NO"/>
 					<boolean value="NO"/>
 					<boolean value="YES"/>
@@ -5025,6 +5053,7 @@
 					<string>URLCollectorOutlineView</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>URLCollectorElementCell</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.brandonwalkin.BWToolkit</string>
@@ -5035,7 +5064,7 @@
 						<bytes key="NSTransformStruct">P4AAAL+AAABDtgAAwYgAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{1300, 918}, {151, 43}}</string>
+					<string>{{1300, 898}, {151, 63}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -5045,6 +5074,7 @@
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">AUNIAABDVAAAA</bytes>
 					</object>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -5092,7 +5122,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">704</int>
+			<int key="maxID">711</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -5110,12 +5140,14 @@
 							<string>configure:</string>
 							<string>copy:</string>
 							<string>moveToGroup:</string>
+							<string>open:</string>
 							<string>quit:</string>
 							<string>removeRow:</string>
 							<string>shortenURL:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -5137,6 +5169,7 @@
 							<string>configure:</string>
 							<string>copy:</string>
 							<string>moveToGroup:</string>
+							<string>open:</string>
 							<string>quit:</string>
 							<string>removeRow:</string>
 							<string>shortenURL:</string>
@@ -5165,6 +5198,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">moveToGroup:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">open:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -5356,6 +5393,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/URLCollectorDataSource.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">URLCollectorElementCell</string>
+					<string key="superclassName">NSTextFieldCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/URLCollectorElementCell.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

@@ -471,13 +471,13 @@ static NSString *defaultSeralizationPath(void)
 			[element release];
 		}
 
-		// TODO: rethink this approach...
+		// FIXME: rethink this approach...
 		void (^fetchContextBlock)(void) = ^{
 			URLCollectorContext *context = [[[URLCollectorContextRecognizer sharedInstance] guessContextFromApplication:activeApp] retain];
 			[elements makeObjectsPerformSelector:@selector(setContext:) withObject:context];
 			[context release];
 			
-			[outlineView reloadData]; // kind of bruteforce, but should be enough for now
+			[outlineView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES]; // kind of bruteforce, but should be enough for now
 		};
 		
 		NSBlockOperation *operation = [[NSBlockOperation alloc] init];

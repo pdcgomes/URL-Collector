@@ -20,6 +20,9 @@
 #import "URLCollectorDataSource.h"
 #import "URLCollectorOutlineView.h"
 
+#import "URLCollectorElementCell.h"
+#import "URLCollectorGroupCell.h"
+
 @interface AppController()
 
 - (void)registerObservers;
@@ -71,7 +74,7 @@
 #pragma mark -
 #pragma mark ServicesProvider
 
-- (void)sendToPuny:(NSPasteboard *)pasteboard userData:(NSString *)userData error:(NSString **)error
+- (void)sendToURLCollector:(NSPasteboard *)pasteboard userData:(NSString *)userData error:(NSString **)error
 {
 	TRACE(@"");
 	[self collectURLFromPasteboard:pasteboard];
@@ -83,6 +86,17 @@
 - (BOOL)shortcutRecorder:(SRRecorderControl *)aRecorder isKeyCode:(NSInteger)keyCode andFlagsTaken:(NSUInteger)flags reason:(NSString **)aReason
 {
 	TRACE(@"");
+	NSMutableSet *shortcutRecorders = [[NSMutableSet alloc] initWithObjects:pasteShortcutRecorder, collectorShortcutRecorder, collectShortcutRecorder, nil];
+	[shortcutRecorders removeObject:aRecorder];
+	
+	for(SRRecorderControl *recorder in shortcutRecorders) {
+		if([recorder keyCombo].code == keyCode && [recorder keyCombo].flags == flags) {
+			if(aReason) {
+				*aReason = NSLocalizedString(@"The selected shortcut is already in use.", @"");
+			}
+			return YES;
+		}
+	}
 	return NO;
 }
 
@@ -170,6 +184,9 @@
 	else if([menuItem action] == @selector(shortenURL:)) {
 		return [self pasteboardContains:[NSURL class]];
 	}
+	else if([menuItem action] == @selector(open:)) {
+		return [self hasSelectedRowsOfClass:[URLCollectorElement class]] && ![self hasSelectedRowsOfClass:[URLCollectorGroup class]];
+	}
 	else if([menuItem action] == @selector(removeRow:)) {
 		return [self hasSelectedRowsOfClass:[URLCollectorGroup class]] || [self hasSelectedRowsOfClass:[URLCollectorElement class]];
 	}
@@ -253,6 +270,21 @@
 	[urlCollectorOutlineView editColumn:0 row:[urlCollectorOutlineView numberOfRows] - 1 withEvent:nil select:YES];
 }
 
+- (IBAction)open:(id)sender
+{
+	TRACE(@"");
+	
+	NSIndexSet *selectedRowIndexes = [urlCollectorOutlineView selectedRowIndexes];
+	NSInteger index = [selectedRowIndexes firstIndex];
+	while(NSNotFound != index) {
+		id representedObject = [[urlCollectorOutlineView itemAtRow:index] representedObject];
+		if([representedObject isKindOfClass:[URLCollectorElement class]]) {
+			[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[(URLCollectorElement *)representedObject URL]]];
+		}
+		index = [selectedRowIndexes indexGreaterThanIndex:index];
+	}
+}
+
 - (IBAction)removeRow:(id)sender
 {
 	NSIndexSet *selectedRowIndexes = [urlCollectorOutlineView selectedRowIndexes];
@@ -321,7 +353,7 @@
 	AppDelegate *appDelegate = (AppDelegate *)[NSApplication sharedApplication].delegate;
 	
 	NSArray *windows = [[NSArray alloc] initWithObjects:[appDelegate window], [appDelegate collectorPanel], nil];
-	[windows makeObjectsPerformSelector:@selector(orderOut:) withObject:self];
+	[windows makeObjectsPerformSelector:@selector(close) withObject:self];
 	[window makeKeyAndOrderFront:self];
 }
 
@@ -356,7 +388,7 @@
 
 #define DEFAULT_ROW_HEIGHT_CACHE_SIZE	50
 #define DEFAULT_GROUP_ROW_HEIGHT		20.0
-#define DEFAULT_ELEMENT_ROW_HEIGHT		50.0
+#define DEFAULT_ELEMENT_ROW_HEIGHT		65.0
 - (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id)item
 {
 	NSIndexPath *itemIndexPath = [item indexPath];
@@ -376,6 +408,64 @@
 	}
 	[cachedOutlineViewRowHeights setObject:rowHeight forKey:itemIndexPath];
 	return [rowHeight floatValue];
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+	// Currently only supporting inline edit for Groups
+	return [[item representedObject] isKindOfClass:[URLCollectorGroup class]];
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
+{
+	return [[item representedObject] isKindOfClass:[URLCollectorGroup class]];
+}
+
+- (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+	NSCell *cell = nil;
+	if([[item representedObject] isKindOfClass:[URLCollectorElement class]]) {
+		cell = [[[URLCollectorElementCell alloc] initTextCell:@""] autorelease];
+	}
+	else if([[item representedObject] isKindOfClass:[URLCollectorGroup class]]) {
+		cell = [[[URLCollectorGroupCell alloc] initTextCell:@""] autorelease];
+	}
+	return cell;
+}
+
+- (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+	if([[item representedObject] isKindOfClass:[URLCollectorGroup class]] ||
+	   [[item representedObject] isKindOfClass:[URLCollectorElement class]]) {
+		[cell setRepresentedObject:[item representedObject]];
+	}
+}
+
+#pragma mark -
+#pragma mark NSWindowDelegate
+
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+	TRACE(@"");
+	if([notification object] == [(AppDelegate *)[NSApp delegate] window]) {
+		
+	}
+}
+
+- (void)windowWillClose:(NSNotification *)notification
+{
+	TRACE(@"");
+	if([notification object] == [(AppDelegate *)[NSApp delegate] window]) {
+
+	}
+}
+
+- (void)windowDidResignKey:(NSNotification *)notification
+{
+	TRACE(@"");
+	if([notification object] == [(AppDelegate *)[NSApp delegate] window]) {
+
+	}
 }
 
 #pragma mark -

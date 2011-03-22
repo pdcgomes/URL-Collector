@@ -8,9 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 #import "URLCollectorNode.h"
+#import "URLCollectorContext.h"
 
 @class URLCollectorGroup;
-@class URLCollectorContext;
 
 @interface URLCollectorElement : URLCollectorNode 
 {
@@ -19,7 +19,6 @@
 	NSString			*URLName;
 	NSMutableArray		*tags;
 
-	URLCollectorGroup	*parentGroup;
 	URLCollectorContext	*context;
 	
 	BOOL				isUnread;
@@ -30,7 +29,6 @@
 @property (nonatomic, copy) NSString *URLName;
 @property (nonatomic, retain) NSMutableArray *tags;
 
-@property (nonatomic, assign) URLCollectorGroup *parentGroup;
 @property (nonatomic, retain) URLCollectorContext *context;
 
 @property (nonatomic, assign) BOOL isUnread;

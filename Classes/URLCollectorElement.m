@@ -7,14 +7,12 @@
 //
 
 #import "URLCollectorElement.h"
-#import "URLCollectorContext.h"
 
 @implementation URLCollectorElement
 
 @synthesize data;
 @synthesize URL;
 @synthesize URLName;
-@synthesize parentGroup;
 @synthesize context;
 @synthesize tags;
 @synthesize isUnread;
@@ -91,5 +89,12 @@
 	return SKStringWithFormat(@"%@\n"
 							  @"%@", URL, [self.context contextInfoLine]);
 }
+
+- (NSString *)contentsHash
+{
+	// hash parentGroup UUID + URL + sortOrder
+	return nil;
+}
+
 
 @end

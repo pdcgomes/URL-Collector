@@ -40,17 +40,17 @@
 		contextName = [[identityInfo objectForKey:@"identityName"] copy];
 		
 		NSMutableString *interactionString = [[NSMutableString alloc] initWithString:@""];
-		[interactionString appendString:[identityInfo objectForKey:@"interactionType"]];
+		[interactionString appendString:SKSafeString([identityInfo objectForKey:@"interactionType"])];
 		if([interactionString length] > 0 && [[identityInfo objectForKey:@"interactionPreposition"] length] > 0) {
-			[interactionString appendFormat:@" %@", [identityInfo objectForKey:@"interactionPreposition"]];
+			[interactionString appendFormat:@" %@", SKSafeString([identityInfo objectForKey:@"interactionPreposition"])];
 		}
 		interaction = [[NSString alloc] initWithString:interactionString];
 		[interactionString release];
 		
-		NSMutableDictionary *tmpApplicationInfo = [[NSMutableDictionary alloc] initWithDictionary:applicationInfo];
-		[tmpApplicationInfo removeObjectForKey:@"NSWorkspaceApplicationKey"];
-		contextApplication = [[NSDictionary alloc] initWithDictionary:tmpApplicationInfo];
-		[tmpApplicationInfo release];
+		NSMutableDictionary *fullApplicationInfo = [[NSMutableDictionary alloc] initWithDictionary:applicationInfo];
+		[fullApplicationInfo removeObjectForKey:@"NSWorkspaceApplicationKey"]; // Removal of elements that don't support NSCoding or that we don't want/need to support
+		contextApplication = [[NSDictionary alloc] initWithDictionary:fullApplicationInfo];
+		[fullApplicationInfo release];
 	}
 	return self;
 }
@@ -74,7 +74,6 @@
 		contextURL		= [[aDecoder decodeObjectForKey:@"contextURL"] copy];
 		interaction		= [[aDecoder decodeObjectForKey:@"interaction"] copy];
 		
-		//		contextIdentity = [[aDecoder decodeObjectForKey:@""] retain];
 		contextApplication = [[aDecoder decodeObjectForKey:@"contextApplication"] retain];
 	}
 	return self;
@@ -103,7 +102,7 @@
 - (NSString *)contextInfoLine
 {
 	return [contextName length] > 0 ?  
-	SKStringWithFormat(@"%@ %@ (via %@)", interaction, contextName, [self applicationName]) :
+	SKStringWithFormat(@"%@ %@ (via %@)", SKSafeString(interaction), contextName, [self applicationName]) :
 	SKStringWithFormat(@"(via %@)", [self applicationName]);
 }
 

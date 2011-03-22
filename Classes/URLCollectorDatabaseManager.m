@@ -9,7 +9,6 @@
 #import "URLCollectorDatabaseManager.h"
 #import "URLCollectorGroup.h"
 #import "URLCollectorElement.h"
-#import "SKObjectSingleton.h"
 #import "GTMFileSystemKQueue.h"
 
 #define ASSERT_STATE(expectedState) do {\
@@ -41,6 +40,9 @@ enum {
 - (void)stopWatchingSyncFolderForChanges;
 - (void)mergeChanges;
 
+//- (void)lockSyncDatabase;
+//- (void)unlockSyncDatabase;
+
 @end
 
 @implementation URLCollectorDatabaseManager
@@ -49,8 +51,6 @@ enum {
 
 #pragma mark -
 #pragma mark Dealloc and Initialization
-
-//SK_OBJECT_SINGLETON_BOILERPLATE(URLCollectorDatabaseManager, sharedInstance);
 
 - (void)dealloc
 {
@@ -80,7 +80,6 @@ enum {
 	ASSERT_STATE(kURLCollectorDatabaseManagerStateIsIdle);
 	state = kURLCollectorDatabaseManagerStateIsLoading;
 	
-	
 	NSArray *loadedObjects =  nil;
 	@try {
 		loadedObjects = [NSKeyedUnarchiver unarchiveObjectWithFile:databaseFilePath];
@@ -91,7 +90,7 @@ enum {
 			[[NSFileManager defaultManager] removeItemAtPath:databaseFilePath error:nil];
 		}
 	}
-	if(!loadedObjects) {
+	if(!loadedObjects || [loadedObjects count] == 0) {
 		URLCollectorGroup *inboxGroup = [[URLCollectorGroup alloc] init];
 		inboxGroup.name = defaultURLCollectorGroupName();
 		loadedObjects = [NSArray arrayWithObject:inboxGroup];
@@ -158,9 +157,8 @@ enum {
 	
 	[self stopWatchingSyncFolderForChanges];
 	
-	NSString *syncDatabaseFilePath = [syncDatabaseFolderPath stringByAppendingPathComponent:@"database.db"];
-	[fileManager removeItemAtPath:syncDatabaseFilePath error:&error];
-	if(![fileManager copyItemAtPath:databaseFilePath toPath:syncDatabaseFilePath error:&error]) {
+	[fileManager removeItemAtPath:defaultSyncDatabasePath() error:&error];
+	if(![fileManager copyItemAtPath:databaseFilePath toPath:defaultSyncDatabasePath() error:&error]) {
 		ERROR(@"Unable to copy database file to Dropbox folder with error <%@>", error);
 	}
 	
@@ -214,7 +212,6 @@ enum {
 	}
 	
 	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSString *syncedDatabasePath = [defaultSyncPath() stringByAppendingPathComponent:@".urlcollector/database.db"];
 	
 	NSError *error = nil;
 	if(![fileManager removeItemAtPath:databaseFilePath error:&error]) {
@@ -223,7 +220,7 @@ enum {
 	}
 	
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.5]];
-	if(![fileManager copyItemAtPath:syncedDatabasePath toPath:databaseFilePath error:&error]) {
+	if(![fileManager copyItemAtPath:defaultSyncDatabasePath() toPath:databaseFilePath error:&error]) {
 		ERROR(@"Unable to copy updated sync database with error <%@>!", error);
 		goto HandleError;
 	}

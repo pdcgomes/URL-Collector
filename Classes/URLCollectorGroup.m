@@ -14,13 +14,11 @@
 
 @synthesize groupColor;
 @synthesize groupImage;
-//@synthesize parentGroup;
 
 - (void)dealloc
 {
 	SKSafeRelease(groupColor);
 	SKSafeRelease(groupImage);
-//	SKSafeRelease(children);
 	
 	[super dealloc];
 }
@@ -58,6 +56,12 @@
 - (NSString *)name
 {
 	return [children count] > 0 ? SKStringWithFormat(@"%@ (%d)", nodeName, [children count]) : nodeName;
+}
+
+- (NSString *)contentsHash
+{
+	// hash UUID + sortOrder
+	return nil;
 }
 
 #pragma mark -

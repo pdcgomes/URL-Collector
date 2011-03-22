@@ -41,8 +41,6 @@
 
 @property (nonatomic, assign) NSObject<URLCollectorDatabaseManagerDelegate> *delegate;
 
-//+ (id)sharedInstance;
-
 - (id)initWithDatabaseFilePath:(NSString *)databaseFilePath;
 
 - (NSArray *)loadData;

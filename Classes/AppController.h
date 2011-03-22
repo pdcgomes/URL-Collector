@@ -14,7 +14,7 @@
 @class URLCollectorDataSource;
 @class URLCollectorOutlineView;
 
-@interface AppController : NSObject <NSOutlineViewDelegate>
+@interface AppController : NSObject <NSOutlineViewDelegate, NSWindowDelegate>
 {
 	IBOutlet NSMenuItem					*collectorMenuItem;
 	IBOutlet NSMenuItem					*collectMenuItem;
@@ -42,10 +42,11 @@
 - (IBAction)configure:(id)sender; 
 - (IBAction)quit:(id)sender;
 
+- (IBAction)open:(id)sender;
 - (IBAction)addGroup:(id)sender;
 - (IBAction)removeRow:(id)sender;
 - (IBAction)moveToGroup:(id)sender;
 
-- (void)sendToPuny:(NSPasteboard *)pboard userData:(NSString *)userData error:(NSString **)error;
+- (void)sendToURLCollector:(NSPasteboard *)pasteboard userData:(NSString *)userData error:(NSString **)error;
 
 @end

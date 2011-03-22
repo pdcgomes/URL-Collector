@@ -10,7 +10,9 @@
 
 @interface URLCollectorNode : NSObject <NSCoding>
 {
+	NSString			*nodeUUID;
 	NSString			*nodeName;
+	
 	URLCollectorNode	*parent;
 	NSMutableArray		*children;
 	BOOL				isLeafNode;
@@ -20,6 +22,7 @@
 	NSUInteger			sortOrder;
 }
 
+@property (nonatomic, readonly) NSString *nodeUUID;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, assign) URLCollectorNode *parent;
 @property (nonatomic, retain) NSMutableArray *children;
@@ -29,5 +32,7 @@
 @property (nonatomic, assign) BOOL isLocked;
 @property (nonatomic, retain) NSDate *createDate;
 @property (nonatomic, assign) NSUInteger sortOrder;
+
+@property (nonatomic, readonly) NSString *contentsHash;
 
 @end

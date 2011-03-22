@@ -34,13 +34,13 @@
 	<array>
 		<dict>
 			<key>NSMessage</key>
-			<string>sendToPuny</string>
+			<string>sendToURLCollector</string>
 			<key>NSPortName</key>
-			<string>Puny</string>
+			<string>URLCollector</string>
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string>Send to SAPO Puny</string>
+				<string>Send to URL Collector</string>
 			</dict>
 			<key>Send Types</key>
 			<array>

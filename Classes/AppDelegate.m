@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "StatusItemDraggingDestinationView.h"
 
 @implementation AppDelegate
 
@@ -48,7 +49,6 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification 
 {
-	// Setup the global hotkey handler
 }
 
 @end
