@@ -7,8 +7,54 @@
 //
 
 #import "MailContextContentProvider.h"
-
+#import "Mail.h"
 
 @implementation MailContextContentProvider
+
+#pragma mark -
+#pragma mark Dealloc and Initialization
+
+- (void)dealloc
+{
+	[application release];
+	[super dealloc];
+}
+
+- (id)init
+{
+	if((self = [super init])) {
+		application = [[SBApplication applicationWithBundleIdentifier:@"com.apple.mail"] retain];
+	}
+	return self;
+}
+
+#pragma mark -
+#pragma mark Public Methods
+
+- (NSDictionary *)extractContent
+{
+	if(![application isRunning]) {
+		ERROR(@"The application isn't running.");
+		return nil;
+	}
+	
+	NSArray *messages = [application selection];
+	if([messages count] == 0) {
+		return nil;
+	}
+	
+	MailMessage *message = [messages objectAtIndex:0];
+	
+	NSString *senderEmailAddress = [application extractAddressFrom:[message sender]];
+	NSString *senderName = [application extractNameFrom:[message sender]];
+	
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+			senderName,			@"identityName",
+			senderEmailAddress,	@"identityEmailAddress",
+			[message subject],	@"messageSubject",
+			@"Mail",			@"interactionType",
+			@"from",			@"interactionPreposition",
+			nil];
+}
 
 @end

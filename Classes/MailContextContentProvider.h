@@ -9,9 +9,11 @@
 #import <Cocoa/Cocoa.h>
 #import "URLCollectorContextContentProvider.h"
 
+@class MailApplication;
+
 @interface MailContextContentProvider : URLCollectorContextContentProvider
 {
-
+	MailApplication	*application;
 }
 
 @end

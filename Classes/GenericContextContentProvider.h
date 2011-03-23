@@ -14,4 +14,6 @@
 
 }
 
++ (NSArray *)extraInfoKeys;
+
 @end

@@ -9,9 +9,11 @@
 #import <Cocoa/Cocoa.h>
 #import "URLCollectorContextContentProvider.h"
 
+@class iChatApplication;
+
 @interface iChatContextContentProvider : URLCollectorContextContentProvider
 {
-
+	iChatApplication	*application;
 }
 
 @end

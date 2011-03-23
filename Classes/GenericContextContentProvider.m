@@ -8,7 +8,11 @@
 
 #import "GenericContextContentProvider.h"
 
-
 @implementation GenericContextContentProvider
+
++ (NSArray *)extraInfoKeys
+{
+	return nil;
+}
 
 @end
