@@ -10,12 +10,15 @@
 
 @class BWHyperlinkButtonCell;
 
-@interface URLCollectorElementCell : NSTextFieldCell 
+@interface URLCollectorElementCell : NSActionCell 
 {
+	NSTextFieldCell *titleCell;
 	NSTextFieldCell	*urlCell;
 	NSTextFieldCell	*interactionTypeCell;
 	NSTextFieldCell	*extraInfoCell;
 	NSButtonCell	*identityButtonCell;
+	
+	NSRect			identityButtonCellFrame;
 }
 
 @end

@@ -384,6 +384,18 @@ static NSString *defaultSeralizationPath(void)
 }
 
 #pragma mark -
+#pragma mark NSOutlineViewDataSource
+
+- (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
+{
+	URLCollectorGroup *group = [item representedObject];
+	
+	[self willChangeValueForKey:@"urlCollectorElements"];
+	[group setName:object];
+	[self didChangeValueForKey:@"urlCollectorElements"];
+}
+
+#pragma mark -
 #pragma mark NSOutlineViewDataSource - Drag and Drop support
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pasteboard

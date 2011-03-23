@@ -13,7 +13,10 @@
 
 - (BOOL)containsKey:(id)key
 {
-	return CFDictionaryContainsKey((CFDictionaryRef)self, key);
+	if(key) {
+		return CFDictionaryContainsKey((CFDictionaryRef)self, key);
+	}
+	return NO;
 }
 
 @end

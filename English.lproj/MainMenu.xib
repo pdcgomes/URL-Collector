@@ -23,11 +23,11 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="674"/>
-			<integer value="553"/>
-			<integer value="372"/>
-			<integer value="566"/>
 			<integer value="29"/>
+			<integer value="566"/>
+			<integer value="674"/>
+			<integer value="372"/>
+			<integer value="553"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1452,7 +1452,7 @@
 				<int key="NSWindowStyleMask">3</int>
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{335, 652}, {448, 150}}</string>
-				<int key="NSWTFlags">1954021376</int>
+				<int key="NSWTFlags">1685585920</int>
 				<string key="NSWindowTitle">SAPO Puny</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
@@ -1681,6 +1681,7 @@
 											<int key="NSvFlags">4352</int>
 											<string key="NSFrameSize">{480, 240}</string>
 											<reference key="NSSuperview" ref="149826056"/>
+											<int key="NSViewLayerContentsRedrawPolicy">2</int>
 											<bool key="NSEnabled">YES</bool>
 											<object class="_NSCornerView" key="NSCornerView">
 												<nil key="NSNextResponder"/>
@@ -1763,6 +1764,7 @@
 									<string key="NSFrame">{{1, 1}, {480, 240}}</string>
 									<reference key="NSSuperview" ref="208282152"/>
 									<reference key="NSNextKeyView" ref="526448049"/>
+									<int key="NSViewLayerContentsRedrawPolicy">2</int>
 									<reference key="NSDocView" ref="526448049"/>
 									<reference key="NSBGColor" ref="78464538"/>
 									<int key="NScvFlags">2</int>
@@ -1772,6 +1774,7 @@
 									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{466, 1}, {15, 225}}</string>
 									<reference key="NSSuperview" ref="208282152"/>
+									<int key="NSViewLayerContentsRedrawPolicy">2</int>
 									<reference key="NSTarget" ref="208282152"/>
 									<string key="NSAction">_doScroller:</string>
 									<double key="NSPercent">0.9375</double>
@@ -1781,6 +1784,7 @@
 									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{1, 226}, {480, 15}}</string>
 									<reference key="NSSuperview" ref="208282152"/>
+									<int key="NSViewLayerContentsRedrawPolicy">2</int>
 									<int key="NSsFlags">1</int>
 									<reference key="NSTarget" ref="208282152"/>
 									<string key="NSAction">_doScroller:</string>
@@ -1790,6 +1794,7 @@
 							<string key="NSFrame">{{-1, 29}, {482, 242}}</string>
 							<reference key="NSSuperview" ref="583844172"/>
 							<reference key="NSNextKeyView" ref="149826056"/>
+							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<int key="NSsFlags">562</int>
 							<reference key="NSVScroller" ref="407370936"/>
 							<reference key="NSHScroller" ref="308934910"/>
@@ -5019,9 +5024,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{1091, 589}, {480, 270}}</string>
+					<string>{{988, 580}, {480, 270}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{1091, 589}, {480, 270}}</string>
+					<string>{{988, 580}, {480, 270}}</string>
 					<boolean value="NO"/>
 					<boolean value="NO"/>
 					<boolean value="YES"/>
@@ -5397,7 +5402,7 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">URLCollectorElementCell</string>
-					<string key="superclassName">NSTextFieldCell</string>
+					<string key="superclassName">NSActionCell</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/URLCollectorElementCell.h</string>
