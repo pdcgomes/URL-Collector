@@ -352,9 +352,13 @@
 {
 	AppDelegate *appDelegate = (AppDelegate *)[NSApplication sharedApplication].delegate;
 	
-	NSArray *windows = [[NSArray alloc] initWithObjects:[appDelegate window], [appDelegate collectorPanel], nil];
+	NSMutableSet *windows = [[NSMutableSet alloc] initWithObjects:[appDelegate window], [appDelegate collectorPanel], nil];
+	[windows removeObject:window];
 	[windows makeObjectsPerformSelector:@selector(close) withObject:self];
-	[window makeKeyAndOrderFront:self];
+	[windows release];
+	
+	[window orderFrontRegardless];
+	[window makeKeyWindow];
 }
 
 - (void)updateStatusBarMenuItems
@@ -423,12 +427,16 @@
 
 - (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
+//	if(tableColumn == nil) {
+//		return nil;
+//	}
 	NSCell *cell = nil;
-	if([[item representedObject] isKindOfClass:[URLCollectorElement class]]) {
-		cell = [[[URLCollectorElementCell alloc] initTextCell:@""] autorelease];
-	}
-	else if([[item representedObject] isKindOfClass:[URLCollectorGroup class]]) {
+	if([[item representedObject] isKindOfClass:[URLCollectorGroup class]]) {
 		cell = [[[URLCollectorGroupCell alloc] initTextCell:@""] autorelease];
+		[cell setEditable:YES];
+	}
+	else if([[item representedObject] isKindOfClass:[URLCollectorElement class]]) {
+		cell = [tableColumn dataCellForRow:[outlineView rowForItem:item]];
 	}
 	return cell;
 }
@@ -463,8 +471,9 @@
 - (void)windowDidResignKey:(NSNotification *)notification
 {
 	TRACE(@"");
+	
 	if([notification object] == [(AppDelegate *)[NSApp delegate] window]) {
-
+		[[(AppDelegate *)[NSApp delegate] window] close];
 	}
 }
 
