@@ -58,6 +58,7 @@
 			[buddy name],			@"identityName",
 			[buddy handle],			@"identityEmailAddress",
 			[chatService name],		@"serviceName",
+			[activeChat started],	@"contextDate",
 			@"Chat",				@"interactionType",
 			@"with",				@"interactionPreposition",
 			nil];

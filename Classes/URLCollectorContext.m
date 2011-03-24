@@ -12,6 +12,7 @@
 
 @synthesize contextName;
 @synthesize contextURL;
+@synthesize contextDate;
 @synthesize contextIdentity;
 @synthesize contextApplication;
 @synthesize interaction;
@@ -20,6 +21,8 @@
 @dynamic applicationBundleIdentifier;
 @dynamic applicationIcon;
 
+@dynamic relativeDate;
+
 #pragma mark -
 #pragma mark Dealloc and Initialization
 
@@ -27,6 +30,7 @@
 {
 	SKSafeRelease(contextName);	
 	SKSafeRelease(contextURL);
+	SKSafeRelease(contextDate);
 	SKSafeRelease(contextIdentity);
 	SKSafeRelease(contextApplication);
 	SKSafeRelease(interaction);
@@ -38,6 +42,12 @@
 {
 	if((self = [super init])) {
 		contextName = [[identityInfo objectForKey:@"identityName"] copy];
+		if([identityInfo containsKey:@"contextDate"]) {
+			contextDate = [[identityInfo objectForKey:@"contextDate"] retain];
+		}
+		else {
+			contextDate = [[NSDate date] retain];
+		}
 		
 		NSMutableString *interactionString = [[NSMutableString alloc] initWithString:@""];
 		[interactionString appendString:SKSafeString([identityInfo objectForKey:@"interactionType"])];
@@ -62,6 +72,8 @@
 {
 	[aCoder encodeObject:contextName forKey:@"contextName"];
 	[aCoder encodeObject:contextURL forKey:@"contextURL"];
+	[aCoder encodeObject:contextDate forKey:@"contextDate"];
+	
 	//	[aCoder encodeObject:contextIdentity forKey:@"contextIdentity"];
 	[aCoder encodeObject:contextApplication forKey:@"contextApplication"];
 	[aCoder encodeObject:interaction forKey:@"interaction"];
@@ -72,6 +84,7 @@
 	if((self = [super init])) {
 		contextName		= [[aDecoder decodeObjectForKey:@"contextName"] copy];
 		contextURL		= [[aDecoder decodeObjectForKey:@"contextURL"] copy];
+		contextDate		= [[aDecoder decodeObjectForKey:@"contextDate"] retain];
 		interaction		= [[aDecoder decodeObjectForKey:@"interaction"] copy];
 		
 		contextApplication = [[aDecoder decodeObjectForKey:@"contextApplication"] retain];
@@ -104,6 +117,11 @@
 	return [contextName length] > 0 ?  
 	SKStringWithFormat(@"%@ %@ (via %@)", SKSafeString(interaction), contextName, [self applicationName]) :
 	SKStringWithFormat(@"(via %@)", [self applicationName]);
+}
+
+- (NSString *)relativeDate
+{
+	return @"~1day";
 }
 
 @end

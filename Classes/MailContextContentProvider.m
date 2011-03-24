@@ -44,14 +44,15 @@
 	}
 	
 	MailMessage *message = [messages objectAtIndex:0];
-	
-	NSString *senderEmailAddress = [application extractAddressFrom:[message sender]];
+
 	NSString *senderName = [application extractNameFrom:[message sender]];
+	NSString *senderEmailAddress = [application extractAddressFrom:[message sender]];
 	
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			senderName,			@"identityName",
 			senderEmailAddress,	@"identityEmailAddress",
 			[message subject],	@"messageSubject",
+			[message dateSent], @"contextDate",
 			@"Mail",			@"interactionType",
 			@"from",			@"interactionPreposition",
 			nil];

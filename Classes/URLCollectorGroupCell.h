@@ -10,6 +10,7 @@
 
 @interface URLCollectorGroupCell : NSTextFieldCell 
 {
+	NSButtonCell	*numberOfChildrenCell;
 }
 
 @end

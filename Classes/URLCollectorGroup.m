@@ -53,11 +53,6 @@
 #pragma mark -
 #pragma mark Properties
 
-- (NSString *)name
-{
-	return [children count] > 0 ? SKStringWithFormat(@"%@ (%d)", nodeName, [children count]) : nodeName;
-}
-
 - (NSString *)contentsHash
 {
 	// hash UUID + sortOrder
