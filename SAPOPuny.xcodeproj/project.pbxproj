@@ -60,6 +60,12 @@
 		0D2310321337762F0011B219 /* StatusItemDraggingDestinationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2310311337762F0011B219 /* StatusItemDraggingDestinationView.m */; };
 		0D2311931337A6A80011B219 /* URLCollectorElementCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2311921337A6A80011B219 /* URLCollectorElementCell.m */; };
 		0D23137D1337B7060011B219 /* URLCollectorGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23137C1337B7060011B219 /* URLCollectorGroupCell.m */; };
+		0D231CD0133BAC540011B219 /* URLCollectorContentClassifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D231CCF133BAC540011B219 /* URLCollectorContentClassifier.m */; };
+		0D231CD3133BAEC30011B219 /* URLCollectorClassifyURLOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D231CD2133BAEC30011B219 /* URLCollectorClassifyURLOperation.m */; };
+		0D231CD6133BB08B0011B219 /* Globals.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D231CD5133BB08B0011B219 /* Globals.m */; };
+		0D231E0B133CE20D0011B219 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D231E06133CE20D0011B219 /* TFHpple.m */; };
+		0D231E0C133CE20D0011B219 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D231E08133CE20D0011B219 /* TFHppleElement.m */; };
+		0D231E0D133CE20D0011B219 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D231E0A133CE20D0011B219 /* XPathQuery.m */; };
 		0D23F569132129340011B219 /* menubar-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D23F568132129340011B219 /* menubar-icon.png */; };
 		0D8BCEDA1332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */; };
 		0D8BCEDF1332A3750079E647 /* URLCollectorDatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8BCEDE1332A3750079E647 /* URLCollectorDatabaseManager.m */; };
@@ -198,6 +204,18 @@
 		0D2311921337A6A80011B219 /* URLCollectorElementCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorElementCell.m; sourceTree = "<group>"; };
 		0D23137B1337B7060011B219 /* URLCollectorGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorGroupCell.h; sourceTree = "<group>"; };
 		0D23137C1337B7060011B219 /* URLCollectorGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorGroupCell.m; sourceTree = "<group>"; };
+		0D231CCE133BAC540011B219 /* URLCollectorContentClassifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorContentClassifier.h; sourceTree = "<group>"; };
+		0D231CCF133BAC540011B219 /* URLCollectorContentClassifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorContentClassifier.m; sourceTree = "<group>"; };
+		0D231CD1133BAEC30011B219 /* URLCollectorClassifyURLOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorClassifyURLOperation.h; sourceTree = "<group>"; };
+		0D231CD2133BAEC30011B219 /* URLCollectorClassifyURLOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorClassifyURLOperation.m; sourceTree = "<group>"; };
+		0D231CD4133BB08B0011B219 /* Globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
+		0D231CD5133BB08B0011B219 /* Globals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Globals.m; sourceTree = "<group>"; };
+		0D231E05133CE20D0011B219 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
+		0D231E06133CE20D0011B219 /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
+		0D231E07133CE20D0011B219 /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHppleElement.h; sourceTree = "<group>"; };
+		0D231E08133CE20D0011B219 /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHppleElement.m; sourceTree = "<group>"; };
+		0D231E09133CE20D0011B219 /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
+		0D231E0A133CE20D0011B219 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
 		0D23F568132129340011B219 /* menubar-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon.png"; sourceTree = "<group>"; };
 		0D8BCED81332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorDatabaseSynchronizer.h; sourceTree = "<group>"; };
 		0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorDatabaseSynchronizer.m; sourceTree = "<group>"; };
@@ -266,6 +284,7 @@
 				0D230439132FCD370011B219 /* GTM */,
 				0D23043F132FCD370011B219 /* gtm-http-fetcher */,
 				0D230451132FCD370011B219 /* HotKey */,
+				0D231E04133CE20D0011B219 /* Hpple */,
 				0D23045A132FCD370011B219 /* JSONKit */,
 				0D23045D132FCD370011B219 /* MAKVONotificationCenter */,
 				0D230460132FCD370011B219 /* RegexKitLite */,
@@ -432,6 +451,8 @@
 				0D2304D3132FD1B10011B219 /* SKManagedObjectContextManager.h */,
 				0D2304D4132FD1B10011B219 /* SKManagedObjectContextManager.m */,
 				0D2304D5132FD1B10011B219 /* SKObjectSingleton.h */,
+				0D231CD4133BB08B0011B219 /* Globals.h */,
+				0D231CD5133BB08B0011B219 /* Globals.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -456,6 +477,7 @@
 		0D2304DF132FD1B10011B219 /* URL Collector */ = {
 			isa = PBXGroup;
 			children = (
+				0D231CCD133BAC2E0011B219 /* Content Classifier */,
 				0D2304E0132FD1B10011B219 /* Context Recognizer */,
 				0D2304E3132FD1B10011B219 /* Persistence */,
 				0D2304E6132FD1B10011B219 /* URLCollectorDataSource.h */,
@@ -563,6 +585,30 @@
 			name = DebugUtils;
 			path = ../../Projects/SAPOPuny/Vendor/GTM/DebugUtils;
 			sourceTree = SOURCE_ROOT;
+		};
+		0D231CCD133BAC2E0011B219 /* Content Classifier */ = {
+			isa = PBXGroup;
+			children = (
+				0D231CCE133BAC540011B219 /* URLCollectorContentClassifier.h */,
+				0D231CCF133BAC540011B219 /* URLCollectorContentClassifier.m */,
+				0D231CD1133BAEC30011B219 /* URLCollectorClassifyURLOperation.h */,
+				0D231CD2133BAEC30011B219 /* URLCollectorClassifyURLOperation.m */,
+			);
+			name = "Content Classifier";
+			sourceTree = "<group>";
+		};
+		0D231E04133CE20D0011B219 /* Hpple */ = {
+			isa = PBXGroup;
+			children = (
+				0D231E05133CE20D0011B219 /* TFHpple.h */,
+				0D231E06133CE20D0011B219 /* TFHpple.m */,
+				0D231E07133CE20D0011B219 /* TFHppleElement.h */,
+				0D231E08133CE20D0011B219 /* TFHppleElement.m */,
+				0D231E09133CE20D0011B219 /* XPathQuery.h */,
+				0D231E0A133CE20D0011B219 /* XPathQuery.m */,
+			);
+			path = Hpple;
+			sourceTree = "<group>";
 		};
 		0D23F536132108DB0011B219 /* Images */ = {
 			isa = PBXGroup;
@@ -759,6 +805,12 @@
 				0D2310321337762F0011B219 /* StatusItemDraggingDestinationView.m in Sources */,
 				0D2311931337A6A80011B219 /* URLCollectorElementCell.m in Sources */,
 				0D23137D1337B7060011B219 /* URLCollectorGroupCell.m in Sources */,
+				0D231CD0133BAC540011B219 /* URLCollectorContentClassifier.m in Sources */,
+				0D231CD3133BAEC30011B219 /* URLCollectorClassifyURLOperation.m in Sources */,
+				0D231CD6133BB08B0011B219 /* Globals.m in Sources */,
+				0D231E0B133CE20D0011B219 /* TFHpple.m in Sources */,
+				0D231E0C133CE20D0011B219 /* TFHppleElement.m in Sources */,
+				0D231E0D133CE20D0011B219 /* XPathQuery.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -831,13 +883,17 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-DLOG_LEVEL=0",
 					"-DDEBUGLOG",
 					"-DDEBUG",
 				);
-				OTHER_LDFLAGS = "-licucore";
+				OTHER_LDFLAGS = (
+					"-lxml2",
+					"-licucore",
+				);
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
 			};
@@ -850,6 +906,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
+				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
 			};

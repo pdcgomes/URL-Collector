@@ -93,6 +93,36 @@
 }
 
 #pragma mark -
+#pragma mark NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	URLCollectorContext *copy = [[[self class] alloc] init];
+	copy->contextName = [contextName copy];
+	copy->contextURL = [contextURL copy];
+	copy->contextDate = [contextDate copy];
+	copy->contextImage = [contextImage copy];
+	copy->interaction = [interaction copy];
+
+#warning IMPLEMENT NSCopying on URLCollectorContextIdentity
+//	contextCopy->contextIdentity = [contextIdentity copyWithZone:zone];
+	
+	copy->contextApplication = [contextApplication copy];
+	
+	return copy;
+}
+
+- (BOOL)isEqual:(id)object
+{
+	return [object isKindOfClass:[self class]] && [self hash] == [object hash];
+}
+
+- (NSUInteger)hash
+{
+	return [contextName hash] ^ [contextURL hash] ^ [contextDate hash] ^ [contextImage hash] ^ [interaction hash] ^ [contextIdentity hash] ^ [contextApplication hash];
+}
+
+#pragma mark -
 #pragma mark Dynamic properties
 
 - (NSString *)applicationName

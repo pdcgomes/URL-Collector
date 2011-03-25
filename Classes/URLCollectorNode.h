@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface URLCollectorNode : NSObject <NSCoding>
+@interface URLCollectorNode : NSObject <NSCoding, NSCopying>
 {
 	NSString			*nodeUUID;
 	NSString			*nodeName;

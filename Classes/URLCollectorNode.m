@@ -82,6 +82,34 @@
 }
 
 #pragma mark -
+#pragma mark NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	URLCollectorNode *copy = [[[self class] alloc] init];
+	copy->nodeUUID = [nodeUUID copy];
+	copy->nodeName = [nodeName copy];
+	copy->parent = [parent copy];
+	copy->children = [children copy];
+	copy->isLeafNode = isLeafNode;
+	copy->isLocked = isLocked;
+	copy->createDate = [createDate copy];
+	copy->sortOrder = sortOrder;
+	
+	return copy;
+}
+
+- (BOOL)isEqual:(id)object
+{
+	return [object isKindOfClass:[self class]] && [self hash] == [object hash];
+}
+
+- (NSUInteger)hash
+{
+	return [nodeUUID hash] ^ [nodeName hash] ^ [parent hash] ^ [children hash] ^ isLeafNode ^ isLocked ^ [createDate hash] ^ sortOrder;
+}
+
+#pragma mark -
 #pragma mark Properties
 
 - (NSUInteger)numberOfChildren

@@ -10,7 +10,7 @@
 
 @class URLCollectorContextIdentity;
 
-@interface URLCollectorContext : NSObject <NSCoding>
+@interface URLCollectorContext : NSObject <NSCoding, NSCopying>
 {	
 	NSString	*contextName;	// Name that uniquely identifies this context
 	NSString	*contextURL;	// Reference URL to this context

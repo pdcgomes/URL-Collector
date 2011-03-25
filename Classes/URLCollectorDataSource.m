@@ -12,6 +12,7 @@
 #import "URLCollectorNode.h"
 
 #import "URLCollectorContextRecognizer.h"
+#import "URLCollectorContentClassifier.h"
 #import "URLCollectorDatabaseManager.h"
 
 #import "SKManagedObjectContextManager.h"
@@ -24,7 +25,7 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 #define INBOX_GROUP_INDEX	0
 #define DEFAULT_SAVE_DELAY	2.0
 
-@interface URLCollectorDataSource() <URLCollectorDatabaseManagerDelegate>
+@interface URLCollectorDataSource() <URLCollectorDatabaseManagerDelegate, URLCollectorContentClassifierDelegate>
 
 - (void)registerObservers;
 - (void)deregisterObservers;
@@ -40,6 +41,9 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 
 - (void)saveChangesInternal;
 - (void)reloadLocalDatabase;
+
+//- (void)fetchContextForElement:(URLCollectorElement *)element;
+- (void)classifyElement:(URLCollectorElement *)element;
 
 @end
 
@@ -208,7 +212,7 @@ static NSString *defaultSeralizationPath(void)
 		[elements makeObjectsPerformSelector:@selector(setContext:) withObject:context];
 		[context release];
 		
-	//	[self.outlineView reloadData];
+		[outlineView_ performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES]; // kind of bruteforce, but should be enough for now
 	};
 	
 	NSBlockOperation *operation = [[NSBlockOperation alloc] init];
@@ -269,6 +273,7 @@ static NSString *defaultSeralizationPath(void)
 
 - (void)removeGroup:(URLCollectorGroup *)group removeChildren:(BOOL)shouldRemoveChildren
 {
+	// FIXME: this may cause trouble when there are async operations for elements being removed here
 	[self willChangeValueForKey:@"urlCollectorElements"];
 	
 	if(!shouldRemoveChildren) {
@@ -287,6 +292,8 @@ static NSString *defaultSeralizationPath(void)
 
 - (void)removeElement:(URLCollectorElement *)element
 {
+	// FIXME: this may cause trouble when there are async operations for elements being removed here	
+	
 	[self willChangeValueForKey:@"urlCollectorElements"];
 	[(URLCollectorGroup *)element.parent remove:element];
 	[self didChangeValueForKey:@"urlCollectorElements"];
@@ -381,6 +388,14 @@ static NSString *defaultSeralizationPath(void)
 	[self rebuildElementIndex];
 	
 	[self registerObservers];
+}
+
+#pragma mark -
+#pragma mark Private Methods - Async operations
+
+- (void)classifyElement:(URLCollectorElement *)element
+{
+	[[URLCollectorContentClassifier sharedInstance] classifyElement:element delegate:self];
 }
 
 #pragma mark -
@@ -480,6 +495,7 @@ static NSString *defaultSeralizationPath(void)
 			element.URLName = [pasteboardItem stringForType:@"public.url-name"];
 			[self addElement:element toGroup:destinationGroup atIndex:index];
 			[elements addObject:element];
+			[self classifyElement:element];
 			[element release];
 		}
 
@@ -551,6 +567,21 @@ static NSString *defaultSeralizationPath(void)
 - (void)databaseManagerDidFinishSyncing:(URLCollectorDatabaseManager *)database
 {
 	[self reloadLocalDatabase];
+}
+
+#pragma mark -
+#pragma mark URLCollectorContentClassifierDelegate
+
+- (void)classificationForElement:(URLCollectorElement *)element didFinishWithResult:(NSDictionary *)classification
+{
+	// TODO: consider using reloadItem instead (efficiency)
+	TRACE(@"Classification for element <%@> finished with result <%@>", element, classification);
+	[outlineView_ reloadData];
+}
+
+- (void)classificationForElement:(URLCollectorElement *)element didFailWithError:(NSError *)error
+{
+	
 }
 
 #pragma mark -

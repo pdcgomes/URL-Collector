@@ -7,6 +7,7 @@
 //
 
 #import "URLCollectorElement.h"
+#import "URLCollectorContentClassifier.h"
 
 @implementation URLCollectorElement
 
@@ -27,6 +28,7 @@
 	SKSafeRelease(tags);
 	SKSafeRelease(URL);
 	SKSafeRelease(URLName);
+	SKSafeRelease(classification);
 	
 	[super dealloc];
 }
@@ -45,6 +47,7 @@
 	[aCoder encodeObject:tags forKey:@"tags"];
 	[aCoder encodeBool:isUnread forKey:@"isUnread"];
 	[aCoder encodeObject:context forKey:@"context"];
+	[aCoder encodeObject:classification forKey:@"classification"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -56,19 +59,32 @@
 		context		= [[aDecoder decodeObjectForKey:@"source"] retain];
 		tags		= [[aDecoder decodeObjectForKey:@"tags"] retain];
 		isUnread	= [aDecoder decodeBoolForKey:@"isUnread"];
-		context		= [aDecoder decodeObjectForKey:@"context"];
+		context		= [[aDecoder decodeObjectForKey:@"context"] retain];
+		classification = [[aDecoder decodeObjectForKey:@"classification"] retain];
 	}
 	return self;
 }
 
 #pragma mark -
-#pragma mark NSObject
+#pragma mark NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	URLCollectorElement *copy = [[[self class] alloc] init];
+	copy->URL = [URL copy];
+	copy->URLName = [URLName copy];
+	copy->tags = [tags copy];
+	
+	copy->context = [context copy];
+	copy->classification = [classification copy];	
+	copy->isUnread = isUnread;
+
+	return copy;
+}
 
 - (BOOL)isEqual:(id)object
 {
-	return 
-	[object isKindOfClass:[self class]] && 
-	[[(URLCollectorElement *)object URL] isEqual:[self URL]];
+	return [object isKindOfClass:[self class]] &&  [[(URLCollectorElement *)object URL] isEqual:[self URL]];
 }
 
 - (NSUInteger)hash
@@ -96,5 +112,12 @@
 	return nil;
 }
 
+#pragma mark -
+#pragma mark Public Methods
+
+- (void)addClassification:(NSDictionary *)classificationInfo
+{
+	// TODO: merge classification data...
+}
 
 @end

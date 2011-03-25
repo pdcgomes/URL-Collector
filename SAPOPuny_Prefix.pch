@@ -9,4 +9,5 @@
 	#import "Constants.h"
 	#import "MAKVONotificationCenter.h"
 	#import "Additions.h"
+	#import "Globals.h"
 #endif

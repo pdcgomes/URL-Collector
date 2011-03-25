@@ -35,10 +35,13 @@ NSString *const URLCollectorContextIdentityImageKey			= @"identityImageRepresent
 	[super dealloc];
 }
 
-- (id)initWithDictionary:(NSDictionary *)dictionaryRepresentation;
+- (id)initWithDictionary:(NSDictionary *)dictionary;
 {
 	if((self = [super init])) {
-		
+		identityName				= [[dictionary objectForKey:URLCollectorContextIdentityNameKey] copy];
+		identityEmailAddress		= [[dictionary objectForKey:URLCollectorContextIdentityEmailAddressKey] copy];
+		identityImageRepresentation = [[dictionary objectForKey:URLCollectorContextIdentityImageKey] retain];
+		identityURL					= [[dictionary objectForKey:URLCollectorContextIdentityURLKey] copy];
 	}
 	return self;
 }

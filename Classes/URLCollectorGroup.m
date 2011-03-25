@@ -51,6 +51,28 @@
 }
 
 #pragma mark -
+#pragma mark NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	URLCollectorGroup *copy = [[[self class] alloc] init];
+	copy->groupColor = [groupColor copy];
+	copy->groupImage = [groupImage copy];
+	
+	return copy;
+}
+
+- (BOOL)isEqual:(id)object
+{
+	return [object isKindOfClass:[self class]] && [self hash] == [object hash];
+}
+
+- (NSUInteger)hash
+{
+	return [super hash] ^ [groupColor hash] ^ [groupImage hash];
+}
+
+#pragma mark -
 #pragma mark Properties
 
 - (NSString *)contentsHash
