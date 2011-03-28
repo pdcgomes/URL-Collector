@@ -10,6 +10,7 @@
 #import "URLCollectorContentClassifier.h"
 #import "URLCollectorElement.h"
 #import "TFHpple.h"
+#import "RegexKitLite.h"
 
 enum {
 	ClassiftyURLStateInitialized = 0,
@@ -182,7 +183,8 @@ enum {
 	
 	TFHppleElement *titleElement = [[HTMLParser search:@"//title"] lastObject];
 	if(titleElement) {
-		NSString *title = [titleElement content];
+		NSString *title = [[titleElement content] stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+		title = [title stringByReplacingOccurrencesOfRegex:@"\\s{2,}" withString:@" "]; // remove excessive spaces
 		TRACE(@"title: %@", title);
 		[classification setObject:title forKey:URLClassificationTitleKey];
 	}
