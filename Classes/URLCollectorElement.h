@@ -20,7 +20,7 @@
 	NSMutableArray		*tags;
 
 	URLCollectorContext	*context;
-	NSDictionary		*classification;
+	NSMutableDictionary	*classification;
 	
 	BOOL				isUnread;
 }
@@ -34,6 +34,6 @@
 
 @property (nonatomic, assign) BOOL isUnread;
 
-- (void)addClassification:(NSDictionary *)classificationInfo;
+- (void)updateClassification:(NSDictionary *)classificationInfo;
 
 @end

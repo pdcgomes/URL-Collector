@@ -576,6 +576,10 @@ static NSString *defaultSeralizationPath(void)
 {
 	// TODO: consider using reloadItem instead (efficiency)
 	TRACE(@"Classification for element <%@> finished with result <%@>", element, classification);
+	[self willChangeValueForKey:@"urlCollectorElements"];
+	[element updateClassification:classification];
+	[self didChangeValueForKey:@"urlCollectorElements"];
+	
 	[outlineView_ reloadData];
 }
 

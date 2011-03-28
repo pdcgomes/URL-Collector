@@ -33,6 +33,14 @@
 	[super dealloc];
 }
 
+- (id)init
+{
+	if((self = [super init])) {
+		
+	}
+	return self;
+}
+
 #pragma mark -
 #pragma mark NSCoding
 
@@ -115,9 +123,16 @@
 #pragma mark -
 #pragma mark Public Methods
 
-- (void)addClassification:(NSDictionary *)classificationInfo
+- (void)updateClassification:(NSDictionary *)classificationInfo
 {
-	// TODO: merge classification data...
+	if(!classification) {
+		classification = [[NSMutableDictionary alloc] init];
+	}
+	
+	[classification addEntriesFromDictionary:classificationInfo];
+	if([classification containsKey:URLClassificationTitleKey]) {
+		self.URLName = [classification objectForKey:URLClassificationTitleKey];
+	}
 }
 
 @end

@@ -215,13 +215,13 @@ enum {
 	TRACE(@"Mime type: %@", MIMEType);
 	[classification setObject:MIMEType forKey:URLClassificationMIMETypeKey];
 	
-	if(NSNotFound == [MIMEType rangeOfString:@"html"].location) {
+	if(NSNotFound == [MIMEType rangeOfString:@"html"].location) { // rough method to test if it's an html document or some other file 
 		[classification setObject:[response suggestedFilename] forKey:URLClassificationTitleKey];
-		[theConnection cancel];
+		[theConnection cancel]; // we don't want to continue downloading. The mime type will be used to display a representation of the (probable) file type, and the suggested filename will be used as the title
 		self.isFinished = YES;
 	}
 	else if([response expectedContentLength] > MAX_EXPECTED_CONTENT_LENGTH) {
-		WARN(@"HTML content exceeds maximum supported length. TODO: implement proper action");
+		WARN(@"HTML content exceeds maximum supported length. TODO: implement proper action"); // maybe download part (up to the max limit) of the document and attempt extraction of what's available
 		[theConnection cancel];
 		self.isFinished = YES;
 	}
