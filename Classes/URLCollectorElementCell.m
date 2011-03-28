@@ -98,7 +98,36 @@
 		[titleCell setTitle:@"Link"];
 	}
 	
-	[urlCell setTitle:SKSafeString(representedObject.URL)];
+	////
+	NSString *URLString = [representedObject URL];
+	if(![[NSURL URLWithString:URLString] isFileURL]) {
+		NSString *host = [[NSURL URLWithString:URLString] host];
+		NSRange hostRange = [URLString rangeOfString:host];
+		NSRange URLStringRange = NSMakeRange(0, [URLString length]);
+		
+		NSFont *font = [urlCell font];
+		NSColor *hostColor = [NSColor whiteColor];
+		NSColor *textColor = RGBCOLOR(190, 190, 190);
+		
+		NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+		[paragraphStyle setParagraphStyle:[NSParagraphStyle defaultParagraphStyle]];
+		[paragraphStyle setLineBreakMode:[urlCell lineBreakMode]];
+		
+		NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:URLString];
+		[attributedString addAttribute:NSFontAttributeName value:font range:URLStringRange];
+		[attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:URLStringRange];
+		[attributedString addAttribute:NSForegroundColorAttributeName value:textColor range:URLStringRange];
+		[attributedString addAttribute:NSForegroundColorAttributeName value:hostColor range:hostRange];
+		
+		[urlCell setAttributedStringValue:attributedString];
+		[attributedString release];
+		[paragraphStyle release];
+	}
+	else {
+		[urlCell setTitle:SKSafeString(representedObject.URL)];
+	}
+	////
+	
 	[interactionTypeCell setTitle:SKSafeString(representedObject.context.interaction)];
 	[identityButtonCell setTitle:SKSafeString(representedObject.context.contextName)];
 	[extraInfoCell setTitle:SKStringWithFormat(@"(via %@)", representedObject.context.applicationName)];
