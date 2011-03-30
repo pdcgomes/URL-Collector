@@ -35,6 +35,8 @@
 - (BOOL)pasteboardContains:(Class)class;
 - (BOOL)hasSelectedRowsOfClass:(Class)objectClass;
 
+- (void)elementCellIdentityButtonClicked:(id)sender;
+
 @end
 
 @implementation AppController
@@ -425,6 +427,11 @@
 	return [[item representedObject] isKindOfClass:[URLCollectorGroup class]];
 }
 
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldShowCellExpansionForTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+	return [[item representedObject] isKindOfClass:[URLCollectorElement class]];
+}
+
 - (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
 //	if(tableColumn == nil) {
@@ -437,6 +444,8 @@
 	}
 	else if([[item representedObject] isKindOfClass:[URLCollectorElement class]]) {
 		cell = [tableColumn dataCellForRow:[outlineView rowForItem:item]];
+		[cell setTarget:self];
+		[cell setAction:@selector(elementCellIdentityButtonClicked:)];
 	}
 	return cell;
 }
@@ -447,6 +456,11 @@
 	   [[item representedObject] isKindOfClass:[URLCollectorElement class]]) {
 		[cell setRepresentedObject:[item representedObject]];
 	}
+}
+
+- (void)elementCellIdentityButtonClicked:(id)sender
+{
+	TRACE(@"");
 }
 
 #pragma mark -

@@ -15,6 +15,7 @@
 @interface URLCollectorElementCell(Private)
 
 - (void)initCellIfNeeded;
+- (void)reconfigureSubCellsWithCellFrame:(NSRect)cellFrame;
 
 @end
 
@@ -68,15 +69,26 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-	if((self = [super copyWithZone:zone])) {
-		self->titleCell = [titleCell copyWithZone:zone];
-		self->urlCell = [urlCell copyWithZone:zone];
-		self->interactionTypeCell = [interactionTypeCell copyWithZone:zone];
-		self->identityButtonCell = [identityButtonCell copyWithZone:zone];
-		self->extraInfoCell = [extraInfoCell copyWithZone:zone];
-//		self->identityButtonCellFrame = identityButtonCellFrame;
-	}
-	return self;
+	URLCollectorElementCell *copy = [super copyWithZone:zone];
+	copy->titleCell = [titleCell copyWithZone:zone];
+	copy->urlCell = [urlCell copyWithZone:zone];
+	copy->interactionTypeCell = [interactionTypeCell copyWithZone:zone];
+	copy->identityButtonCell = [identityButtonCell copyWithZone:zone];
+	copy->extraInfoCell = [extraInfoCell copyWithZone:zone];
+	
+//	[self reconfigureSubCells];
+	
+	return copy;
+	
+//	if((self = [super copyWithZone:zone])) {
+//		self->titleCell = [titleCell copyWithZone:zone];
+//		self->urlCell = [urlCell copyWithZone:zone];
+//		self->interactionTypeCell = [interactionTypeCell copyWithZone:zone];
+//		self->identityButtonCell = [identityButtonCell copyWithZone:zone];
+//		self->extraInfoCell = [extraInfoCell copyWithZone:zone];
+////		self->identityButtonCellFrame = identityButtonCellFrame;
+//	}
+//	return self;
 }
 
 #pragma mark -
@@ -89,97 +101,39 @@
 - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
 	[self initCellIfNeeded];
-	
-	URLCollectorElement *representedObject = [self representedObject];
-	if(![representedObject.URLName isEqualToString:representedObject.URL] || !IsEmptyString(representedObject.URLName)) {
-		[titleCell setTitle:representedObject.URLName];
-	}
-	else {
-		[titleCell setTitle:@"Link"];
-	}
-	
-	////
-	NSString *URLString = [representedObject URL];
-	if(![[NSURL URLWithString:URLString] isFileURL]) {
-		NSString *host = [[NSURL URLWithString:URLString] host];
-		NSRange hostRange = [URLString rangeOfString:host];
-		NSRange URLStringRange = NSMakeRange(0, [URLString length]);
-		
-		NSFont *font = [urlCell font];
-		NSColor *hostColor = [NSColor whiteColor];
-		NSColor *textColor = RGBCOLOR(190, 190, 190);
-		
-		NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-		[paragraphStyle setParagraphStyle:[NSParagraphStyle defaultParagraphStyle]];
-		[paragraphStyle setLineBreakMode:[urlCell lineBreakMode]];
-		
-		NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:URLString];
-		[attributedString addAttribute:NSFontAttributeName value:font range:URLStringRange];
-		[attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:URLStringRange];
-		[attributedString addAttribute:NSForegroundColorAttributeName value:textColor range:URLStringRange];
-		[attributedString addAttribute:NSForegroundColorAttributeName value:hostColor range:hostRange];
-		
-		[urlCell setAttributedStringValue:attributedString];
-		[attributedString release];
-		[paragraphStyle release];
-	}
-	else {
-		[urlCell setTitle:SKSafeString(representedObject.URL)];
-	}
-	////
-	
-	[interactionTypeCell setTitle:SKSafeString(representedObject.context.interaction)];
-	[identityButtonCell setTitle:SKSafeString(representedObject.context.contextName)];
-	[extraInfoCell setTitle:SKStringWithFormat(@"(via %@)", representedObject.context.applicationName)];
-	
-	// Drawing
-	NSRect titleCellFrame	= NSMakeRect(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width, TITLE_LABEL_HEIGHT);
-	NSRect urlCellFrame		= NSOffsetRect(titleCellFrame, 0, TITLE_LABEL_HEIGHT + 2.0);
-	
-	// Interaction type
-	NSDictionary *textAttributes	= [[NSDictionary alloc] initWithObjectsAndKeys:[interactionTypeCell font], NSFontAttributeName, nil];
-	NSSize interactionTextSize		= [SKSafeString(representedObject.context.interaction) sizeWithAttributes:textAttributes];
-	[textAttributes release];
-	
-	NSUInteger textWidth = ceil(interactionTextSize.width);
-	textWidth = textWidth > 0 ? textWidth + 5.0 : 0;
-	NSRect interactionCellFrame	= NSMakeRect(cellFrame.origin.x, NSMaxY(urlCellFrame) + 2.0, 
-											 textWidth, TITLE_LABEL_HEIGHT);
-	
-	// Identity string
-	textAttributes	= [[NSDictionary alloc] initWithObjectsAndKeys:[identityButtonCell font], NSFontAttributeName, nil];
-	NSSize identityTextSize = [SKSafeString(representedObject.context.contextName) sizeWithAttributes:textAttributes];
-	[textAttributes release];
-	
-	textWidth = ceil(identityTextSize.width);
-	textWidth = textWidth > 0 ? textWidth + 15.0 : 0;
-	identityButtonCellFrame = NSMakeRect(NSMaxX(interactionCellFrame) + 2.0, NSMaxY(urlCellFrame) + 1.0, 
-										 textWidth, TITLE_LABEL_HEIGHT);
-
-	// Extra info (application name, etc...)
-	textAttributes	= [[NSDictionary alloc] initWithObjectsAndKeys:[extraInfoCell font], NSFontAttributeName, nil];
-	NSSize extraInfoTextSize = [[extraInfoCell title] sizeWithAttributes:textAttributes];
-	[textAttributes release];
-	
-	textWidth = ceil(extraInfoTextSize.width);
-	textWidth = textWidth > 0 ? textWidth + 5.0 : 0;
-	NSRect extraInfoFrame = NSMakeRect(NSMaxX(identityButtonCellFrame) + 2.0, NSMaxY(urlCellFrame) + 2.0, 
-									   cellFrame.size.width - NSMaxX(identityButtonCellFrame) + 2.0, TITLE_LABEL_HEIGHT);
+	[self reconfigureSubCellsWithCellFrame:cellFrame];
 	
 	[titleCell drawInteriorWithFrame:titleCellFrame inView:controlView];
 	[urlCell drawInteriorWithFrame:urlCellFrame inView:controlView];
 	[interactionTypeCell drawInteriorWithFrame:interactionCellFrame inView:controlView];
 	[identityButtonCell drawBezelWithFrame:identityButtonCellFrame inView:controlView];
 	[identityButtonCell drawInteriorWithFrame:identityButtonCellFrame inView:controlView];
-	[extraInfoCell drawInteriorWithFrame:extraInfoFrame inView:controlView];
+	[extraInfoCell drawInteriorWithFrame:extraInfoCellFrame inView:controlView];
 	
-//	[super drawInteriorWithFrame:cellFrame inView:controlView];
 }
 
-- (NSColor *)highlightColorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
+- (void)drawWithExpansionFrame:(NSRect)cellFrame inView:(NSView *)view
 {
-	return RGBACOLOR(20, 20, 20, 0.8);
+	[urlCell drawWithExpansionFrame:cellFrame inView:view];
 }
+
+- (NSRect)expansionFrameWithFrame:(NSRect)cellFrame inView:(NSView *)view
+{
+	CGEventRef event = CGEventCreate(NULL);
+	CGPoint location = CGEventGetLocation(event);
+	CFRelease(event);
+	
+	NSWindow *window = [view window];
+	CGPoint point = [window convertScreenToBase:location];
+	
+	NSRect tooltipFrame = NSMakeRect(point.x, point.y, 200, 200);
+	return [urlCell expansionFrameWithFrame:tooltipFrame inView:view];
+}
+
+//- (NSColor *)highlightColorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
+//{
+//	return RGBACOLOR(20, 20, 20, 0.8);
+//}
 
 #pragma mark -
 #pragma mark NSCell mouse tracking
@@ -191,21 +145,17 @@
 
 - (BOOL)startTrackingAt:(NSPoint)startPoint inView:(NSView *)controlView
 {
-	TRACE(@"");
-
-	BOOL highlightIdentityButton = NSMouseInRect(startPoint, identityButtonCellFrame, [controlView isFlipped]);
-	TRACE(@"%d", highlightIdentityButton);
-	[identityButtonCell setHighlighted:highlightIdentityButton];
+	BOOL isOverIdentityButton = NSMouseInRect(startPoint, identityButtonCellFrame, [controlView isFlipped]);
+	[identityButtonCell setHighlighted:isOverIdentityButton];
 	
 	return YES;
 }
 
 - (BOOL)continueTracking:(NSPoint)lastPoint at:(NSPoint)currentPoint inView:(NSView *)controlView
 {
-	BOOL highlightIdentityButton = NSMouseInRect(currentPoint, identityButtonCellFrame, [controlView isFlipped]);
-	TRACE(@"%d", highlightIdentityButton);
-	[identityButtonCell setHighlighted:highlightIdentityButton];
-	   
+	BOOL isOverIdentityButton = NSMouseInRect(currentPoint, identityButtonCellFrame, [controlView isFlipped]);
+	[identityButtonCell setHighlighted:isOverIdentityButton];
+	
 	return YES;
 }
 
@@ -213,22 +163,33 @@
 {
 	BOOL isOverIdentityButton = NSMouseInRect(lastPoint, identityButtonCellFrame, [controlView isFlipped]);
 	if(isOverIdentityButton) {
-		TRACE(@"TODO: SEND ACTION RELATIVE TO THE IDENTITY BUTTON");
+		TRACE(@"SENDING ACTION RELATIVE TO THE IDENTITY BUTTON");
+		[NSApp sendAction:[self action] to:[self target] from:self];
 	}
 	[identityButtonCell setHighlighted:NO];
 }
 
+//- (BOOL)trackMouse:(NSEvent *)theEvent inRect:(NSRect)cellFrame ofView:(NSView *)controlView untilMouseUp:(BOOL)untilMouseUp
+//{
+//	TRACEMARK;
+//	return [identityButtonCell trackMouse:theEvent inRect:cellFrame ofView:controlView untilMouseUp:untilMouseUp];
+////	return YES;
+//}
+
 - (NSUInteger)hitTestForEvent:(NSEvent *)event inRect:(NSRect)cellFrame ofView:(NSView *)controlView
 {
 	NSUInteger hitType = [super hitTestForEvent:event inRect:cellFrame ofView:controlView];
+
+	// Recalculate identityButtonCellFrame here... This is not efficient, but I wasn't able to figure out another way to correctly 
+	// determine the identityButtonCellFrame
+	// Cells get copied and hittest gets called before the drawing happens
+	// Without this, we're likely to get the identityButtonCellFrame for a different cell
+	// Need to investigate this further, but this does solve the problem.
+	[self reconfigureSubCellsWithCellFrame:cellFrame];
 	
 	NSPoint point = [event locationInWindow];
-	point = [controlView convertPointToBase:point];
-	
-	LOGRECT(identityButtonCellFrame);
-	LOGPOINT(point);
+	point = [controlView convertPoint:point fromView:nil];
 	if(NSMouseInRect(point, identityButtonCellFrame, [controlView isFlipped])) {
-		TRACE(@"");
 		hitType |= (NSCellHitContentArea|NSCellHitTrackableArea);
 	}
 	return hitType;
@@ -275,6 +236,85 @@
 		[extraInfoCell setDrawsBackground:NO];
 		[extraInfoCell setTextColor:[NSColor whiteColor]];
 	}
+}
+
+- (void)reconfigureSubCellsWithCellFrame:(NSRect)cellFrame
+{
+	URLCollectorElement *representedObject = [self representedObject];
+	if(![representedObject.URLName isEqualToString:representedObject.URL] || !IsEmptyString(representedObject.URLName)) {
+		[titleCell setTitle:representedObject.URLName];
+	}
+	else {
+		[titleCell setTitle:@"Link"];
+	}
+	
+	////
+	NSString *URLString = [representedObject URL];
+	if(![[NSURL URLWithString:URLString] isFileURL]) {
+		NSString *host = [[NSURL URLWithString:URLString] host];
+		NSRange hostRange = [URLString rangeOfString:host];
+		NSRange URLStringRange = NSMakeRange(0, [URLString length]);
+		
+		NSFont *font = [urlCell font];
+		NSColor *hostColor = [NSColor whiteColor];
+		NSColor *textColor = RGBCOLOR(190, 190, 190);
+		
+		NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+		[paragraphStyle setParagraphStyle:[NSParagraphStyle defaultParagraphStyle]];
+		[paragraphStyle setLineBreakMode:[urlCell lineBreakMode]];
+		
+		NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:URLString];
+		[attributedString addAttribute:NSFontAttributeName value:font range:URLStringRange];
+		[attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:URLStringRange];
+		[attributedString addAttribute:NSForegroundColorAttributeName value:textColor range:URLStringRange];
+		[attributedString addAttribute:NSForegroundColorAttributeName value:hostColor range:hostRange];
+		
+		[urlCell setAttributedStringValue:attributedString];
+		[attributedString release];
+		[paragraphStyle release];
+	}
+	else {
+		[urlCell setTitle:SKSafeString(representedObject.URL)];
+	}
+	////
+	
+	[interactionTypeCell setTitle:SKSafeString(representedObject.context.interaction)];
+	[identityButtonCell setTitle:SKSafeString(representedObject.context.contextName)];
+	[extraInfoCell setTitle:SKStringWithFormat(@"(via %@)", representedObject.context.applicationName)];
+	
+	// Drawing
+	titleCellFrame	= NSMakeRect(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width, TITLE_LABEL_HEIGHT);
+	urlCellFrame		= NSOffsetRect(titleCellFrame, 0, TITLE_LABEL_HEIGHT + 2.0);
+	
+	// Interaction type
+	NSDictionary *textAttributes	= [[NSDictionary alloc] initWithObjectsAndKeys:[interactionTypeCell font], NSFontAttributeName, nil];
+	NSSize interactionTextSize		= [SKSafeString(representedObject.context.interaction) sizeWithAttributes:textAttributes];
+	[textAttributes release];
+	
+	NSUInteger textWidth = ceil(interactionTextSize.width);
+	textWidth = textWidth > 0 ? textWidth + 5.0 : 0;
+	interactionCellFrame	= NSMakeRect(cellFrame.origin.x, NSMaxY(urlCellFrame) + 2.0, 
+										 textWidth, TITLE_LABEL_HEIGHT);
+	
+	// Identity string
+	textAttributes	= [[NSDictionary alloc] initWithObjectsAndKeys:[identityButtonCell font], NSFontAttributeName, nil];
+	NSSize identityTextSize = [SKSafeString(representedObject.context.contextName) sizeWithAttributes:textAttributes];
+	[textAttributes release];
+	
+	textWidth = ceil(identityTextSize.width);
+	textWidth = textWidth > 0 ? textWidth + 15.0 : 0;
+	identityButtonCellFrame = NSMakeRect(NSMaxX(interactionCellFrame) + 2.0, NSMaxY(urlCellFrame) + 1.0, 
+										 textWidth, TITLE_LABEL_HEIGHT);
+	
+	// Extra info (application name, etc...)
+	textAttributes	= [[NSDictionary alloc] initWithObjectsAndKeys:[extraInfoCell font], NSFontAttributeName, nil];
+	NSSize extraInfoTextSize = [[extraInfoCell title] sizeWithAttributes:textAttributes];
+	[textAttributes release];
+	
+	textWidth = ceil(extraInfoTextSize.width);
+	textWidth = textWidth > 0 ? textWidth + 5.0 : 0;
+	extraInfoCellFrame = NSMakeRect(NSMaxX(identityButtonCellFrame) + 2.0, NSMaxY(urlCellFrame) + 2.0, 
+									cellFrame.size.width - NSMaxX(identityButtonCellFrame) + 2.0, TITLE_LABEL_HEIGHT);	
 }
 
 @end

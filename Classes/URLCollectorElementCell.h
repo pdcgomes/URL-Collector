@@ -18,6 +18,10 @@
 	NSTextFieldCell	*extraInfoCell;
 	NSButtonCell	*identityButtonCell;
 	
+	NSRect			titleCellFrame;
+	NSRect			urlCellFrame;
+	NSRect			interactionCellFrame;
+	NSRect			extraInfoCellFrame;
 	NSRect			identityButtonCellFrame;
 }
 

@@ -25,26 +25,17 @@
 	[self registerForDraggedTypes:[NSArray arrayWithObjects:/*NSPasteboardTypeString, NSPasteboardTypeHTML, NSPasteboardTypeRTF, */NSURLPboardType, NSPasteboardTypeURLCollectorElement, nil]];
 }
 
-//- (void)setupMouseTrackingArea
+#pragma mark -
+#pragma mark NSTableView overrides
+
+//- (void)highlightSelectionInClipRect:(NSRect)clipRect
 //{
-//	NSTrackingArea *trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds] 
-//																options:(NSTrackingMouseEnteredAndExited|NSTrackingActiveInKeyWindow|NSTrackingEnabledDuringMouseDrag)
-//																  owner:self userInfo:nil];
-//	[self addTrackingArea:trackingArea];
-//	[trackingArea release];
+//	
 //}
 //
-//#pragma mark -
-//#pragma mark NSTrackingAreaDelegate
-//
-//- (void)mouseEntered:(NSEvent *)theEvent
+//- (NSColor *)_highlightColorForCell:(NSCell *)cell
 //{
-//	TRACE(@"Mouse entered");
-//}
-//
-//- (void)mouseExited:(NSEvent *)theEvent
-//{
-//	TRACE(@"Mouse exited");	
+//	return nil;
 //}
 
 @end

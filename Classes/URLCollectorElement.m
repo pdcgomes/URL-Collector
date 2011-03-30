@@ -108,11 +108,11 @@
 	return YES;
 }
 
-- (NSString *)name
-{
-	return SKStringWithFormat(@"%@\n"
-							  @"%@", URL, [self.context contextInfoLine]);
-}
+//- (NSString *)name
+//{
+//	return SKStringWithFormat(@"%@\n"
+//							  @"%@", URL, [self.context contextInfoLine]);
+//}
 
 - (NSString *)contentsHash
 {

@@ -59,6 +59,8 @@
 #define FATAL(...) /* */
 #endif
 
+#define TRACEMARK TRACE(@"")
+
 #define LOGRECT(rect) TRACE(@"%@", NSStringFromRect(rect))
 #define LOGPOINT(point) TRACE(@"%@", NSStringFromPoint(point))
 #define LOGBOOL(_bool_) TRACE(@"%s: %d",  #_bool_, _bool_)

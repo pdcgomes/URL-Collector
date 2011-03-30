@@ -66,9 +66,14 @@
 		0D231E0B133CE20D0011B219 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D231E06133CE20D0011B219 /* TFHpple.m */; };
 		0D231E0C133CE20D0011B219 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D231E08133CE20D0011B219 /* TFHppleElement.m */; };
 		0D231E0D133CE20D0011B219 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D231E0A133CE20D0011B219 /* XPathQuery.m */; };
+		0D2321391340E6220011B219 /* NSBezierPath+AMShading.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2321381340E6220011B219 /* NSBezierPath+AMShading.m */; };
+		0D2322251341E4C00011B219 /* UCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2322241341E4C00011B219 /* UCNavigationController.m */; };
 		0D23F569132129340011B219 /* menubar-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D23F568132129340011B219 /* menubar-icon.png */; };
 		0D8BCEDA1332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */; };
 		0D8BCEDF1332A3750079E647 /* URLCollectorDatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8BCEDE1332A3750079E647 /* URLCollectorDatabaseManager.m */; };
+		0DA2903A13436ECF000FC202 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA2903913436ECF000FC202 /* Sparkle.framework */; };
+		0DA2907B13436EDD000FC202 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA2903913436ECF000FC202 /* Sparkle.framework */; };
+		0DA2909E1343702A000FC202 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0DA2909D1343702A000FC202 /* dsa_pub.pem */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -82,6 +87,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				0DA2907B13436EDD000FC202 /* Sparkle.framework in Copy Frameworks */,
 				0D230507132FD1C80011B219 /* BWToolkitFramework.framework in Copy Frameworks */,
 				0D21C3D2132012D600A0B8BB /* ShortcutRecorder.framework in Copy Frameworks */,
 			);
@@ -216,11 +222,17 @@
 		0D231E08133CE20D0011B219 /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHppleElement.m; sourceTree = "<group>"; };
 		0D231E09133CE20D0011B219 /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
 		0D231E0A133CE20D0011B219 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
+		0D2321371340E6220011B219 /* NSBezierPath+AMShading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBezierPath+AMShading.h"; sourceTree = "<group>"; };
+		0D2321381340E6220011B219 /* NSBezierPath+AMShading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBezierPath+AMShading.m"; sourceTree = "<group>"; };
+		0D2322231341E4C00011B219 /* UCNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UCNavigationController.h; sourceTree = "<group>"; };
+		0D2322241341E4C00011B219 /* UCNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UCNavigationController.m; sourceTree = "<group>"; };
 		0D23F568132129340011B219 /* menubar-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon.png"; sourceTree = "<group>"; };
 		0D8BCED81332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorDatabaseSynchronizer.h; sourceTree = "<group>"; };
 		0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorDatabaseSynchronizer.m; sourceTree = "<group>"; };
 		0D8BCEDD1332A3750079E647 /* URLCollectorDatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorDatabaseManager.h; sourceTree = "<group>"; };
 		0D8BCEDE1332A3750079E647 /* URLCollectorDatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorDatabaseManager.m; sourceTree = "<group>"; };
+		0DA2903913436ECF000FC202 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
+		0DA2909D1343702A000FC202 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -242,6 +254,7 @@
 				0D21C3EB1320130D00A0B8BB /* Carbon.framework in Frameworks */,
 				0D230506132FD1C10011B219 /* BWToolkitFramework.framework in Frameworks */,
 				0D2305A4132FE0F70011B219 /* ScriptingBridge.framework in Frameworks */,
+				0DA2903A13436ECF000FC202 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,8 +285,9 @@
 		0D21C3B81320127E00A0B8BB /* Bundled Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0D21C3C51320129400A0B8BB /* ShortcutRecorder.framework */,
 				0D230505132FD1C10011B219 /* BWToolkitFramework.framework */,
+				0D21C3C51320129400A0B8BB /* ShortcutRecorder.framework */,
+				0DA2903913436ECF000FC202 /* Sparkle.framework */,
 			);
 			name = "Bundled Frameworks";
 			sourceTree = "<group>";
@@ -287,6 +301,7 @@
 				0D231E04133CE20D0011B219 /* Hpple */,
 				0D23045A132FCD370011B219 /* JSONKit */,
 				0D23045D132FCD370011B219 /* MAKVONotificationCenter */,
+				0D2321321340E6030011B219 /* Misc */,
 				0D230460132FCD370011B219 /* RegexKitLite */,
 			);
 			path = Vendor;
@@ -539,6 +554,8 @@
 				0D23137C1337B7060011B219 /* URLCollectorGroupCell.m */,
 				0D2304F1132FD1B10011B219 /* URLCollectorOutlineView.h */,
 				0D2304F2132FD1B10011B219 /* URLCollectorOutlineView.m */,
+				0D2322231341E4C00011B219 /* UCNavigationController.h */,
+				0D2322241341E4C00011B219 /* UCNavigationController.m */,
 			);
 			name = GUI;
 			sourceTree = "<group>";
@@ -610,12 +627,29 @@
 			path = Hpple;
 			sourceTree = "<group>";
 		};
+		0D2321321340E6030011B219 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				0D2321371340E6220011B219 /* NSBezierPath+AMShading.h */,
+				0D2321381340E6220011B219 /* NSBezierPath+AMShading.m */,
+			);
+			name = Misc;
+			sourceTree = "<group>";
+		};
 		0D23F536132108DB0011B219 /* Images */ = {
 			isa = PBXGroup;
 			children = (
 				0D23F568132129340011B219 /* menubar-icon.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		0DA2909B13437021000FC202 /* Signing */ = {
+			isa = PBXGroup;
+			children = (
+				0DA2909D1343702A000FC202 /* dsa_pub.pem */,
+			);
+			name = Signing;
 			sourceTree = "<group>";
 		};
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
@@ -672,6 +706,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0DA2909B13437021000FC202 /* Signing */,
 				0D23050B132FD1E40011B219 /* Model */,
 				0D23F536132108DB0011B219 /* Images */,
 				0D21C35F13200CFE00A0B8BB /* NIB */,
@@ -702,6 +737,8 @@
 				0D21C3D7132012DE00A0B8BB /* Copy Frameworks */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
+				0DA290B51343710C000FC202 /* Set Build Number and Date */,
+				0DA2909813436FAA000FC202 /* Package and sign */,
 			);
 			buildRules = (
 			);
@@ -745,10 +782,42 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				0D23F569132129340011B219 /* menubar-icon.png in Resources */,
+				0DA2909E1343702A000FC202 /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0DA2909813436FAA000FC202 /* Package and sign */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Package and sign";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# if test \"$BUILD_STYLE\" != \"Release\"; then\n# \techo \"No in Release, not building the zip archive\";\n# \texit 0;\n# fi\n\nPACKAGEANDSIGN=1;\n\nif test $PACKAGEANDSIGN == 0; then\n\techo \"***** PACKAGING AND SIGNING IS CURRENTLY DISABLED *****\"\n\techo \"***** TO ENABLE, SET \"PACKAGEANDSIGN=1\" *****\"\n\texit 0;\nfi\n\necho \"***** PACKAGING APPLICATION... *****\"\n\nbuildPlist=\"Info.plist\"\nbuildVersion=$(/usr/libexec/PlistBuddy -c \"Print CFBuildVersion\" $buildPlist)\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBuildNumber\" $buildPlist)\n\nversion=\"$CONFIGURATION-\"$buildVersion.$buildNumber\n\nARCHIVE_FILENAME=\"URLCollector-$version.zip\"\n\ncd \"$BUILT_PRODUCTS_DIR\"\nrm $BUILT_PRODUCTS_DIR/URLCollector-*.zip $BUILT_PRODUCTS_DIR/*.signature\nditto -ck --keepParent \"$FULL_PRODUCT_NAME\" \"$ARCHIVE_FILENAME\"\n# open \"$BUILT_PRODUCTS_DIR\"\n\n################\n# Sign package #\n################\n\necho \"***** SIGNING PACKAGE... *****\"\n\nPACKAGE_PATH=\"$BUILT_PRODUCTS_DIR/$ARCHIVE_FILENAME\"\nPRIVATE_KEY_PATH=\"$SRCROOT/Signing/dsa_priv.pem\"\nSIGNATURE=`openssl dgst -sha1 -binary < \"$PACKAGE_PATH\" | openssl dgst -dss1 -sign \"$PRIVATE_KEY_PATH\" | openssl enc -base64`\nPACKAGE_SIZE=`ls -la \"$PACKAGE_PATH\" | awk '{print $5}'`\necho \"PACKAGE SIGNATURE: $SIGNATURE\"\necho \"PACKAGE SIZE: $PACKAGE_SIZE\"\n\nBUILD_PLIST=\"$SRCROOT/Info.plist\"\nBUNDLE_VERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" $BUILD_PLIST)\nBUILD_DATE=`date \"+%a, %d %b %Y %H:%M:%S %z\"`\nBASE_URL=\"http://dl.dropbox.com/u/185282/Sparkle-URLCollector\"\n\necho \"PACKAGE SIGNATURE: $SIGNATURE\" > $PACKAGE_PATH.signature\necho \"PACKAGE SIZE: $PACKAGE_SIZE\" >> $PACKAGE_PATH.signature\necho \"<pubDate>$BUILD_DATE</pubDate>\" >> $PACKAGE_PATH.signature\necho \"<enclosure url=\\\"$BASE_URL/$ARCHIVE_FILENAME\\\" sparkle:version=\\\"$BUNDLE_VERSION\\\" length=\\\"$PACKAGE_SIZE\\\" type=\\\"application/octet-stream\\\" sparkle:dsaSignature=\\\"$SIGNATURE\\\" />\" >> $PACKAGE_PATH.signature\n\necho \"***** PACKAGE SIGNED *****\"\n";
+		};
+		0DA290B51343710C000FC202 /* Set Build Number and Date */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Set Build Number and Date";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\n# Auto Increment Version Script\nbuildPlist=\"Info.plist\"\nbundlePlist=$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\necho $bundlePlist\nbuildVersion=$(/usr/libexec/PlistBuddy -c \"Print CFBuildVersion\" $buildPlist)\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBuildNumber\" $buildPlist)\nbuildNumber=$(($buildNumber + 1))\nbuildDate=$(date)\n/usr/libexec/PlistBuddy -c \"Set :CFBuildNumber $buildNumber\" $buildPlist\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildVersion.$buildNumber\" $buildPlist\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $buildVersion.$buildNumber\" $buildPlist\n/usr/libexec/PlistBuddy -c \"Set :CFBuildDate $buildDate\" $buildPlist\n\n/usr/libexec/PlistBuddy -c \"Set :CFBuildNumber $buildNumber\" \"$bundlePlist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildVersion.$buildNumber\" \"$bundlePlist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $buildVersion.$buildNumber\" \"$bundlePlist\"\n/usr/libexec/PlistBuddy -c \"Set :CFBuildDate $buildDate\" \"$bundlePlist\"\n\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -811,6 +880,8 @@
 				0D231E0B133CE20D0011B219 /* TFHpple.m in Sources */,
 				0D231E0C133CE20D0011B219 /* TFHppleElement.m in Sources */,
 				0D231E0D133CE20D0011B219 /* XPathQuery.m in Sources */,
+				0D2321391340E6220011B219 /* NSBezierPath+AMShading.m in Sources */,
+				0D2322251341E4C00011B219 /* UCNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
