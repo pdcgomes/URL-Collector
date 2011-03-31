@@ -380,10 +380,12 @@ static NSString *defaultSeralizationPath(void)
 	[self deregisterObservers];
 	
 	[self willChangeValueForKey:@"urlCollectorElements"];
-	if(urlCollectorElements) {
-		[urlCollectorElements removeAllObjects];
+	if(!urlCollectorElements) {
+		urlCollectorElements = [[NSMutableArray alloc] init];
 	}
-	urlCollectorElements = [[NSMutableArray alloc] initWithArray:storedData];
+	[urlCollectorElements removeAllObjects];
+	[urlCollectorElements addObjectsFromArray:storedData];
+	
 	[self didChangeValueForKey:@"urlCollectorElements"];
 	[self rebuildElementIndex];
 	
