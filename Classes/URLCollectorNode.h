@@ -20,6 +20,8 @@
 
 	NSDate				*createDate;	
 	NSUInteger			sortOrder;
+	
+	BOOL				hasChanges;
 }
 
 @property (nonatomic, readonly) NSString *nodeUUID;
@@ -34,5 +36,6 @@
 @property (nonatomic, assign) NSUInteger sortOrder;
 
 @property (nonatomic, readonly) NSString *contentsHash;
+@property (nonatomic, readonly) BOOL hasChanges;
 
 @end

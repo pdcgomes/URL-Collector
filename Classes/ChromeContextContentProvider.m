@@ -1,19 +1,19 @@
 //
-//  SafariContextContentProvider.m
+//  ChromeContextContentProvider.m
 //  SAPOPuny
 //
-//  Created by Pedro Gomes on 3/15/11.
+//  Created by Pedro Gomes on 3/31/11.
 //  Copyright 2011 SAPO. All rights reserved.
 //
 
-#import "SafariContextContentProvider.h"
-#import "Safari.h"
+#import "ChromeContextContentProvider.h"
+#import "Chrome.h"
 
-@implementation SafariContextContentProvider
+@implementation ChromeContextContentProvider
 
 + (NSString *)applicationIdentifier
 {
-	return @"com.apple.Safari";
+	return @"com.google.Chrome";
 }
 
 #pragma mark -
@@ -47,10 +47,10 @@
 		return nil;
 	}
 	
-	SafariWindow *firstWindow = [[application windows] objectAtIndex:0];
-	SafariTab *activeTab = [firstWindow currentTab];
+	ChromeWindow *firstWindow = [[application windows] objectAtIndex:0];
+	ChromeTab *activeTab = [firstWindow activeTab];
 	
-	//	NSString *tabTitle = activeTab.title;
+//	NSString *tabTitle = activeTab.title;
 	NSString *tabURLString = activeTab.URL;
 	NSURL *tabURL = [NSURL URLWithString:tabURLString];
 	
@@ -62,4 +62,5 @@
 			@"",						@"interactionPreposition",
 			nil];
 }
+
 @end

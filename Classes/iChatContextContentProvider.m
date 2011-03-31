@@ -11,6 +11,11 @@
 
 @implementation iChatContextContentProvider
 
++ (NSString *)applicationIdentifier
+{
+	return @"com.apple.iChat";
+}
+
 #pragma mark -
 #pragma mark Dealloc and Initialization
 

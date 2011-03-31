@@ -74,6 +74,11 @@
 		0DA2903A13436ECF000FC202 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA2903913436ECF000FC202 /* Sparkle.framework */; };
 		0DA2907B13436EDD000FC202 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA2903913436ECF000FC202 /* Sparkle.framework */; };
 		0DA2909E1343702A000FC202 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0DA2909D1343702A000FC202 /* dsa_pub.pem */; };
+		0DA292991343990C000FC202 /* UCIdentityDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA292981343990C000FC202 /* UCIdentityDetailViewController.m */; };
+		0DA2929C13439922000FC202 /* UCURLDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA2929B13439922000FC202 /* UCURLDetailViewController.m */; };
+		0DA292FA13448769000FC202 /* URLDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DA292F913448769000FC202 /* URLDetailView.xib */; };
+		0DA292FC13448773000FC202 /* IdentityDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DA292FB13448773000FC202 /* IdentityDetailView.xib */; };
+		0DA294201344E507000FC202 /* ChromeContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA2941F1344E507000FC202 /* ChromeContextContentProvider.m */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -233,6 +238,15 @@
 		0D8BCEDE1332A3750079E647 /* URLCollectorDatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorDatabaseManager.m; sourceTree = "<group>"; };
 		0DA2903913436ECF000FC202 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
 		0DA2909D1343702A000FC202 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
+		0DA292971343990C000FC202 /* UCIdentityDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UCIdentityDetailViewController.h; sourceTree = "<group>"; };
+		0DA292981343990C000FC202 /* UCIdentityDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UCIdentityDetailViewController.m; sourceTree = "<group>"; };
+		0DA2929A13439922000FC202 /* UCURLDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UCURLDetailViewController.h; sourceTree = "<group>"; };
+		0DA2929B13439922000FC202 /* UCURLDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UCURLDetailViewController.m; sourceTree = "<group>"; };
+		0DA292F913448769000FC202 /* URLDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = URLDetailView.xib; sourceTree = "<group>"; };
+		0DA292FB13448773000FC202 /* IdentityDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IdentityDetailView.xib; sourceTree = "<group>"; };
+		0DA2941C1344E481000FC202 /* Chrome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Chrome.h; path = ../../Projects/SAPOPuny/ScriptingBridge/Chrome.h; sourceTree = SOURCE_ROOT; };
+		0DA2941E1344E507000FC202 /* ChromeContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChromeContextContentProvider.h; sourceTree = "<group>"; };
+		0DA2941F1344E507000FC202 /* ChromeContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChromeContextContentProvider.m; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -266,6 +280,7 @@
 			children = (
 				0D2304C2132FD1B10011B219 /* Application */,
 				0D2304C7132FD1B10011B219 /* Common */,
+				0DA29296134398F6000FC202 /* Controllers */,
 				0D2304F0132FD1B10011B219 /* GUI */,
 				0D2304D6132FD1B10011B219 /* Model */,
 				0D2304DF132FD1B10011B219 /* URL Collector */,
@@ -277,7 +292,9 @@
 		0D21C35F13200CFE00A0B8BB /* NIB */ = {
 			isa = PBXGroup;
 			children = (
+				0DA292FB13448773000FC202 /* IdentityDetailView.xib */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+				0DA292F913448769000FC202 /* URLDetailView.xib */,
 			);
 			name = NIB;
 			sourceTree = "<group>";
@@ -429,6 +446,7 @@
 			children = (
 				0D230474132FCD3F0011B219 /* AddressBook.h */,
 				0D230475132FCD3F0011B219 /* Adium.h */,
+				0DA2941C1344E481000FC202 /* Chrome.h */,
 				0D230476132FCD3F0011B219 /* iCal.h */,
 				0D230477132FCD3F0011B219 /* iChat.h */,
 				0D230478132FCD3F0011B219 /* Mail.h */,
@@ -589,6 +607,8 @@
 				0D2305B3132FE25D0011B219 /* URLCollectorContextContentProvider.m */,
 				0D23056A132FD69C0011B219 /* XcodeContextContentProvider.h */,
 				0D23056B132FD69C0011B219 /* XcodeContextContentProvider.m */,
+				0DA2941E1344E507000FC202 /* ChromeContextContentProvider.h */,
+				0DA2941F1344E507000FC202 /* ChromeContextContentProvider.m */,
 			);
 			name = "Content Providers";
 			sourceTree = "<group>";
@@ -650,6 +670,17 @@
 				0DA2909D1343702A000FC202 /* dsa_pub.pem */,
 			);
 			name = Signing;
+			sourceTree = "<group>";
+		};
+		0DA29296134398F6000FC202 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0DA292971343990C000FC202 /* UCIdentityDetailViewController.h */,
+				0DA292981343990C000FC202 /* UCIdentityDetailViewController.m */,
+				0DA2929A13439922000FC202 /* UCURLDetailViewController.h */,
+				0DA2929B13439922000FC202 /* UCURLDetailViewController.m */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
@@ -783,6 +814,8 @@
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				0D23F569132129340011B219 /* menubar-icon.png in Resources */,
 				0DA2909E1343702A000FC202 /* dsa_pub.pem in Resources */,
+				0DA292FA13448769000FC202 /* URLDetailView.xib in Resources */,
+				0DA292FC13448773000FC202 /* IdentityDetailView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -882,6 +915,9 @@
 				0D231E0D133CE20D0011B219 /* XPathQuery.m in Sources */,
 				0D2321391340E6220011B219 /* NSBezierPath+AMShading.m in Sources */,
 				0D2322251341E4C00011B219 /* UCNavigationController.m in Sources */,
+				0DA292991343990C000FC202 /* UCIdentityDetailViewController.m in Sources */,
+				0DA2929C13439922000FC202 /* UCURLDetailViewController.m in Sources */,
+				0DA294201344E507000FC202 /* ChromeContextContentProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

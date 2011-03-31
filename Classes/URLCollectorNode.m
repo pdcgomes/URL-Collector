@@ -18,6 +18,7 @@
 @synthesize isLocked;
 @synthesize createDate;
 @synthesize sortOrder;
+@synthesize hasChanges;
 @dynamic contentsHash;
 @dynamic numberOfChildren;
 
@@ -120,6 +121,18 @@
 - (NSString *)contentsHash
 {
 	return nil;
+}
+
+#pragma -
+#pragma mark KVO
+
++ (NSSet *)keyPathsForValuesAffectingHasChanges
+{
+	return [NSSet setWithObjects:
+			@"nodeName",
+			@"sortOrder",
+			@"children",
+			nil];
 }
 
 @end

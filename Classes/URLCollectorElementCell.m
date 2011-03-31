@@ -112,22 +112,30 @@
 	
 }
 
+#define EXPANSION_FRAME_INSET_AMOUNT 2.0
 - (void)drawWithExpansionFrame:(NSRect)cellFrame inView:(NSView *)view
 {
-	[urlCell drawWithExpansionFrame:cellFrame inView:view];
+	NSRect innerRect = NSInsetRect(cellFrame, EXPANSION_FRAME_INSET_AMOUNT, EXPANSION_FRAME_INSET_AMOUNT);
+	[[urlCell title] drawAtPoint:innerRect.origin withAttributes:nil];
 }
 
 - (NSRect)expansionFrameWithFrame:(NSRect)cellFrame inView:(NSView *)view
 {
 	CGEventRef event = CGEventCreate(NULL);
-	CGPoint location = CGEventGetLocation(event);
+	CGPoint location = CGEventGetLocation(event); // global display coordinates (0,0) = top,left
 	CFRelease(event);
 	
 	NSWindow *window = [view window];
+	CGFloat displayHeight = NSHeight([[window screen] frame]);
+	location.y = displayHeight - location.y; // we need convert the coordinate system, since convertScreenToBase assumes Screen coordinate system (0,0) = bottom,left
+
 	CGPoint point = [window convertScreenToBase:location];
-	
-	NSRect tooltipFrame = NSMakeRect(point.x, point.y, 200, 200);
-	return [urlCell expansionFrameWithFrame:tooltipFrame inView:view];
+	if([view isFlipped]) {
+		point.y = NSHeight([view frame]) - point.y;
+	}
+
+	NSSize URLStringSize = [[urlCell title] sizeWithAttributes:nil];
+	return NSInsetRect(NSMakeRect(point.x, point.y, URLStringSize.width, URLStringSize.height), -EXPANSION_FRAME_INSET_AMOUNT, -EXPANSION_FRAME_INSET_AMOUNT); // replace the hard coded size with the appropriate calculations
 }
 
 //- (NSColor *)highlightColorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView

@@ -11,6 +11,11 @@
 
 @implementation URLCollectorContextContentProvider
 
++ (NSString *)applicationIdentifier
+{
+	return nil;
+}
+
 - (NSDictionary *)extractContent
 {
 	return nil;

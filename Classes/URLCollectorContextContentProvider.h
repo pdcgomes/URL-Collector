@@ -15,6 +15,7 @@
 
 }
 
++ (NSString *)applicationIdentifier;
 - (NSDictionary *)extractContent;
 
 @end

@@ -13,6 +13,7 @@
 
 #import "AddressBookContextContentProvider.h"
 #import "AdiumContextContentProvider.h"
+#import "ChromeContextContentProvider.h"
 #import "GenericContextContentProvider.h"
 #import "iCalContextContentProvider.h"
 #import "iChatContextContentProvider.h"
@@ -85,10 +86,11 @@ SK_OBJECT_SINGLETON_BOILERPLATE(URLCollectorContextRecognizer, sharedInstance);
 								 [iCalContextContentProvider class],		@"com.apple.iCal",
 								 [iChatContextContentProvider class],		@"com.apple.iChat",
 								 [MailContextContentProvider class],		@"com.apple.mail",
-								 [SafariContextContentProvider class],		@"com.apple.Safari",
+								 [SafariContextContentProvider class],		[SafariContextContentProvider applicationIdentifier],
 								 [XcodeContextContentProvider class],		@"com.apple.Xcode",
 								 // Non-apple
 								 [AdiumContextContentProvider class],		@"com.adiumX.adiumX",
+								 [ChromeContextContentProvider class],		[ChromeContextContentProvider applicationIdentifier],
 								 nil];
 	}
 	return [supportedApplications containsKey:bundleIdentifier];

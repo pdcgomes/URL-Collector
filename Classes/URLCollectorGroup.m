@@ -179,9 +179,9 @@
 #pragma mark KVO
 
 // Automatically notifies of count changes when "children" changes
-+ (NSSet *)keyPathsForValuesAffectingNumberOfChildren
-{
-	return [NSSet setWithObject:@"children"];
-}
+//+ (NSSet *)keyPathsForValuesAffectingNumberOfChildren
+//{
+//	return [NSSet setWithObject:@"children"];
+//}
 
 @end

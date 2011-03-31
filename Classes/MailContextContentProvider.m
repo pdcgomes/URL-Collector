@@ -11,6 +11,11 @@
 
 @implementation MailContextContentProvider
 
++ (NSString *)applicationIdentifier
+{
+	return @"com.apple.mail";
+}
+
 #pragma mark -
 #pragma mark Dealloc and Initialization
 

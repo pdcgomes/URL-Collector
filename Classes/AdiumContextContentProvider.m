@@ -11,6 +11,11 @@
 
 @implementation AdiumContextContentProvider
 
++ (NSString *)applicationIdentifier
+{
+	return @"com.adiumX.adiumX";
+}
+
 #pragma mark -
 #pragma mark Dealloc and Initialization
 

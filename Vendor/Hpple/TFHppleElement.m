@@ -71,7 +71,7 @@ NSString * const TFHppleNodeAttributeNameKey     = @"attributeName";
 {
   NSMutableDictionary * translatedAttributes = [NSMutableDictionary dictionary];
   for (NSDictionary * attributeDict in [node objectForKey:TFHppleNodeAttributeArrayKey]) {
-    [translatedAttributes setObject:[attributeDict objectForKey:TFHppleNodeContentKey]
+	  [translatedAttributes setObject:[attributeDict objectForKey:TFHppleNodeContentKey] ? [attributeDict objectForKey:TFHppleNodeContentKey] : [NSNull null]
                              forKey:[attributeDict objectForKey:TFHppleNodeAttributeNameKey]];
   }
   return translatedAttributes;

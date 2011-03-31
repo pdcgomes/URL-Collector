@@ -9,9 +9,11 @@
 #import <Cocoa/Cocoa.h>
 #import "URLCollectorContextContentProvider.h"
 
+@class SafariApplication;
+
 @interface SafariContextContentProvider : URLCollectorContextContentProvider
 {
-
+	SafariApplication	*application;
 }
 
 @end

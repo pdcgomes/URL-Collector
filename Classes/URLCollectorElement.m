@@ -125,6 +125,7 @@
 
 - (void)updateClassification:(NSDictionary *)classificationInfo
 {
+	[self willChangeValueForKey:@"classification"];
 	if(!classification) {
 		classification = [[NSMutableDictionary alloc] init];
 	}
@@ -133,6 +134,26 @@
 	if([classification containsKey:URLClassificationTitleKey]) {
 		self.URLName = [classification objectForKey:URLClassificationTitleKey];
 	}
+	[self didChangeValueForKey:@"classification"];
+}
+
+#pragma -
+#pragma mark KVO
+
++ (NSSet *)keyPathsForValuesAffectingHasChanges
+{
+	NSMutableSet *keyPaths = [[NSMutableSet alloc] initWithSet:[super keyPathsForValuesAffectingValueForKey:@"hasChanges"]];
+	[keyPaths unionSet:[NSSet setWithObjects:
+						@"URL",
+						@"URLName",
+						@"tags",
+						@"context",
+						@"classification",
+						@"isUnread",
+						nil]];
+	NSSet *affectingKeyPaths = [NSSet setWithSet:keyPaths];
+	[keyPaths release];
+	return affectingKeyPaths;
 }
 
 @end
