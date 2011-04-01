@@ -11,6 +11,7 @@
 #import "URLCollectorElement.h"
 #import "TFHpple.h"
 #import "RegexKitLite.h"
+#import "NSString+Additions.h"
 
 enum {
 	ClassiftyURLStateInitialized = 0,
@@ -204,6 +205,34 @@ enum {
 		TRACE(@"name = %@, content = %@", [metaElement objectForKey:@"name"], [metaElement objectForKey:@"content"]);
 	}
 	[interestingMetaTags release];
+	
+	////
+	NSArray *linkElements = [HTMLParser search:@"//link"];
+	for(TFHppleElement *linkElement in linkElements) {
+		if(NSNotFound == [[linkElement objectForKey:@"rel"] rangeOfString:@"icon" options:NSCaseInsensitiveSearch].location) {
+			continue;
+		}
+		NSString *iconImageType = [linkElement objectForKey:@"type"];
+		if(iconImageType && ![iconImageType isMatchedByRegex:@"(png|jpg|gif|ico|x\\-icon)$"]) { // TODO: matching needs to be smarter
+			WARN(@"Found a possible match for a favicon but the declared icon MIME Type <%@> isn't recognized", iconImageType);
+			continue;
+		}
+		
+		NSString *iconURL = [linkElement objectForKey:@"href"];
+		if(iconURL) {
+			if(![iconURL isValidURL]) {
+				NSURL *elementURL = [NSURL URLWithString:element.URL];
+				iconURL = [[elementURL host] stringByAppendingPathComponent:iconURL];
+				if(![iconURL hasPrefix:@"http://"]) {
+					iconURL = [@"http://" stringByAppendingString:iconURL];
+				}
+			}
+			[classification setObject:iconURL forKey:URLClassificationImageKey];
+
+			TRACE(@"favicon = %@", iconURL);
+			break;
+		}
+	}
 	[HTMLParser release];
 }
 
@@ -217,7 +246,7 @@ enum {
 	TRACE(@"Mime type: %@", MIMEType);
 	[classification setObject:MIMEType forKey:URLClassificationMIMETypeKey];
 	
-	if(NSNotFound == [MIMEType rangeOfString:@"html"].location) { // rough method to test if it's an html document or some other file 
+	if(NSNotFound == [MIMEType rangeOfString:@"html" options:NSCaseInsensitiveSearch].location) { // rough method to test if it's an html document or some other file 
 		[classification setObject:[response suggestedFilename] forKey:URLClassificationTitleKey];
 		[theConnection cancel]; // we don't want to continue downloading. The mime type will be used to display a representation of the (probable) file type, and the suggested filename will be used as the title
 		self.isFinished = YES;

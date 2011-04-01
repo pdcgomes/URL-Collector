@@ -17,6 +17,7 @@
 @synthesize context;
 @synthesize tags;
 @synthesize isUnread;
+@synthesize classification;
 
 #pragma mark -
 #pragma mark Dealloc and Initialization

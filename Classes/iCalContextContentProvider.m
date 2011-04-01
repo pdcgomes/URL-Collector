@@ -8,7 +8,11 @@
 
 #import "iCalContextContentProvider.h"
 
-
 @implementation iCalContextContentProvider
+
++ (NSString *)applicationIdentifier
+{
+	return @"com.apple.iCal";
+}
 
 @end

@@ -460,7 +460,7 @@
 
 - (void)elementCellIdentityButtonClicked:(id)sender
 {
-	TRACE(@"");
+	TRACE(@"TODO: present identity detail view");
 }
 
 #pragma mark -

@@ -27,7 +27,7 @@
 
 	IBOutlet URLCollectorOutlineView	*urlCollectorOutlineView;
 	IBOutlet URLCollectorDataSource		*urlCollectorDataSource;
-
+	
 	URLShortener						*urlShortener;
 	
 	NSMutableDictionary					*cachedOutlineViewRowHeights;

@@ -33,6 +33,7 @@
 @property (nonatomic, retain) URLCollectorContext *context;
 
 @property (nonatomic, assign) BOOL isUnread;
+@property (nonatomic, readonly) NSDictionary *classification;
 
 - (void)updateClassification:(NSDictionary *)classificationInfo;
 

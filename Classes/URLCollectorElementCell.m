@@ -11,6 +11,7 @@
 
 #import "URLCollectorGroup.h"
 #import "URLCollectorElement.h"
+#import "URLCollectorContentClassifier.h"
 
 @interface URLCollectorElementCell(Private)
 
@@ -31,6 +32,7 @@
 	[interactionTypeCell release];
 	[extraInfoCell release];
 	[identityButtonCell release];
+	[iconCell release];
 	
 	[super dealloc];
 }
@@ -75,6 +77,7 @@
 	copy->interactionTypeCell = [interactionTypeCell copyWithZone:zone];
 	copy->identityButtonCell = [identityButtonCell copyWithZone:zone];
 	copy->extraInfoCell = [extraInfoCell copyWithZone:zone];
+	copy->iconCell = [iconCell copyWithZone:zone];
 	
 //	[self reconfigureSubCells];
 	
@@ -94,22 +97,18 @@
 #pragma mark -
 #pragma mark NSCell drawing
 
-#define TITLE_LABEL_HEIGHT		18.0
-#define URL_BUTTON_HEIGHT		18.0
-#define CONTEXT_LABEL_HEIGHT	18.0
-
 - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
 	[self initCellIfNeeded];
 	[self reconfigureSubCellsWithCellFrame:cellFrame];
 	
 	[titleCell drawInteriorWithFrame:titleCellFrame inView:controlView];
+	[iconCell drawInteriorWithFrame:iconCellFrame inView:controlView];
 	[urlCell drawInteriorWithFrame:urlCellFrame inView:controlView];
 	[interactionTypeCell drawInteriorWithFrame:interactionCellFrame inView:controlView];
 	[identityButtonCell drawBezelWithFrame:identityButtonCellFrame inView:controlView];
 	[identityButtonCell drawInteriorWithFrame:identityButtonCellFrame inView:controlView];
 	[extraInfoCell drawInteriorWithFrame:extraInfoCellFrame inView:controlView];
-	
 }
 
 #define EXPANSION_FRAME_INSET_AMOUNT 2.0
@@ -244,7 +243,16 @@
 		[extraInfoCell setDrawsBackground:NO];
 		[extraInfoCell setTextColor:[NSColor whiteColor]];
 	}
+	if(!iconCell) {
+		iconCell = [[NSImageCell alloc] initImageCell:nil];
+		[iconCell setControlView:[self controlView]];
+	}
 }
+
+#define TITLE_LABEL_HEIGHT		18.0
+#define URL_BUTTON_HEIGHT		18.0
+#define CONTEXT_LABEL_HEIGHT	18.0
+#define ICON_SIZE				16.0
 
 - (void)reconfigureSubCellsWithCellFrame:(NSRect)cellFrame
 {
@@ -285,14 +293,21 @@
 		[urlCell setTitle:SKSafeString(representedObject.URL)];
 	}
 	////
-	
 	[interactionTypeCell setTitle:SKSafeString(representedObject.context.interaction)];
 	[identityButtonCell setTitle:SKSafeString(representedObject.context.contextName)];
 	[extraInfoCell setTitle:SKStringWithFormat(@"(via %@)", representedObject.context.applicationName)];
 	
 	// Drawing
 	titleCellFrame	= NSMakeRect(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width, TITLE_LABEL_HEIGHT);
-	urlCellFrame		= NSOffsetRect(titleCellFrame, 0, TITLE_LABEL_HEIGHT + 2.0);
+	if([representedObject.classification containsKey:URLClassificationImageKey]) {
+		NSImage *icon = [[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:[representedObject.classification objectForKey:URLClassificationImageKey]]];
+		[iconCell setImage:icon];
+		iconCellFrame = NSMakeRect(cellFrame.origin.x, NSMaxY(titleCellFrame) + 2.0, ICON_SIZE, ICON_SIZE);
+		urlCellFrame	= NSMakeRect(NSMaxX(iconCellFrame), NSMaxY(titleCellFrame) + 2.0, cellFrame.size.width - NSWidth(iconCellFrame), TITLE_LABEL_HEIGHT);
+	}
+	else {
+		urlCellFrame	= NSOffsetRect(titleCellFrame, 0, TITLE_LABEL_HEIGHT + 2.0);
+	}
 	
 	// Interaction type
 	NSDictionary *textAttributes	= [[NSDictionary alloc] initWithObjectsAndKeys:[interactionTypeCell font], NSFontAttributeName, nil];

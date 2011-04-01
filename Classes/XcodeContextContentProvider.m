@@ -8,7 +8,11 @@
 
 #import "XcodeContextContentProvider.h"
 
-
 @implementation XcodeContextContentProvider
+
++ (NSString *)applicationIdentifier
+{
+	return @"com.apple.Xcode";
+}
 
 @end

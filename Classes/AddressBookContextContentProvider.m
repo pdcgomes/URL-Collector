@@ -10,4 +10,9 @@
 
 @implementation AddressBookContextContentProvider
 
++ (NSString *)applicationIdentifier
+{
+	return @"com.apple.AddressBook";
+}
+
 @end

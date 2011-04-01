@@ -17,9 +17,11 @@
 	NSTextFieldCell	*interactionTypeCell;
 	NSTextFieldCell	*extraInfoCell;
 	NSButtonCell	*identityButtonCell;
+	NSImageCell		*iconCell;
 	
 	NSRect			titleCellFrame;
 	NSRect			urlCellFrame;
+	NSRect			iconCellFrame;
 	NSRect			interactionCellFrame;
 	NSRect			extraInfoCellFrame;
 	NSRect			identityButtonCellFrame;

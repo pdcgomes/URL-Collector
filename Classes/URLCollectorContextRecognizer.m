@@ -82,14 +82,14 @@ SK_OBJECT_SINGLETON_BOILERPLATE(URLCollectorContextRecognizer, sharedInstance);
 	if(supportedApplications == nil) {
 		supportedApplications = [[NSDictionary alloc] initWithObjectsAndKeys:
 								 // Apple applications
-								 [AddressBookContextContentProvider class],	@"com.apple.AddressBook",
-								 [iCalContextContentProvider class],		@"com.apple.iCal",
-								 [iChatContextContentProvider class],		@"com.apple.iChat",
-								 [MailContextContentProvider class],		@"com.apple.mail",
+								 [AddressBookContextContentProvider class],	[AddressBookContextContentProvider applicationIdentifier],
+								 [iCalContextContentProvider class],		[iCalContextContentProvider applicationIdentifier],
+								 [iChatContextContentProvider class],		[iChatContextContentProvider applicationIdentifier],
+								 [MailContextContentProvider class],		[MailContextContentProvider applicationIdentifier],
 								 [SafariContextContentProvider class],		[SafariContextContentProvider applicationIdentifier],
-								 [XcodeContextContentProvider class],		@"com.apple.Xcode",
+								 [XcodeContextContentProvider class],		[XcodeContextContentProvider applicationIdentifier],
 								 // Non-apple
-								 [AdiumContextContentProvider class],		@"com.adiumX.adiumX",
+								 [AdiumContextContentProvider class],		[AdiumContextContentProvider applicationIdentifier],
 								 [ChromeContextContentProvider class],		[ChromeContextContentProvider applicationIdentifier],
 								 nil];
 	}

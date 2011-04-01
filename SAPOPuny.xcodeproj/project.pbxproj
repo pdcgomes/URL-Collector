@@ -68,7 +68,6 @@
 		0D231E0D133CE20D0011B219 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D231E0A133CE20D0011B219 /* XPathQuery.m */; };
 		0D2321391340E6220011B219 /* NSBezierPath+AMShading.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2321381340E6220011B219 /* NSBezierPath+AMShading.m */; };
 		0D2322251341E4C00011B219 /* UCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2322241341E4C00011B219 /* UCNavigationController.m */; };
-		0D23F569132129340011B219 /* menubar-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D23F568132129340011B219 /* menubar-icon.png */; };
 		0D8BCEDA1332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */; };
 		0D8BCEDF1332A3750079E647 /* URLCollectorDatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8BCEDE1332A3750079E647 /* URLCollectorDatabaseManager.m */; };
 		0DA2903A13436ECF000FC202 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA2903913436ECF000FC202 /* Sparkle.framework */; };
@@ -79,6 +78,8 @@
 		0DA292FA13448769000FC202 /* URLDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DA292F913448769000FC202 /* URLDetailView.xib */; };
 		0DA292FC13448773000FC202 /* IdentityDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DA292FB13448773000FC202 /* IdentityDetailView.xib */; };
 		0DA294201344E507000FC202 /* ChromeContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA2941F1344E507000FC202 /* ChromeContextContentProvider.m */; };
+		0DA294BE1345DBBD000FC202 /* menubar-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA294BD1345DBBD000FC202 /* menubar-icon.png */; };
+		0DA295E013462717000FC202 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA295DF13462717000FC202 /* NSString+Additions.m */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -231,7 +232,7 @@
 		0D2321381340E6220011B219 /* NSBezierPath+AMShading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBezierPath+AMShading.m"; sourceTree = "<group>"; };
 		0D2322231341E4C00011B219 /* UCNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UCNavigationController.h; sourceTree = "<group>"; };
 		0D2322241341E4C00011B219 /* UCNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UCNavigationController.m; sourceTree = "<group>"; };
-		0D23F568132129340011B219 /* menubar-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon.png"; sourceTree = "<group>"; };
+		0D23F568132129340011B219 /* menubar-icon.old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon.old.png"; sourceTree = "<group>"; };
 		0D8BCED81332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorDatabaseSynchronizer.h; sourceTree = "<group>"; };
 		0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorDatabaseSynchronizer.m; sourceTree = "<group>"; };
 		0D8BCEDD1332A3750079E647 /* URLCollectorDatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorDatabaseManager.h; sourceTree = "<group>"; };
@@ -247,6 +248,9 @@
 		0DA2941C1344E481000FC202 /* Chrome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Chrome.h; path = ../../Projects/SAPOPuny/ScriptingBridge/Chrome.h; sourceTree = SOURCE_ROOT; };
 		0DA2941E1344E507000FC202 /* ChromeContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChromeContextContentProvider.h; sourceTree = "<group>"; };
 		0DA2941F1344E507000FC202 /* ChromeContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChromeContextContentProvider.m; sourceTree = "<group>"; };
+		0DA294BD1345DBBD000FC202 /* menubar-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon.png"; sourceTree = "<group>"; };
+		0DA295DE13462717000FC202 /* NSString+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Additions.h"; sourceTree = "<group>"; };
+		0DA295DF13462717000FC202 /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -255,7 +259,7 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8D1107320486CEB800E47090 /* SAPOPuny.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SAPOPuny.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D1107320486CEB800E47090 /* URLCollector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = URLCollector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -473,6 +477,8 @@
 				0D2304C8132FD1B10011B219 /* Additions.h */,
 				0D2304C9132FD1B10011B219 /* Constants.h */,
 				0D2304CA132FD1B10011B219 /* Constants.m */,
+				0D231CD4133BB08B0011B219 /* Globals.h */,
+				0D231CD5133BB08B0011B219 /* Globals.m */,
 				0D2304CB132FD1B10011B219 /* Logging.h */,
 				0D2304CC132FD1B10011B219 /* Macros.h */,
 				0D2304CD132FD1B10011B219 /* NSBundle+Additions.h */,
@@ -481,11 +487,11 @@
 				0D2304D0132FD1B10011B219 /* NSDictionary+Additions.m */,
 				0D2304D1132FD1B10011B219 /* NSManagedObject+Additions.h */,
 				0D2304D2132FD1B10011B219 /* NSManagedObject+Additions.m */,
+				0DA295DE13462717000FC202 /* NSString+Additions.h */,
+				0DA295DF13462717000FC202 /* NSString+Additions.m */,
 				0D2304D3132FD1B10011B219 /* SKManagedObjectContextManager.h */,
 				0D2304D4132FD1B10011B219 /* SKManagedObjectContextManager.m */,
 				0D2304D5132FD1B10011B219 /* SKObjectSingleton.h */,
-				0D231CD4133BB08B0011B219 /* Globals.h */,
-				0D231CD5133BB08B0011B219 /* Globals.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -593,6 +599,8 @@
 				0D230549132FD5160011B219 /* AddressBookContextContentProvider.m */,
 				0D230557132FD5430011B219 /* AdiumContextContentProvider.h */,
 				0D230558132FD5430011B219 /* AdiumContextContentProvider.m */,
+				0DA2941E1344E507000FC202 /* ChromeContextContentProvider.h */,
+				0DA2941F1344E507000FC202 /* ChromeContextContentProvider.m */,
 				0D23055F132FD59D0011B219 /* GenericContextContentProvider.h */,
 				0D230560132FD59D0011B219 /* GenericContextContentProvider.m */,
 				0D230567132FD6970011B219 /* iCalContextContentProvider.h */,
@@ -607,8 +615,6 @@
 				0D2305B3132FE25D0011B219 /* URLCollectorContextContentProvider.m */,
 				0D23056A132FD69C0011B219 /* XcodeContextContentProvider.h */,
 				0D23056B132FD69C0011B219 /* XcodeContextContentProvider.m */,
-				0DA2941E1344E507000FC202 /* ChromeContextContentProvider.h */,
-				0DA2941F1344E507000FC202 /* ChromeContextContentProvider.m */,
 			);
 			name = "Content Providers";
 			sourceTree = "<group>";
@@ -659,7 +665,8 @@
 		0D23F536132108DB0011B219 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				0D23F568132129340011B219 /* menubar-icon.png */,
+				0DA294BD1345DBBD000FC202 /* menubar-icon.png */,
+				0D23F568132129340011B219 /* menubar-icon.old.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -706,7 +713,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107320486CEB800E47090 /* SAPOPuny.app */,
+				8D1107320486CEB800E47090 /* URLCollector.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -760,9 +767,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8D1107260486CEB800E47090 /* SAPOPuny */ = {
+		8D1107260486CEB800E47090 /* URLCollector */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "SAPOPuny" */;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "URLCollector" */;
 			buildPhases = (
 				8D1107290486CEB800E47090 /* Resources */,
 				0D21C3D7132012DE00A0B8BB /* Copy Frameworks */,
@@ -775,10 +782,10 @@
 			);
 			dependencies = (
 			);
-			name = SAPOPuny;
+			name = URLCollector;
 			productInstallPath = "$(HOME)/Applications";
 			productName = SAPOPuny;
-			productReference = 8D1107320486CEB800E47090 /* SAPOPuny.app */;
+			productReference = 8D1107320486CEB800E47090 /* URLCollector.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -800,7 +807,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D1107260486CEB800E47090 /* SAPOPuny */,
+				8D1107260486CEB800E47090 /* URLCollector */,
 			);
 		};
 /* End PBXProject section */
@@ -812,10 +819,10 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
-				0D23F569132129340011B219 /* menubar-icon.png in Resources */,
 				0DA2909E1343702A000FC202 /* dsa_pub.pem in Resources */,
 				0DA292FA13448769000FC202 /* URLDetailView.xib in Resources */,
 				0DA292FC13448773000FC202 /* IdentityDetailView.xib in Resources */,
+				0DA294BE1345DBBD000FC202 /* menubar-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -918,6 +925,7 @@
 				0DA292991343990C000FC202 /* UCIdentityDetailViewController.m in Sources */,
 				0DA2929C13439922000FC202 /* UCURLDetailViewController.m in Sources */,
 				0DA294201344E507000FC202 /* ChromeContextContentProvider.m in Sources */,
+				0DA295E013462717000FC202 /* NSString+Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -960,7 +968,7 @@
 				GCC_PREFIX_HEADER = SAPOPuny_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = SAPOPuny;
+				PRODUCT_NAME = URLCollector;
 			};
 			name = Debug;
 		};
@@ -1023,7 +1031,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "SAPOPuny" */ = {
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "URLCollector" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4B08A954540054247B /* Debug */,
