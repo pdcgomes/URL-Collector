@@ -8,15 +8,18 @@
 
 #import "URLCollectorElement.h"
 #import "URLCollectorContentClassifier.h"
+#import "UCImageLoader.h"
 
 @implementation URLCollectorElement
 
 @synthesize data;
 @synthesize URL;
 @synthesize URLName;
+@synthesize icon;
 @synthesize context;
 @synthesize tags;
 @synthesize isUnread;
+@synthesize isIconLoaded;
 @synthesize classification;
 
 #pragma mark -
@@ -24,12 +27,16 @@
 
 - (void)dealloc
 {
+	[imageLoader cancel];
+	
 	SKSafeRelease(data);
 	SKSafeRelease(context);
 	SKSafeRelease(tags);
 	SKSafeRelease(URL);
 	SKSafeRelease(URLName);
+	SKSafeRelease(icon);
 	SKSafeRelease(classification);
+	SKSafeRelease(imageLoader);
 	
 	[super dealloc];
 }
@@ -70,6 +77,7 @@
 		isUnread	= [aDecoder decodeBoolForKey:@"isUnread"];
 		context		= [[aDecoder decodeObjectForKey:@"context"] retain];
 		classification = [[aDecoder decodeObjectForKey:@"classification"] retain];
+		isIconLoaded = NO;
 	}
 	return self;
 }
@@ -87,6 +95,7 @@
 	copy->context = [context copy];
 	copy->classification = [classification copy];	
 	copy->isUnread = isUnread;
+	copy->isIconLoaded = isIconLoaded;
 
 	return copy;
 }
@@ -136,6 +145,42 @@
 		self.URLName = [classification objectForKey:URLClassificationTitleKey];
 	}
 	[self didChangeValueForKey:@"classification"];
+}
+
+- (void)loadIconIfNeeded
+{
+	if(isIconLoaded) {
+		[self willChangeValueForKey:@"isIconLoaded"];
+		[self didChangeValueForKey:@"isIconLoaded"];
+		return;
+	}
+	
+	NSString *iconURL = [self.classification objectForKey:URLClassificationImageKey];
+	if(iconURL) {
+		imageLoader = [[UCImageLoader alloc] initWithImageURL:iconURL delegate:self];
+		[imageLoader load];
+	}
+}
+
+#pragma mark -
+#pragma mark UCImageLoaderDelegate
+
+- (void)imageLoader:(UCImageLoader *)theImageLoader didFinishLoadingImage:(NSImage *)image
+{
+	[self willChangeValueForKey:@"isIconLoaded"];
+	icon = [image retain];
+	isIconLoaded = YES;
+	[self didChangeValueForKey:@"isIconLoaded"];
+	
+	[imageLoader release], imageLoader = nil;
+}
+
+- (void)imageLoader:(UCImageLoader *)theImageLoader didFailWithError:(NSError *)error
+{
+	[self willChangeValueForKey:@"isIconLoaded"];
+	[imageLoader release], imageLoader = nil;	
+	isIconLoaded = NO;
+	[self didChangeValueForKey:@"isIconLoaded"];
 }
 
 #pragma -

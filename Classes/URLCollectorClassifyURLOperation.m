@@ -182,6 +182,7 @@ enum {
 	// Think about deriving context from other sources (google social API?)
 	TFHpple *HTMLParser = [[TFHpple alloc] initWithHTMLData:connectionData];
 	
+	// Extract the document title
 	TFHppleElement *titleElement = [[HTMLParser search:@"//title"] lastObject];
 	if(titleElement) {
 		NSString *title = [[titleElement content] stringByReplacingOccurrencesOfString:@"\n" withString:@""];
@@ -190,6 +191,7 @@ enum {
 		[classification setObject:title forKey:URLClassificationTitleKey];
 	}
 	
+	// Extract interesting <meta> tags
 	NSDictionary *interestingMetaTags = [[NSDictionary alloc] initWithObjectsAndKeys:
 										 URLClassificationDescriptionKey,	@"description",
 										 URLClassificationKeywordsKey,		@"keywords",
@@ -206,7 +208,7 @@ enum {
 	}
 	[interestingMetaTags release];
 	
-	////
+	// Extract the favicon
 	NSArray *linkElements = [HTMLParser search:@"//link"];
 	for(TFHppleElement *linkElement in linkElements) {
 		if(NSNotFound == [[linkElement objectForKey:@"rel"] rangeOfString:@"icon" options:NSCaseInsensitiveSearch].location) {

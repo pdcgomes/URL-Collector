@@ -8,7 +8,6 @@
 
 #import <BWToolkitFramework/BWToolkitFramework.h>
 #import "URLCollectorElementCell.h"
-
 #import "URLCollectorGroup.h"
 #import "URLCollectorElement.h"
 #import "URLCollectorContentClassifier.h"
@@ -78,8 +77,6 @@
 	copy->identityButtonCell = [identityButtonCell copyWithZone:zone];
 	copy->extraInfoCell = [extraInfoCell copyWithZone:zone];
 	copy->iconCell = [iconCell copyWithZone:zone];
-	
-//	[self reconfigureSubCells];
 	
 	return copy;
 	
@@ -299,14 +296,12 @@
 	
 	// Drawing
 	titleCellFrame	= NSMakeRect(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width, TITLE_LABEL_HEIGHT);
-	if([representedObject.classification containsKey:URLClassificationImageKey]) {
-		NSImage *icon = [[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:[representedObject.classification objectForKey:URLClassificationImageKey]]];
-		[iconCell setImage:icon];
+	urlCellFrame	= NSOffsetRect(titleCellFrame, 0, TITLE_LABEL_HEIGHT + 2.0);
+	
+	if(representedObject.isIconLoaded) {
+		[iconCell setImage:representedObject.icon];
 		iconCellFrame = NSMakeRect(cellFrame.origin.x, NSMaxY(titleCellFrame) + 2.0, ICON_SIZE, ICON_SIZE);
 		urlCellFrame	= NSMakeRect(NSMaxX(iconCellFrame), NSMaxY(titleCellFrame) + 2.0, cellFrame.size.width - NSWidth(iconCellFrame), TITLE_LABEL_HEIGHT);
-	}
-	else {
-		urlCellFrame	= NSOffsetRect(titleCellFrame, 0, TITLE_LABEL_HEIGHT + 2.0);
 	}
 	
 	// Interaction type

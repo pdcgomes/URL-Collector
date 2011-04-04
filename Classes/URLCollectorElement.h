@@ -11,18 +11,23 @@
 #import "URLCollectorContext.h"
 
 @class URLCollectorGroup;
+@class UCImageLoader;
 
 @interface URLCollectorElement : URLCollectorNode 
 {
 	id					data;
 	NSString			*URL;
 	NSString			*URLName;
+	NSImage				*icon;
 	NSMutableArray		*tags;
 
 	URLCollectorContext	*context;
 	NSMutableDictionary	*classification;
 	
 	BOOL				isUnread;
+	
+	UCImageLoader		*imageLoader;
+	BOOL				isIconLoaded;
 }
 
 @property (nonatomic, retain) id data;
@@ -32,9 +37,12 @@
 
 @property (nonatomic, retain) URLCollectorContext *context;
 
+@property (nonatomic, readonly) NSImage *icon;
 @property (nonatomic, assign) BOOL isUnread;
+@property (nonatomic, readonly) BOOL isIconLoaded;
 @property (nonatomic, readonly) NSDictionary *classification;
 
 - (void)updateClassification:(NSDictionary *)classificationInfo;
+- (void)loadIconIfNeeded;
 
 @end

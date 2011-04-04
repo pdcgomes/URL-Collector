@@ -388,8 +388,18 @@ static NSString *defaultSeralizationPath(void)
 	
 	[self didChangeValueForKey:@"urlCollectorElements"];
 	[self rebuildElementIndex];
-	
 	[self registerObservers];
+	
+	for(URLCollectorGroup *group in urlCollectorElements) {
+		for(URLCollectorElement *element in group.children) {
+			[element addObserver:self 
+					  forKeyPath:@"isIconLoaded" 
+						selector:@selector(iconForElementHasChanged:ofObject:change:userInfo:) 
+						userInfo:nil 
+						 options:0];
+			[element loadIconIfNeeded];
+		}
+	}
 }
 
 #pragma mark -
@@ -582,7 +592,20 @@ static NSString *defaultSeralizationPath(void)
 	[element updateClassification:classification];
 	[self didChangeValueForKey:@"urlCollectorElements"];
 	
+	[element addObserver:self forKeyPath:@"isIconLoaded" selector:@selector(iconForElementHasChanged:ofObject:change:userInfo:) userInfo:nil options:0];
+	[element loadIconIfNeeded];
+	
 	[outlineView_ reloadData];
+	// TODO: Load icon if one is available
+}
+
+- (void)iconForElementHasChanged:(NSString *)keyPath ofObject:(id)target change:(NSDictionary *)change userInfo:(id)userInfo
+{
+	URLCollectorElement *element = (URLCollectorElement *)target;
+	if([element isIconLoaded]) {
+		[outlineView_ reloadData]; // FIXME: only reload the affected item
+	}
+	[element removeObserver:self keyPath:@"isIconLoaded" selector:@selector(iconForElementHasChanged:ofObject:change:userInfo:)];
 }
 
 - (void)classificationForElement:(URLCollectorElement *)element didFailWithError:(NSError *)error
