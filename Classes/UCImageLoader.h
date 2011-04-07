@@ -10,7 +10,7 @@
 
 @class GTMHTTPFetcher;
 
-@interface UCImageLoader : NSObject <NSCopying>
+@interface UCImageLoader : NSObject
 {
 	GTMHTTPFetcher	*fetcher;
 	NSObject		*delegate;

@@ -11,17 +11,28 @@
 
 @implementation StatusItemDraggingDestinationView
 
-- (id)initWithFrame:(NSRect)frame 
+- (id)initWithStatusItem:(NSStatusItem *)theStatusItem
 {
-    if((self = [super initWithFrame:frame])) {
-		[self registerForDraggedTypes:[NSArray arrayWithObjects:NSURLPboardType, NSStringPboardType, nil]];
+	if((self = [super initWithFrame:NSMakeRect(0, 0, 22, 22)])) {
+		statusItem = theStatusItem;
+		[self setImage:[theStatusItem image]];
+		[self setImageFrameStyle:NSImageFrameNone];
+		[self registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];
 	}
-    return self;
+	return self;
 }
 
-- (void)drawRect:(NSRect)dirtyRect 
+//- (void)drawRect:(NSRect)dirtyRect 
+//{
+//	
+//}
+
+#pragma mark -
+#pragma mark NSControl overrides
+
+- (void)mouseDown:(NSEvent *)theEvent
 {
-	
+	[statusItem popUpStatusItemMenu:[statusItem menu]];
 }
 
 #pragma mark -
@@ -56,7 +67,14 @@
 - (BOOL)performDragOperation:(id<NSDraggingInfo>)sender
 {
 	TRACE(@"");
-
+	
+	NSArray *URLObjects = [[sender draggingPasteboard] readObjectsForClasses:[NSArray arrayWithObject:[NSURL class]] options:nil];
+	for(NSURL *URL in URLObjects) {
+		NSString *URLString = [URL description];
+		[[NSNotificationCenter defaultCenter] postNotificationName:UCDroppedItemAtStatusBarNotification 
+															object:self 
+														  userInfo:[NSDictionary dictionaryWithObject:URLString forKey:UCDroppedItemDraggingInfoKey]];
+	}
 	return YES;
 }
 

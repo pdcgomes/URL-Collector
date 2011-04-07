@@ -13,5 +13,8 @@ extern NSString *UserDefaults_URLCollectorDatabasePath;
 
 NSString *URLCollectorDatabaseFileName;
 
+// Notifications
+extern NSString *const UCDroppedItemAtStatusBarNotification;
+extern NSString *const UCDroppedItemDraggingInfoKey;
 // Functions
 NSString *defaultURLCollectorGroupName(void);

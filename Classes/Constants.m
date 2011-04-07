@@ -13,7 +13,12 @@ NSString *UserDefaults_URLCollectorDatabasePath		= @"URLCollectorDatabasePath";
 
 NSString *URLCollectorDatabaseFileName				= @"URLCollectorDatabase.db";
 
-// Functtions
+// Notifications
+
+NSString *const UCDroppedItemAtStatusBarNotification = @"UCDroppedItemAtStatusBarNotification";
+NSString *const UCDroppedItemDraggingInfoKey = @"UCDroppedItemDraggingInfoKey";
+
+// Functions
 NSString *defaultURLCollectorGroupName(void)
 {
 	return NSLocalizedString(@"Inbox", @"");

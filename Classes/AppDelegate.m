@@ -45,6 +45,11 @@
 	[statusItem setImage:NSIMAGE(@"menubar-icon")];
 	[statusItem setHighlightMode:YES];
 	[statusItem setMenu:statusMenu];
+	
+	StatusItemDraggingDestinationView *statusBarIconView = [[StatusItemDraggingDestinationView alloc] initWithStatusItem:statusItem];
+	[statusItem setView:statusBarIconView];
+
+	[statusBarIconView release];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification 

@@ -9,9 +9,11 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface StatusItemDraggingDestinationView : NSView 
+@interface StatusItemDraggingDestinationView : NSImageView 
 {
-
+	NSStatusItem	*statusItem;
 }
+
+- (id)initWithStatusItem:(NSStatusItem *)statusItem;
 
 @end

@@ -203,7 +203,9 @@ static NSString *defaultSeralizationPath(void)
 	NSMutableArray *elements = [[NSMutableArray alloc] init];
 	URLCollectorElement *element = [[URLCollectorElement alloc] init];
 	element.URL = URL;
+	element.URLName = @"---";
 	[self addElement:element toGroup:destinationGroup];
+	[self classifyElement:element];
 	[elements addObject:element];
 	[element release];
 	
@@ -222,7 +224,6 @@ static NSString *defaultSeralizationPath(void)
 	[operation addExecutionBlock:fetchContextBlock];
 	[operationQueue addOperation:operation];
 	[operation release];
-	// END TODO
 	[elements release];
 }
 
@@ -636,6 +637,7 @@ static NSString *defaultSeralizationPath(void)
 - (void)registerObservers
 {
 	[self addObserver:self forKeyPath:@"urlCollectorElements" selector:@selector(urlCollectorElementsChanged:ofObject:change:userInfo:) userInfo:nil options:0];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDroppedItemAtStatusBarNotification:) name:UCDroppedItemAtStatusBarNotification object:nil];
 }
 
 - (void)deregisterObservers
@@ -654,6 +656,14 @@ static NSString *defaultSeralizationPath(void)
 	TRACE(@"");
 	hasPendingChanges = YES;
 	[self saveChanges];
+}
+
+- (void)handleDroppedItemAtStatusBarNotification:(NSNotification *)notification
+{
+	TRACE(@"");
+	
+	NSString *droppedURL = [[notification userInfo] objectForKey:UCDroppedItemDraggingInfoKey];
+	[self addURLToInbox:droppedURL];
 }
 
 #pragma mark -
