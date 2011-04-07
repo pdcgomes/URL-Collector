@@ -248,7 +248,9 @@ static NSString *defaultSeralizationPath(void)
 
 - (void)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group
 {
-	[self addElement:element toGroup:group atIndex:-1];
+	if(element.parent != group) {
+		[self addElement:element toGroup:group atIndex:-1];
+	}
 }
 
 - (void)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group atIndex:(NSInteger)index
@@ -448,7 +450,6 @@ static NSString *defaultSeralizationPath(void)
 	NSArray *indexPaths = [items valueForKey:@"indexPath"];
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:indexPaths];
 	[pasteboard declareTypes:[NSArray arrayWithObjects:NSPasteboardTypeURLCollectorElement, nil] owner:self];
-	[pasteboard setData:data forType:NSPasteboardTypeURLCollectorElement];
 	
 	BOOL shouldRegisterURLType = ([items count] == 1 && [itemClasses anyObject] == [URLCollectorElement class]);
 	if(shouldRegisterURLType) {
@@ -458,6 +459,7 @@ static NSString *defaultSeralizationPath(void)
 		NSURL *URL = [NSURL URLWithString:[(URLCollectorElement *)[[items lastObject] representedObject] URL]];
 		[pasteboard writeObjects:[NSArray arrayWithObject:URL]];
 	}
+	[pasteboard setData:data forType:NSPasteboardTypeURLCollectorElement];
 	
 	[outlineView deselectAll:nil];
 	return YES;
