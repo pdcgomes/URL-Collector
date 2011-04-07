@@ -26,7 +26,25 @@
 }
 
 #pragma mark -
+#pragma mark NSView overrides
+
+- (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)flag
+{
+	if(flag) {
+		return NSDragOperationAll;
+	}
+	return NSDragOperationCopy;
+}
+
+#pragma mark -
 #pragma mark NSTableView overrides
+
+//- (NSImage *)dragImageForRowsWithIndexes:(NSIndexSet *)dragRows tableColumns:(NSArray *)tableColumns event:(NSEvent *)dragEvent offset:(NSPointPointer)dragImageOffset
+//{
+//	NSImage *dragImage = [super dragImageForRowsWithIndexes:dragRows tableColumns:tableColumns event:dragEvent offset:dragImageOffset];
+//	[dragImage setBackgroundColor:[NSColor blackColor]];
+//	return dragImage;
+//}
 
 //- (void)highlightSelectionInClipRect:(NSRect)clipRect
 //{

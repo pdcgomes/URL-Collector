@@ -64,6 +64,7 @@
 	[aCoder encodeBool:isUnread forKey:@"isUnread"];
 	[aCoder encodeObject:context forKey:@"context"];
 	[aCoder encodeObject:classification forKey:@"classification"];
+	// consider encoding the icon
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -96,6 +97,7 @@
 	copy->classification = [classification copy];	
 	copy->isUnread = isUnread;
 	copy->isIconLoaded = isIconLoaded;
+	copy->icon = [icon copy];
 
 	return copy;
 }

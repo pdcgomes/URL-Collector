@@ -80,6 +80,7 @@
 		0DA294201344E507000FC202 /* ChromeContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA2941F1344E507000FC202 /* ChromeContextContentProvider.m */; };
 		0DA294BE1345DBBD000FC202 /* menubar-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA294BD1345DBBD000FC202 /* menubar-icon.png */; };
 		0DA295E013462717000FC202 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA295DF13462717000FC202 /* NSString+Additions.m */; };
+		0DA296CC1349D4B2000FC202 /* UCImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA296CB1349D4B2000FC202 /* UCImageLoader.m */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -251,6 +252,8 @@
 		0DA294BD1345DBBD000FC202 /* menubar-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon.png"; sourceTree = "<group>"; };
 		0DA295DE13462717000FC202 /* NSString+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Additions.h"; sourceTree = "<group>"; };
 		0DA295DF13462717000FC202 /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
+		0DA296CA1349D4B2000FC202 /* UCImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UCImageLoader.h; sourceTree = "<group>"; };
+		0DA296CB1349D4B2000FC202 /* UCImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UCImageLoader.m; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -492,6 +495,8 @@
 				0D2304D3132FD1B10011B219 /* SKManagedObjectContextManager.h */,
 				0D2304D4132FD1B10011B219 /* SKManagedObjectContextManager.m */,
 				0D2304D5132FD1B10011B219 /* SKObjectSingleton.h */,
+				0DA296CA1349D4B2000FC202 /* UCImageLoader.h */,
+				0DA296CB1349D4B2000FC202 /* UCImageLoader.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -926,6 +931,7 @@
 				0DA2929C13439922000FC202 /* UCURLDetailViewController.m in Sources */,
 				0DA294201344E507000FC202 /* ChromeContextContentProvider.m in Sources */,
 				0DA295E013462717000FC202 /* NSString+Additions.m in Sources */,
+				0DA296CC1349D4B2000FC202 /* UCImageLoader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
