@@ -42,8 +42,9 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 - (void)saveChangesInternal;
 - (void)reloadLocalDatabase;
 
-//- (void)fetchContextForElement:(URLCollectorElement *)element;
 - (void)classifyElement:(URLCollectorElement *)element;
+- (void)loadIconForElementIfNeeded:(URLCollectorElement *)element;
+//- (void)fetchContextForElement:(URLCollectorElement *)element;
 
 @end
 
@@ -167,11 +168,11 @@ static NSString *defaultSeralizationPath(void)
 	TRACE(@"");
 	NSUInteger groupIndex = [urlCollectorElements indexOfObject:element.parent];
 	NSUInteger theElementIndex = [[[urlCollectorElements objectAtIndex:groupIndex] children] indexOfObject:element];
-	
-//	NSUInteger indexes[2] = {groupIndex, theElementIndex};
-//	NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+
 	NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:(NSUInteger[2]){groupIndex, theElementIndex} length:2];
-	
+
+	// Note: URLCollectorElement conforms to the NSCopying protocol, we could use the object as the key instead of the URL
+	// However, we still want unique URLs, it's probably easier and clearer to simply use the URL string as the key of our index
 	[elementIndex setObject:indexPath forKey:element.URL];
 }
 
@@ -207,6 +208,8 @@ static NSString *defaultSeralizationPath(void)
 	[element release];
 	
 	// TODO: rethink this approach...
+	// Consider refactoring the context loading routine into URLCollectorElement itself (like we did with the icon loading)
+	// This promotes reusability and it's an overall cleaner design
 	void (^fetchContextBlock)(void) = ^{
 		URLCollectorContext *context = [[[URLCollectorContextRecognizer sharedInstance] guessContextFromApplication:activeApp] retain];
 		[elements makeObjectsPerformSelector:@selector(setContext:) withObject:context];
@@ -392,12 +395,7 @@ static NSString *defaultSeralizationPath(void)
 	
 	for(URLCollectorGroup *group in urlCollectorElements) {
 		for(URLCollectorElement *element in group.children) {
-			[element addObserver:self 
-					  forKeyPath:@"isIconLoaded" 
-						selector:@selector(iconForElementHasChanged:ofObject:change:userInfo:) 
-						userInfo:nil 
-						 options:0];
-			[element loadIconIfNeeded];
+			[self loadIconForElementIfNeeded:element];
 		}
 	}
 }
@@ -408,6 +406,17 @@ static NSString *defaultSeralizationPath(void)
 - (void)classifyElement:(URLCollectorElement *)element
 {
 	[[URLCollectorContentClassifier sharedInstance] classifyElement:element delegate:self];
+}
+
+- (void)loadIconForElementIfNeeded:(URLCollectorElement *)element
+{
+	// FIXME: there's a potential for kvo leaks right here. Consider the case where a given elements is removed before the image loading finishes
+	// Rethink this, but let's keep it simple for now
+	// It would probably best to pass a completion action/target, but this will require more effort in case we have multiple object trying to be notified of the loading status
+	if([element.classification containsKey:URLClassificationImageKey] && !element.isIconLoaded) {
+		[element addObserver:self forKeyPath:@"isIconLoaded" selector:@selector(iconForElementHasChanged:ofObject:change:userInfo:) userInfo:nil options:0];
+		[element loadIconIfNeeded];
+	}
 }
 
 #pragma mark -
@@ -427,7 +436,7 @@ static NSString *defaultSeralizationPath(void)
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pasteboard
 {
-	TRACE(@"");
+	TRACE(@"PasteboardName: <%@>", [pasteboard name]);
 	
 	// Simple check to determine whether the user has selected mixed element types (groups + children) or a single type (just groups; just children)
 	NSSet *itemClasses = [NSSet setWithArray:[items valueForKeyPath:@"representedObject.class"]];
@@ -438,8 +447,17 @@ static NSString *defaultSeralizationPath(void)
 
 	NSArray *indexPaths = [items valueForKey:@"indexPath"];
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:indexPaths];
-	[pasteboard declareTypes:[NSArray arrayWithObject:NSPasteboardTypeURLCollectorElement] owner:self];
+	[pasteboard declareTypes:[NSArray arrayWithObjects:NSPasteboardTypeURLCollectorElement, nil] owner:self];
 	[pasteboard setData:data forType:NSPasteboardTypeURLCollectorElement];
+	
+	BOOL shouldRegisterURLType = ([items count] == 1 && [itemClasses anyObject] == [URLCollectorElement class]);
+	if(shouldRegisterURLType) {
+		TRACE(@"shouldRegisterURLType");
+		[pasteboard declareTypes:[NSArray arrayWithObjects:NSPasteboardTypeURLCollectorElement, NSURLPboardType, nil] owner:self];
+
+		NSURL *URL = [NSURL URLWithString:[(URLCollectorElement *)[[items lastObject] representedObject] URL]];
+		[pasteboard writeObjects:[NSArray arrayWithObject:URL]];
+	}
 	
 	[outlineView deselectAll:nil];
 	return YES;
@@ -495,6 +513,7 @@ static NSString *defaultSeralizationPath(void)
 {
 	TRACE(@"");
 	
+	// TODO: Refactor these branches
 	if([info draggingSource] == nil) {
 		URLCollectorGroup *destinationGroup = [item representedObject];
 
@@ -526,8 +545,6 @@ static NSString *defaultSeralizationPath(void)
 		[operation release];
 		// END TODO
 		[elements release];
-		
-//		[context release];
 	}
 	else if([info draggingSource] == outlineView) {
 		NSData *draggedData = [[info draggingPasteboard] dataForType:NSPasteboardTypeURLCollectorElement];
@@ -557,7 +574,7 @@ static NSString *defaultSeralizationPath(void)
 			}
 			 // !!! IMPORTANT !!! 
 			 // since we're inserting the elements in reverse order, we need to adjust the insertion index at every iteration
-			 // this is to ensure that the elements preserve the original order
+			 // this is to ensure that the elements preserve their original order
 			index = MAX(0, index-1);
 		}
 		TRACE(@"IndexPaths: %@", draggedIndexPaths);
@@ -586,31 +603,29 @@ static NSString *defaultSeralizationPath(void)
 
 - (void)classificationForElement:(URLCollectorElement *)element didFinishWithResult:(NSDictionary *)classification
 {
-	// TODO: consider using reloadItem instead (efficiency)
+	// TODO: consider using reloadItem instead of reloading the whole outlineView (efficiency)
 	TRACE(@"Classification for element <%@> finished with result <%@>", element, classification);
 	[self willChangeValueForKey:@"urlCollectorElements"];
 	[element updateClassification:classification];
 	[self didChangeValueForKey:@"urlCollectorElements"];
 	
-	[element addObserver:self forKeyPath:@"isIconLoaded" selector:@selector(iconForElementHasChanged:ofObject:change:userInfo:) userInfo:nil options:0];
-	[element loadIconIfNeeded];
-	
+	[self loadIconForElementIfNeeded:element];
 	[outlineView_ reloadData];
-	// TODO: Load icon if one is available
+}
+
+- (void)classificationForElement:(URLCollectorElement *)element didFailWithError:(NSError *)error
+{
+	
 }
 
 - (void)iconForElementHasChanged:(NSString *)keyPath ofObject:(id)target change:(NSDictionary *)change userInfo:(id)userInfo
 {
 	URLCollectorElement *element = (URLCollectorElement *)target;
 	if([element isIconLoaded]) {
+		// we may want to invoke [self willChangeValueForKey:@"urlCollectorElements"] to save the changes
 		[outlineView_ reloadData]; // FIXME: only reload the affected item
 	}
 	[element removeObserver:self keyPath:@"isIconLoaded" selector:@selector(iconForElementHasChanged:ofObject:change:userInfo:)];
-}
-
-- (void)classificationForElement:(URLCollectorElement *)element didFailWithError:(NSError *)error
-{
-	
 }
 
 #pragma mark -
