@@ -35,6 +35,8 @@
 - (BOOL)pasteboardContains:(Class)class;
 - (BOOL)hasSelectedRowsOfClass:(Class)objectClass;
 
+- (void)updateMenuItemKeyEquivalent:(NSMenuItem *)menuItem withRecorderControl:(SRRecorderControl *)recorderControl;
+
 @end
 
 @implementation AppController
@@ -140,7 +142,6 @@
 
 - (void)pasteHotKeyPressed:(PTHotKey *)hotKey
 {
-	TRACE(@"");
 	if([self pasteboardContains:[NSURL class]]) {
 		[self shortenURL:self];
 	}
@@ -148,7 +149,6 @@
 
 - (void)collectorHotKeyPressed:(PTHotKey *)hotKey
 {
-	TRACE(@"");
 	NSPanel *collectorPanel = [(AppDelegate *)[NSApplication sharedApplication].delegate collectorPanel];
 	if([collectorPanel isVisible]) {
 		[collectorPanel orderOut:self];
@@ -160,7 +160,6 @@
 
 - (void)collectURLHotKeyPressed:(PTHotKey *)hotKey
 {
-	TRACE(@"");
 	if([self pasteboardContains:[NSURL class]]) {
 		[self collectURL:self];
 	}
@@ -369,19 +368,67 @@
 	[window makeKeyWindow];
 }
 
+#define MENU_ITEM			0
+#define	SHORTCUT_RECORDER	1
 - (void)updateStatusBarMenuItems
 {
-	if([collectorShortcutRecorder keyChars]) {
-		[collectorMenuItem setKeyEquivalent:[collectorShortcutRecorder keyChars]];
-		[collectorMenuItem setKeyEquivalentModifierMask:[collectorShortcutRecorder keyCombo].flags];
+	// matrix that maps a given menuItem to the shortCutRecorder that it's representing
+	id shortcuts[][2] = {
+		{collectorMenuItem, collectorShortcutRecorder},
+		{collectMenuItem, collectShortcutRecorder},
+		{shortenMenuItem, pasteShortcutRecorder}
+	};
+	
+	for(int i = 0; i < SKArrayLength(shortcuts); i++) {
+		[self updateMenuItemKeyEquivalent:shortcuts[i][MENU_ITEM] withRecorderControl:shortcuts[i][SHORTCUT_RECORDER]];
 	}
-	if([collectShortcutRecorder keyChars]) {
-		[collectMenuItem setKeyEquivalent:[collectShortcutRecorder keyChars]];
-		[collectMenuItem setKeyEquivalentModifierMask:[collectShortcutRecorder keyCombo].flags];
-	}
-	if([pasteShortcutRecorder keyChars]) {
-		[shortenMenuItem setKeyEquivalent:[pasteShortcutRecorder keyCharsIgnoringModifiers]];
-		[shortenMenuItem setKeyEquivalentModifierMask:[pasteShortcutRecorder keyCombo].flags];
+}
+
+#define PTHotKeySpecialKeyCode	0
+#define NSEventSpecialKeyCode	1
+- (void)updateMenuItemKeyEquivalent:(NSMenuItem *)menuItem withRecorderControl:(SRRecorderControl *)recorderControl
+{
+	// Currently only supporting Function "special keys"
+	// May need to support others in the future
+	// Couldn't figure out other way to get the appropriate unichar representation of some special keys (mainly Function keys), decided to map them instead
+	// I'm sure there's an easier way
+	static int functionKeyMap[][2] = {
+		{kSRKeysF1, NSF1FunctionKey},
+		{kSRKeysF2, NSF2FunctionKey},
+		{kSRKeysF3, NSF3FunctionKey},
+		{kSRKeysF4, NSF4FunctionKey},
+		{kSRKeysF5, NSF5FunctionKey},
+		{kSRKeysF6, NSF6FunctionKey},
+		{kSRKeysF7, NSF7FunctionKey},
+		{kSRKeysF8, NSF8FunctionKey},
+		{kSRKeysF9, NSF9FunctionKey},
+		{kSRKeysF10, NSF10FunctionKey},
+		{kSRKeysF11, NSF11FunctionKey},
+		{kSRKeysF12, NSF12FunctionKey},
+		{kSRKeysF13, NSF13FunctionKey},
+		{kSRKeysF14, NSF14FunctionKey},
+		{kSRKeysF15, NSF15FunctionKey},
+		{kSRKeysF16, NSF16FunctionKey},
+		{kSRKeysF17, NSF17FunctionKey},
+		{kSRKeysF18, NSF18FunctionKey},
+		{kSRKeysF19, NSF19FunctionKey},
+	};
+
+	if([recorderControl keyChars]) {
+		[menuItem setKeyEquivalent:[recorderControl keyCharsIgnoringModifiers]];
+		if(SRIsSpecialKey([recorderControl keyCombo].code)) {
+			for(int i = 0; i < SKArrayLength(functionKeyMap); i++) {
+				if([recorderControl keyCombo].code == functionKeyMap[i][PTHotKeySpecialKeyCode]) {
+					[menuItem setKeyEquivalent:SKStringWithFormat(@"%C", functionKeyMap[i][NSEventSpecialKeyCode])];
+					break;
+				}
+			}
+			TRACE(@"");
+		}
+		else {
+			[menuItem setKeyEquivalent:[recorderControl keyChars]];
+		}
+		[menuItem setKeyEquivalentModifierMask:[recorderControl keyCombo].flags];
 	}
 }
 
