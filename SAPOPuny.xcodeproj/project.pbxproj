@@ -297,6 +297,15 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		0D164962134F4C6300BA1F60 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				0D8BCED81332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.h */,
+				0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */,
+			);
+			name = Sync;
+			sourceTree = "<group>";
+		};
 		0D21C35F13200CFE00A0B8BB /* NIB */ = {
 			isa = PBXGroup;
 			children = (
@@ -525,6 +534,7 @@
 				0D231CCD133BAC2E0011B219 /* Content Classifier */,
 				0D2304E0132FD1B10011B219 /* Context Recognizer */,
 				0D2304E3132FD1B10011B219 /* Persistence */,
+				0D164962134F4C6300BA1F60 /* Sync */,
 				0D2304E6132FD1B10011B219 /* URLCollectorDataSource.h */,
 				0D2304E7132FD1B10011B219 /* URLCollectorDataSource.m */,
 			);
@@ -544,8 +554,6 @@
 		0D2304E3132FD1B10011B219 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				0D8BCED81332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.h */,
-				0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */,
 				0D8BCEDD1332A3750079E647 /* URLCollectorDatabaseManager.h */,
 				0D8BCEDE1332A3750079E647 /* URLCollectorDatabaseManager.m */,
 			);
