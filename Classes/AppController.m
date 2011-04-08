@@ -35,8 +35,6 @@
 - (BOOL)pasteboardContains:(Class)class;
 - (BOOL)hasSelectedRowsOfClass:(Class)objectClass;
 
-- (void)elementCellIdentityButtonClicked:(id)sender;
-
 @end
 
 @implementation AppController
@@ -327,6 +325,14 @@
 	}
 }
 
+- (void)showIdentity:(id)sender
+{
+	// FIXME: This condition is here because of a weird issue that's causing the action on the cell to be called twice:
+	if([sender isKindOfClass:[NSCell class]]) {
+		TRACE(@"***** TODO: PRESENT IDENTITY WINDOW");
+	}
+}
+
 #pragma mark -
 #pragma mark Properties
 
@@ -445,7 +451,7 @@
 	else if([[item representedObject] isKindOfClass:[URLCollectorElement class]]) {
 		cell = [tableColumn dataCellForRow:[outlineView rowForItem:item]];
 		[cell setTarget:self];
-		[cell setAction:@selector(elementCellIdentityButtonClicked:)];
+		[cell setAction:@selector(showIdentity:)];
 	}
 	return cell;
 }
@@ -456,11 +462,6 @@
 	   [[item representedObject] isKindOfClass:[URLCollectorElement class]]) {
 		[cell setRepresentedObject:[item representedObject]];
 	}
-}
-
-- (void)elementCellIdentityButtonClicked:(id)sender
-{
-	TRACE(@"TODO: present identity detail view");
 }
 
 #pragma mark -

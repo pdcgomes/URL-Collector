@@ -12,6 +12,7 @@
 @interface StatusItemDraggingDestinationView : NSImageView 
 {
 	NSStatusItem	*statusItem;
+	BOOL			isMouseDown;
 }
 
 - (id)initWithStatusItem:(NSStatusItem *)statusItem;

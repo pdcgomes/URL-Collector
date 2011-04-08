@@ -47,6 +47,8 @@
 - (IBAction)removeRow:(id)sender;
 - (IBAction)moveToGroup:(id)sender;
 
+- (IBAction)showIdentity:(id)sender;
+
 - (void)sendToURLCollector:(NSPasteboard *)pasteboard userData:(NSString *)userData error:(NSString **)error;
 
 @end

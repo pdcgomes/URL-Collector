@@ -149,6 +149,8 @@ static NSString *defaultSeralizationPath(void)
 
 - (void)rebuildElementIndex
 {
+	TRACE(@"***** REBUILDING INDEX...");
+	
 	if(elementIndex != nil) {
 		[elementIndex removeAllObjects];
 	}
@@ -161,11 +163,12 @@ static NSString *defaultSeralizationPath(void)
 			[self indexElement:element];
 		}
 	}
+	
+	TRACE(@"***** INDEX REBUILT!");
 }
 
 - (void)indexElement:(URLCollectorElement *)element
 {
-	TRACE(@"");
 	NSUInteger groupIndex = [urlCollectorElements indexOfObject:element.parent];
 	NSUInteger theElementIndex = [[[urlCollectorElements objectAtIndex:groupIndex] children] indexOfObject:element];
 
@@ -178,7 +181,6 @@ static NSString *defaultSeralizationPath(void)
 
 - (void)removeElementFromIndex:(URLCollectorElement *)element
 {
-	TRACE(@"");
 	[elementIndex removeObjectForKey:element.URL];
 }
 
@@ -683,6 +685,7 @@ static NSString *defaultSeralizationPath(void)
 - (void)deregisterObservers
 {
 	[self removeObserver:self keyPath:@"urlCollectorElements" selector:@selector(urlCollectorElementsChanged:ofObject:change:userInfo:)];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UCDroppedItemAtStatusBarNotification object:nil];
 }
 
 + (NSSet *)keyPathsForValuesAffectingHasPendingChanges

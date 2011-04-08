@@ -167,18 +167,10 @@
 {
 	BOOL isOverIdentityButton = NSMouseInRect(lastPoint, identityButtonCellFrame, [controlView isFlipped]);
 	if(isOverIdentityButton) {
-		TRACE(@"SENDING ACTION RELATIVE TO THE IDENTITY BUTTON");
 		[NSApp sendAction:[self action] to:[self target] from:self];
 	}
 	[identityButtonCell setHighlighted:NO];
 }
-
-//- (BOOL)trackMouse:(NSEvent *)theEvent inRect:(NSRect)cellFrame ofView:(NSView *)controlView untilMouseUp:(BOOL)untilMouseUp
-//{
-//	TRACEMARK;
-//	return [identityButtonCell trackMouse:theEvent inRect:cellFrame ofView:controlView untilMouseUp:untilMouseUp];
-////	return YES;
-//}
 
 - (NSUInteger)hitTestForEvent:(NSEvent *)event inRect:(NSRect)cellFrame ofView:(NSView *)controlView
 {
