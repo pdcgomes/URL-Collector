@@ -8,6 +8,11 @@
 
 #import "StatusItemDraggingDestinationView.h"
 
+@interface StatusItemDraggingDestinationView(Private) <NSMenuDelegate>
+
+- (void)toggleStatusItem:(BOOL)enabled;
+
+@end
 
 @implementation StatusItemDraggingDestinationView
 
@@ -17,6 +22,8 @@
 {
 	if((self = [super initWithFrame:NSMakeRect(0, 0, ITEM_WIDTH, ITEM_HEIGHT)])) {
 		statusItem = theStatusItem;
+		[[statusItem menu] setDelegate:self];
+
 		[self setImageScaling:NSImageScaleNone];
 		[self setImage:NSIMAGE(@"menubar-icon")];
 		[self setImageFrameStyle:NSImageFrameNone];
@@ -25,13 +32,11 @@
 	return self;
 }
 
-
 #pragma mark -
 #pragma mark NSView Overrides
 
 - (void)drawRect:(NSRect)dirtyRect 
 {
-	TRACE(@"");
 	if(isMouseDown) {
 		[[NSColor selectedMenuItemColor] set];
 		NSRectFill(dirtyRect);
@@ -44,17 +49,28 @@
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-	isMouseDown = YES;
-	[self setImage:NSIMAGE(@"menubar-icon-selected")];
-	[self setNeedsDisplay:YES];
+	[self toggleStatusItem:YES];
 	[statusItem popUpStatusItemMenu:[statusItem menu]];
 }
 
-- (void)mouseUp:(NSEvent *)theEvent
+- (void)toggleStatusItem:(BOOL)enabled
 {
-	isMouseDown = NO;
-	[self setImage:NSIMAGE(@"menubar-icon")];
+	isMouseDown = !isMouseDown;
+	if(isMouseDown) {
+		[self setImage:NSIMAGE(@"menubar-icon-selected")];
+	}
+	else {
+		[self setImage:NSIMAGE(@"menubar-icon")];
+	}
 	[self setNeedsDisplay:YES];
+}
+
+#pragma mark -
+#pragma mark NSMenuDelegate
+
+- (void)menuDidClose:(NSMenu *)menu
+{
+	[self toggleStatusItem:NO];
 }
 
 #pragma mark -
@@ -70,9 +86,9 @@
 	return NSDragOperationCopy;	
 }
 
-- (void)draggingExited:(id<NSDraggingInfo>)sender
-{
-}
+//- (void)draggingExited:(id<NSDraggingInfo>)sender
+//{
+//}
 
 - (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender
 {
@@ -84,7 +100,7 @@
 	NSArray *URLObjects = [[sender draggingPasteboard] readObjectsForClasses:[NSArray arrayWithObject:[NSURL class]] options:nil];
 	for(NSURL *URL in URLObjects) {
 		TRACE(@"");
-		NSString *URLString = [URL description]; // FIXME: replace with the actual NSURL object
+		NSString *URLString = [URL description]; // FIXME: replace with the actual NSURL object -- or maybe event the dragging info object
 		[[NSNotificationCenter defaultCenter] postNotificationName:UCDroppedItemAtStatusBarNotification 
 															object:self 
 														  userInfo:[NSDictionary dictionaryWithObject:URLString forKey:UCDroppedItemDraggingInfoKey]];
