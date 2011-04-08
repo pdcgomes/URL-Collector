@@ -203,7 +203,7 @@ static NSString *defaultSeralizationPath(void)
 	NSMutableArray *elements = [[NSMutableArray alloc] init];
 	URLCollectorElement *element = [[URLCollectorElement alloc] init];
 	element.URL = URL;
-	element.URLName = @"---";
+	element.URLName = @"---"; // FIXME: this needs to be replaced by the declared URL-name, but for that, this method must receive an NSURL instead of a NSString representation...
 	[self addElement:element toGroup:destinationGroup];
 	[self classifyElement:element];
 	[elements addObject:element];
@@ -247,18 +247,47 @@ static NSString *defaultSeralizationPath(void)
 	[self didChangeValueForKey:@"urlCollectorElements"];
 }
 
-- (void)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group
+- (BOOL)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group
 {
 	if(element.parent != group) {
-		[self addElement:element toGroup:group atIndex:-1];
+		return [self addElement:element toGroup:group atIndex:-1];
 	}
+	return NO;
 }
 
-- (void)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group atIndex:(NSInteger)index
+- (BOOL)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group atIndex:(NSInteger)index
 {
 	if([self elementIsIndexed:element] && element.parent == nil) { // If parent != nil, it's safe to assume that this is just a move operation
+		// Presenting the alertView on the dataSource isn't really a good design
+		// Consider posting a notification and having AppController handle it and present the alert view instead
 		INFO(@"TODO: warn user that he attempted to insert an item with a duplicate URL...");
-		return;
+		NSAlert *alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Duplicate URL", @"") 
+										 defaultButton:NSLocalizedString(@"Ok", @"")
+									   alternateButton:nil//NSLocalizedString(@"Yes", @"")
+										   otherButton:nil 
+							 informativeTextWithFormat:NSLocalizedString(@"An element with the same URL already exists.", @"")];
+		[alert beginSheetModalForWindow:outlineView_.window modalDelegate:self didEndSelector:@selector(alertSheetDidEnd:returnCode:contextInfo:) contextInfo:NULL];
+		
+		NSIndexPath *indexPath = [elementIndex objectForKey:element.URL];
+		NSUInteger groupNumber = [indexPath indexAtPosition:0];
+		NSUInteger elementNumber = [indexPath indexAtPosition:1];
+		
+		NSInteger currentGroupNumber = -1;
+		for(int i = 0; i < [outlineView_ numberOfRows]; i++) {
+			id rowItem = [outlineView_ itemAtRow:i];
+			if([outlineView_ isExpandable:rowItem]) {
+				currentGroupNumber++;
+				if(groupNumber == currentGroupNumber) {
+					NSUInteger row = i+elementNumber+1;
+					[outlineView_ expandItem:rowItem];
+					[outlineView_ scrollRowToVisible:row];
+					[outlineView_ selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+					break;
+				}
+			}
+		}
+
+		return NO;
 	}
 	[self willChangeValueForKey:@"urlCollectorElements"];
 	
@@ -270,6 +299,13 @@ static NSString *defaultSeralizationPath(void)
 	
 	[self didChangeValueForKey:@"urlCollectorElements"];
 	[self indexElement:element];
+	return YES;
+}
+
+- (void)alertSheetDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+{
+	[[alert window] orderOut:self];
+	TRACE(@"returnCode <%d>", returnCode);
 }
 
 - (void)removeGroup:(URLCollectorGroup *)group
@@ -370,6 +406,7 @@ static NSString *defaultSeralizationPath(void)
 {
 	TRACE(@"***** SAVING CHANGES TO DISK...");
 	[databaseManager saveData:urlCollectorElements];
+	[self rebuildElementIndex];
 	hasPendingChanges = NO;
 }
 
@@ -527,9 +564,12 @@ static NSString *defaultSeralizationPath(void)
 			URLCollectorElement *element = [[URLCollectorElement alloc] init];
 			element.URL = [pasteboardItem stringForType:NSPasteboardTypeString];
 			element.URLName = [pasteboardItem stringForType:@"public.url-name"];
-			[self addElement:element toGroup:destinationGroup atIndex:index];
-			[elements addObject:element];
-			[self classifyElement:element];
+			if([self addElement:element toGroup:destinationGroup atIndex:index]) {
+				[elements addObject:element];
+				[self classifyElement:element];
+			}
+//			[elements addObject:element];
+//			[self classifyElement:element];
 			[element release];
 		}
 

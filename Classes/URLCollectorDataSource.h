@@ -40,8 +40,8 @@
 - (void)addGroup:(URLCollectorGroup *)group atIndex:(NSInteger)index;
 
 - (void)addElement:(URLCollectorElement *)element;
-- (void)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group;
-- (void)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group atIndex:(NSInteger)index;
+- (BOOL)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group;
+- (BOOL)addElement:(URLCollectorElement *)element toGroup:(URLCollectorGroup *)group atIndex:(NSInteger)index;
 
 - (void)removeGroup:(URLCollectorGroup *)group;
 - (void)removeGroup:(URLCollectorGroup *)group removeChildren:(BOOL)shouldRemoveChildren; // If shouldRemoveChildren == NO, child elements are moved to the default "Inbox" group automatically
