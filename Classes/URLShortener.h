@@ -19,6 +19,7 @@
 @property (nonatomic, assign) NSObject *delegate;
 
 + (BOOL)isValidURL:(NSString *)URL;
++ (BOOL)conformsToRFC1808:(NSString *)URL;
 + (NSArray *)supportedShorteningServices;
 
 - (id)initWithServiceKey:(NSString *)serviceKey;

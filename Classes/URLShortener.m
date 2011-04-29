@@ -13,8 +13,8 @@
 
 //#import "SAPOPunyShorteningService.h"
 
-#define URL_MATCHING_PATTERN @"(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?«»“”‘’]))"
-
+#define URL_MATCHING_PATTERN	@"(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?«»“”‘’]))"
+#define URL_RFC1808_PATTERN		@"^[^:]+\\:\\/\\/"
 @interface URLShortener(Private)
 
 + (Class)classForServiceKey:(NSString *)serviceKey;
@@ -31,6 +31,12 @@
 + (BOOL)isValidURL:(NSString *)URL
 {
 	return [URL isMatchedByRegex:URL_MATCHING_PATTERN];
+}
+
+// Currently only checking for the scheme part
++ (BOOL)conformsToRFC1808:(NSString *)URL
+{
+	return [URL isMatchedByRegex:URL_RFC1808_PATTERN];
 }
 
 + (NSArray *)supportedShorteningServices

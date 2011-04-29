@@ -68,7 +68,6 @@
 	[self registerObservers];
 	[self updateStatusBarMenuItems];
 
-//	NSRegisterServicesProvider(self, @"ServiceProviderPort");
 	[NSApp setServicesProvider:self];
 	NSUpdateDynamicServices();
 }
@@ -372,16 +371,31 @@
 #define	SHORTCUT_RECORDER	1
 - (void)updateStatusBarMenuItems
 {
-	// matrix that maps a given menuItem to the shortCutRecorder that it's representing
-	id shortcuts[][2] = {
-		{collectorMenuItem, collectorShortcutRecorder},
-		{collectMenuItem, collectShortcutRecorder},
-		{shortenMenuItem, pasteShortcutRecorder}
-	};
+	[collectorMenuItem setRepresentedObject:collectorShortcutRecorder];
+	[collectMenuItem setRepresentedObject:collectShortcutRecorder];
+	[shortenMenuItem setRepresentedObject:pasteShortcutRecorder];
 	
-	for(int i = 0; i < SKArrayLength(shortcuts); i++) {
-		[self updateMenuItemKeyEquivalent:shortcuts[i][MENU_ITEM] withRecorderControl:shortcuts[i][SHORTCUT_RECORDER]];
+	NSArray *menuItems = [[NSArray alloc] initWithObjects:collectorMenuItem, collectMenuItem, shortenMenuItem, nil];
+	for(NSMenuItem *menuItem in menuItems) {
+		[self updateMenuItemKeyEquivalent:menuItem withRecorderControl:[menuItem representedObject]];
 	}
+	[menuItems release];
+	
+//	NSMenuItem *menuItems[3] = { collectorMenuItem, collectMenuItem, shortenMenuItem };
+//	for(int i = 0; i < SKArrayLength(menuItems); i++) {
+//		[self updateMenuItemKeyEquivalent:menuItems[i] withRecorderControl:[menuItems[i] representedObject]];
+//	}
+	
+	// matrix that maps a given menuItem to the shortCutRecorder that it's representing
+//	id shortcuts[][2] = {
+//		{collectorMenuItem, collectorShortcutRecorder},
+//		{collectMenuItem, collectShortcutRecorder},
+//		{shortenMenuItem, pasteShortcutRecorder}
+//	};
+//	
+//	for(int i = 0; i < SKArrayLength(shortcuts); i++) {
+//		[self updateMenuItemKeyEquivalent:shortcuts[i][MENU_ITEM] withRecorderControl:shortcuts[i][SHORTCUT_RECORDER]];
+//	}
 }
 
 #define PTHotKeySpecialKeyCode	0
@@ -544,11 +558,13 @@
 
 - (void)collectURLFromPasteboard:(NSPasteboard *)pasteboard
 {
-	NSArray *items = [pasteboard readObjectsForClasses:[NSArray arrayWithObject:[NSURL class]] options:nil];
-	TRACE(@"Pasteboard items of type <NSURL>: %@", items);
+	NSArray *items = [pasteboard readObjectsForClasses:[NSArray arrayWithObject:[NSString class]] options:nil];
 	if([items count] > 0) {
-		NSString *theURL = [[items objectAtIndex:0] absoluteString];
+		NSString *theURL = [items objectAtIndex:0];
 		if([URLShortener isValidURL:theURL]) {
+			if(![URLShortener conformsToRFC1808:theURL]) {
+				theURL = SKStringWithFormat(@"http://%@", theURL);
+			}
 			[urlCollectorDataSource addURLToInbox:theURL];
 		}
 	}
