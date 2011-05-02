@@ -295,6 +295,9 @@
 		iconCellFrame = NSMakeRect(cellFrame.origin.x, NSMaxY(titleCellFrame) + 2.0, ICON_SIZE, ICON_SIZE);
 		urlCellFrame	= NSMakeRect(NSMaxX(iconCellFrame), NSMaxY(titleCellFrame) + 2.0, cellFrame.size.width - NSWidth(iconCellFrame), TITLE_LABEL_HEIGHT);
 	}
+	else {
+		[iconCell setImage:nil];
+	}
 	
 	// Interaction type
 	NSDictionary *textAttributes	= [[NSDictionary alloc] initWithObjectsAndKeys:[interactionTypeCell font], NSFontAttributeName, nil];
