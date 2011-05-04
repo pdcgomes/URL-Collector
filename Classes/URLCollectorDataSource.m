@@ -336,6 +336,8 @@ static NSString *defaultSeralizationPath(void)
 
 - (void)removeElement:(URLCollectorElement *)element
 {
+	[element removeObserver:self keyPath:@"isIconLoaded" selector:@selector(iconForElementHasChanged:ofObject:change:userInfo:)];
+
 	// FIXME: this may cause trouble when there are async operations for elements being removed here	
 	
 	[self willChangeValueForKey:@"urlCollectorElements"];
@@ -570,8 +572,6 @@ static NSString *defaultSeralizationPath(void)
 				[elements addObject:element];
 				[self classifyElement:element];
 			}
-//			[elements addObject:element];
-//			[self classifyElement:element];
 			[element release];
 		}
 
@@ -615,7 +615,7 @@ static NSString *defaultSeralizationPath(void)
 					break;
 					
 				default:
-					NSAssert(NO, @"Unsupported indexPath length.");
+					NSAssert(NO, @"Unsupported drag operation.");
 			}
 			 // !!! IMPORTANT !!! 
 			 // since we're inserting the elements in reverse order, we need to adjust the insertion index at every iteration
@@ -685,6 +685,7 @@ static NSString *defaultSeralizationPath(void)
 - (void)deregisterObservers
 {
 	[self removeObserver:self keyPath:@"urlCollectorElements" selector:@selector(urlCollectorElementsChanged:ofObject:change:userInfo:)];
+
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UCDroppedItemAtStatusBarNotification object:nil];
 }
 
