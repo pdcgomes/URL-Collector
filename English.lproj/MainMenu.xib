@@ -24,8 +24,8 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="565"/>
-			<integer value="371"/>
 			<integer value="29"/>
+			<integer value="371"/>
 			<integer value="674"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">

@@ -50,10 +50,19 @@
 	[statusItem setView:statusBarIconView];
 
 	[statusBarIconView release];
+
+	[collectorPanel setFrameAutosaveName:@"CollectorWindowFrame"];
+	[collectorPanel setFrameUsingName:@"CollectorWindowFrame"];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification 
 {
+}
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
+{
+	[collectorPanel saveFrameUsingName:@"CollectorWindowFrame"];
+	return NSTerminateNow;
 }
 
 @end

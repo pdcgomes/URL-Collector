@@ -325,7 +325,7 @@
 
 - (void)showIdentity:(id)sender
 {
-	// FIXME: This condition is here because of a weird issue that's causing the action on the cell to be called twice:
+	// FIXME: This condition is here because of a weird issue that's causing the action on the cell to be called twice when clicked
 	if([sender isKindOfClass:[NSCell class]]) {
 		TRACE(@"***** TODO: PRESENT IDENTITY WINDOW");
 	}
@@ -523,6 +523,15 @@
 	   [[item representedObject] isKindOfClass:[URLCollectorElement class]]) {
 		[cell setRepresentedObject:[item representedObject]];
 	}
+}
+
+- (NSString *)outlineView:(NSOutlineView *)outlineView toolTipForCell:(NSCell *)cell rect:(NSRectPointer)rect tableColumn:(NSTableColumn *)tc item:(id)item mouseLocation:(NSPoint)mouseLocation
+{
+	id representedObject = [item representedObject];
+	if([representedObject isKindOfClass:[URLCollectorElement class]]) {
+		return [(URLCollectorElement *)representedObject URL];
+	}
+	return [(URLCollectorGroup *)representedObject name];
 }
 
 #pragma mark -
