@@ -45,4 +45,7 @@
 - (void)updateClassification:(NSDictionary *)classificationInfo;
 - (void)loadIconIfNeeded;
 
+- (NSString *)stringRepresentation;
+- (NSString *)HTMLRepresentation;
+
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "URLCollectorElement.h"
+#import "URLCollectorContext.h"
 #import "URLCollectorContentClassifier.h"
 #import "UCImageLoader.h"
 
@@ -162,6 +163,28 @@
 		imageLoader = [[UCImageLoader alloc] initWithImageURL:iconURL delegate:self];
 		[imageLoader load];
 	}
+}
+
+- (NSString *)stringRepresentation
+{
+	NSString *template = 
+	@"%@\n"			// Title
+	@"%@\n"			// URL
+	@"%@ %@ %@\n"	// Context and identity
+	@"--------------------\n";
+	
+	NSString *applicationName = SKStringWithFormat2(@"(via %@)", self.context.applicationName);
+	return SKStringWithFormat(template, 
+							  self.URLName,
+							  self.URL,
+							  SKSafeString(self.context.interaction),
+							  SKSafeString(self.context.contextName),
+							  applicationName);
+}
+
+- (NSString *)HTMLRepresentation
+{
+	return nil;
 }
 
 #pragma mark -

@@ -191,6 +191,9 @@
 	else if([menuItem action] == @selector(moveToGroup:)) {
 		return [self hasSelectedRowsOfClass:[URLCollectorElement class]] && ![self hasSelectedRowsOfClass:[URLCollectorGroup class]];
 	}
+	else if([menuItem action] == @selector(exportAsText:)) { // Only allow exporting of elements
+		return [self hasSelectedRowsOfClass:[URLCollectorElement class]] || ![self hasSelectedRowsOfClass:[URLCollectorGroup class]];
+	}
 	else {
 		return YES;
 	}
@@ -329,6 +332,34 @@
 	if([sender isKindOfClass:[NSCell class]]) {
 		TRACE(@"***** TODO: PRESENT IDENTITY WINDOW");
 	}
+}
+
+- (IBAction)exportAsText:(id)sender
+{
+	NSIndexSet *selectedRowIndexes = [urlCollectorOutlineView selectedRowIndexes];
+	
+	NSInteger index = [selectedRowIndexes firstIndex];
+	NSMutableString *textRepresentation = [[NSMutableString alloc] initWithString:@"--------------------\n"];
+
+	TRACE(@"***** BUILDING TEXT REPRESENTATION ... *****");
+	while(NSNotFound != index) {
+		URLCollectorElement *representedObject = [[urlCollectorOutlineView itemAtRow:index] representedObject];
+		[textRepresentation appendString:[representedObject stringRepresentation]];
+		index = [selectedRowIndexes indexGreaterThanIndex:index];
+	}
+	
+	TRACE(@"%@", textRepresentation);
+	
+	NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+	[pasteboard declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:self];
+	
+	if([pasteboard writeObjects:[NSArray arrayWithObject:textRepresentation]]) {
+		TRACE(@"***** WROTE SELECTED ITEMS TEXT REPRESENTATION TO PASTEBOARD *****");
+	}
+	else {
+		TRACE(@"***** UNABLE TO EXPORT SELECTED ITEMS TO PASTEBOARD! *****");
+	}
+	[textRepresentation release];
 }
 
 #pragma mark -
