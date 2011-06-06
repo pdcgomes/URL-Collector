@@ -19,6 +19,7 @@
 @synthesize createDate;
 @synthesize sortOrder;
 @synthesize hasChanges;
+@synthesize predicate;
 @dynamic contentsHash;
 @dynamic numberOfChildren;
 
@@ -32,6 +33,8 @@
 	
 	SKSafeRelease(createDate);
 	SKSafeRelease(children);
+	
+	SKSafeRelease(predicate);
 	
 	[super dealloc];
 }
@@ -115,12 +118,22 @@
 
 - (NSUInteger)numberOfChildren
 {
-	return [children count];
+	return [self.children count];
+//	return [children count];
 }
 
 - (NSString *)contentsHash
 {
 	return nil;
+}
+
+- (NSMutableArray *)children
+{
+	if(!predicate) {
+		return children;
+	}
+	
+	return [NSMutableArray arrayWithArray:[children filteredArrayUsingPredicate:predicate]];
 }
 
 #pragma -

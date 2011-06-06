@@ -362,6 +362,18 @@
 	[textRepresentation release];
 }
 
+#define MIN_SEARCH_STRING_LENGTH 3
+- (IBAction)updateSearchFilter:(id)sender
+{
+	NSString *searchString = [sender stringValue];
+	if([searchString length] < MIN_SEARCH_STRING_LENGTH) {
+		[urlCollectorDataSource setPredicate:nil];
+		return;
+	}
+
+	[urlCollectorDataSource setPredicate:[NSPredicate predicateWithFormat:@"URLName CONTAINS[cd] %@ OR URL CONTAINS[cd] %@ OR context.contextName CONTAINS[cd] %@", searchString, searchString, searchString]];
+}
+
 #pragma mark -
 #pragma mark Properties
 
@@ -468,7 +480,6 @@
 					break;
 				}
 			}
-			TRACE(@"");
 		}
 		else {
 			[menuItem setKeyEquivalent:[recorderControl keyChars]];
@@ -634,10 +645,13 @@
 	
 	TRACE(@"Reloading 'Move to group' contextual menu...");
 	[groupsSubmenu removeAllItems];
-	for(URLCollectorGroup *group in urlCollectorDataSource.urlCollectorElements) {
-		NSMenuItem *groupMenuItem = [[NSMenuItem alloc] initWithTitle:group.name action:@selector(moveToGroup:) keyEquivalent:@""];
+	for(URLCollectorNode *node in urlCollectorDataSource.urlCollectorElements) {
+		if(![node isKindOfClass:[URLCollectorGroup class]]) {
+			continue;
+		}
+		NSMenuItem *groupMenuItem = [[NSMenuItem alloc] initWithTitle:node.name action:@selector(moveToGroup:) keyEquivalent:@""];
 		[groupMenuItem setTarget:self];
-		[groupMenuItem setRepresentedObject:group];
+		[groupMenuItem setRepresentedObject:node];
 		[groupsSubmenu addItem:groupMenuItem];
 		[groupMenuItem release];
 	}

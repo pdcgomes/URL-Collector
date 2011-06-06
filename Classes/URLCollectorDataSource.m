@@ -54,7 +54,7 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 @synthesize outlineView = outlineView_;
 @synthesize urlCollectorElements;
 @synthesize selectedElements;
-
+@synthesize predicate;
 
 static NSString *defaultSeralizationPath(void)
 {
@@ -75,6 +75,7 @@ static NSString *defaultSeralizationPath(void)
 	[urlCollectorElements release];
 	[selectedElements release];
 	[operationQueue release];
+	[predicate release];
 	[super dealloc];
 }
 
@@ -82,6 +83,7 @@ static NSString *defaultSeralizationPath(void)
 {
 	[self registerObservers];
 	[self initializeDatabaseIfNeeded];
+//	[self initializePersistentStoreIfNeeded];
 //	[self reloadLocalDatabase];
 	
 	selectedElements = [[NSMutableArray alloc] init];
@@ -401,6 +403,34 @@ static NSString *defaultSeralizationPath(void)
 	else {
 		INFO(@"saveChanges was called but no changes were made.");
 	}
+}
+
+#pragma mark -
+#pragma mark Properties
+
+- (NSMutableArray *)urlCollectorElements
+{
+	[urlCollectorElements makeObjectsPerformSelector:@selector(setPredicate:) withObject:predicate];
+	return urlCollectorElements;
+	
+//	if(!predicate) {
+//		return urlCollectorElements;
+//	}
+//	
+//	NSMutableArray *filteredElements = [[NSMutableArray alloc] init];
+//	for(URLCollectorGroup *group in urlCollectorElements) {
+//		if([group.children count] > 0) {
+//			[filteredElements addObjectsFromArray:group.children];
+//		}
+//	}
+//	[filteredElements filterUsingPredicate:predicate];
+//	TRACE(@"Filtered Elements: %@", filteredElements);
+//	return filteredElements;
+}
+
++ (NSArray *)keyPathsForValuesAffectingUrlCollectorElements
+{
+	return [NSArray arrayWithObject:@"predicate"];
 }
 
 #pragma mark -

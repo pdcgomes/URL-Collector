@@ -52,6 +52,8 @@
 
 - (IBAction)showIdentity:(id)sender;
 
+- (IBAction)updateSearchFilter:(id)sender;
+
 - (void)sendToURLCollector:(NSPasteboard *)pasteboard userData:(NSString *)userData error:(NSString **)error;
 
 @end

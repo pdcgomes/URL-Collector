@@ -22,6 +22,8 @@
 	NSUInteger			sortOrder;
 	
 	BOOL				hasChanges;
+	
+	NSPredicate			*predicate;
 }
 
 @property (nonatomic, readonly) NSString *nodeUUID;
@@ -37,5 +39,7 @@
 
 @property (nonatomic, readonly) NSString *contentsHash;
 @property (nonatomic, readonly) BOOL hasChanges;
+
+@property (nonatomic, retain) NSPredicate *predicate;
 
 @end

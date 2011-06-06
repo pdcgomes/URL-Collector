@@ -23,9 +23,9 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="721"/>
 			<integer value="29"/>
 			<integer value="566"/>
+			<integer value="721"/>
 			<integer value="371"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -3102,6 +3102,14 @@
 					</object>
 					<int key="connectionID">724</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">updateSearchFilter:</string>
+						<reference key="source" ref="12593596"/>
+						<reference key="destination" ref="806895202"/>
+					</object>
+					<int key="connectionID">725</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -5132,9 +5140,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{775, 555}, {480, 270}}</string>
+					<string>{{968, 681}, {480, 270}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{775, 555}, {480, 270}}</string>
+					<string>{{968, 681}, {480, 270}}</string>
 					<boolean value="NO"/>
 					<boolean value="NO"/>
 					<boolean value="YES"/>
@@ -5177,7 +5185,7 @@
 						<bytes key="NSTransformStruct">P4AAAL+AAABDtgAAwYgAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{1261, 987}, {151, 93}}</string>
+					<string>{{1101, 1087}, {151, 93}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -5196,7 +5204,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{1412, 987}, {224, 23}}</string>
+					<string>{{1252, 1087}, {224, 23}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -5242,7 +5250,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">724</int>
+			<int key="maxID">725</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -5266,9 +5274,11 @@
 							<string>removeRow:</string>
 							<string>shortenURL:</string>
 							<string>showIdentity:</string>
+							<string>updateSearchFilter:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -5299,6 +5309,7 @@
 							<string>removeRow:</string>
 							<string>shortenURL:</string>
 							<string>showIdentity:</string>
+							<string>updateSearchFilter:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -5348,6 +5359,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">showIdentity:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">updateSearchFilter:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>

@@ -26,12 +26,15 @@
 	
 	NSOperationQueue			*operationQueue;
 	URLCollectorDatabaseManager *databaseManager;
+	
+	NSPredicate					*predicate;
 }
 
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, assign) NSOutlineView *outlineView;
 @property (nonatomic, retain) NSMutableArray *urlCollectorElements;
 @property (nonatomic, retain) NSMutableArray *selectedElements;
+@property (nonatomic, retain) NSPredicate *predicate;
 
 - (void)addURLToInbox:(NSString *)URL;
 - (void)addURL:(NSString *)URL toGroup:(URLCollectorGroup *)group;
