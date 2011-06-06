@@ -23,7 +23,7 @@
 #import "URLCollectorElementCell.h"
 #import "URLCollectorGroupCell.h"
 
-@interface AppController()
+@interface AppController() <NSAnimationDelegate>
 
 - (void)registerObservers;
 - (void)deregisterObservers;
@@ -36,6 +36,9 @@
 - (BOOL)hasSelectedRowsOfClass:(Class)objectClass;
 
 - (void)updateMenuItemKeyEquivalent:(NSMenuItem *)menuItem withRecorderControl:(SRRecorderControl *)recorderControl;
+
+- (void)fadeInCollectorWindow;
+- (void)fadeOutCollectorWindow;
 
 @end
 
@@ -150,10 +153,12 @@
 {
 	NSPanel *collectorPanel = [(AppDelegate *)[NSApplication sharedApplication].delegate collectorPanel];
 	if([collectorPanel isVisible]) {
+		[self fadeOutCollectorWindow];
 		[collectorPanel orderOut:self];
 	}
 	else {
 		[collectorPanel makeKeyAndOrderFront:nil];
+		[self fadeInCollectorWindow];
 	}
 }
 
@@ -602,6 +607,47 @@
 	if([notification object] == [(AppDelegate *)[NSApp delegate] window]) {
 		[[(AppDelegate *)[NSApp delegate] window] close];
 	}
+}
+
+#pragma mark -
+#pragma mark NSAnimationDelegate
+
+#define COLLECTOR_PANEL_FADE_ANIMATION_DURATION 0.2
+- (void)fadeInCollectorWindow
+{
+	NSDictionary *fadeInAnimationSettings = [[NSDictionary alloc] initWithObjectsAndKeys:
+											 [[NSApp delegate] collectorPanel], NSViewAnimationTargetKey, 
+											 NSViewAnimationFadeOutEffect , NSViewAnimationEffectKey,
+											 nil];
+	
+	NSViewAnimation *animation = [[NSViewAnimation alloc] initWithDuration:COLLECTOR_PANEL_FADE_ANIMATION_DURATION animationCurve:NSAnimationEaseOut];
+	[animation setDelegate:self];
+	[animation setViewAnimations:[NSArray arrayWithObject:fadeInAnimationSettings]];
+	[animation startAnimation];
+	
+	[fadeInAnimationSettings release];
+	[animation release];
+}
+
+- (void)fadeOutCollectorWindow
+{
+	NSDictionary *fadeOutAnimationSettings = [[NSDictionary alloc] initWithObjectsAndKeys:
+											  [[NSApp delegate] collectorPanel], NSViewAnimationTargetKey, 
+											  NSViewAnimationFadeOutEffect, NSViewAnimationEffectKey,
+											  nil];
+	
+	NSViewAnimation *animation = [[NSViewAnimation alloc] initWithDuration:COLLECTOR_PANEL_FADE_ANIMATION_DURATION animationCurve:NSAnimationEaseIn];
+	[animation setDelegate:self];
+	[animation setViewAnimations:[NSArray arrayWithObject:fadeOutAnimationSettings]];
+	[animation startAnimation];
+	
+	[fadeOutAnimationSettings release];
+	[animation release];
+}
+
+- (void)animationDidEnd:(NSAnimation *)animation
+{
+	
 }
 
 #pragma mark -
