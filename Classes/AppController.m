@@ -658,6 +658,18 @@
 	}
 }
 
+- (void)windowDidResize:(NSNotification *)notification
+{
+	NSWindow *window = [notification object];
+	NSWindow *childWindow = [[window childWindows] lastObject];
+	
+	NSRect parentWindowRect		= [window frame];
+	NSRect childWindowStartRect = [childWindow frame];
+	NSRect childWindowRect		= NSMakeRect(NSMaxX(parentWindowRect), NSMinY(parentWindowRect), childWindowStartRect.size.width, NSHeight(parentWindowRect));
+	
+	[childWindow setFrame:childWindowRect display:YES];
+}
+
 #pragma mark -
 #pragma mark UCIdentityDetailViewControllerDelegate
 
@@ -700,7 +712,6 @@
 											  [[NSApp delegate] collectorPanel], NSViewAnimationTargetKey, 
 											  NSViewAnimationFadeOutEffect, NSViewAnimationEffectKey,
 											  nil];
-	
 	NSViewAnimation *animation = [[NSViewAnimation alloc] initWithDuration:COLLECTOR_PANEL_FADE_ANIMATION_DURATION animationCurve:NSAnimationEaseIn];
 	[animation setViewAnimations:[NSArray arrayWithObject:fadeOutAnimationSettings]];
 	[animation startAnimation];
@@ -717,6 +728,7 @@
 		[identityDetailViewController setRepresentedObject:element];
 		return;
 	}
+	
 	
 	NSPanel *collectorPanel = [[NSApp delegate] collectorPanel];
 	NSRect panelFrame = [collectorPanel frame];
@@ -744,6 +756,9 @@
 	
 	[viewAnimation startAnimation];
 	[viewAnimation release];
+	
+	// Observe collectorPanel frame changes so that we can keep the identityPane positioned correctly in relation to it
+	[collectorPanel setDelegate:self];
 }
 
 - (void)dismissIdentityPane
@@ -769,6 +784,9 @@
 	
 	[viewAnimation startAnimation];
 	[viewAnimation release];
+	
+	// Stop observing collectorPanel frame changes
+	[collectorPanel setDelegate:nil];
 }
 
 - (void)animationDidEnd:(NSAnimation *)animation

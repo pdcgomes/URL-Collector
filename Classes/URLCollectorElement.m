@@ -10,6 +10,7 @@
 #import "URLCollectorContext.h"
 #import "URLCollectorContentClassifier.h"
 #import "UCImageLoader.h"
+#import "NSDateAdditions.h"
 
 @implementation URLCollectorElement
 
@@ -168,9 +169,9 @@
 - (NSString *)stringRepresentation
 {
 	NSString *template = 
-	@"%@\n"			// Title
-	@"%@\n"			// URL
-	@"%@ %@ %@\n"	// Context and identity
+	@"%@\n"				// Title
+	@"%@\n"				// URL
+	@"%@ %@ %@ %@\n"	// Context and identity
 	@"--------------------\n";
 	
 	NSString *applicationName = SKStringWithFormat2(@"(via %@)", self.context.applicationName);
@@ -179,7 +180,8 @@
 							  self.URL,
 							  SKSafeString(self.context.interaction),
 							  SKSafeString(self.context.contextName),
-							  applicationName);
+							  applicationName,
+							  [self.context.contextDate formatDate]);
 }
 
 - (NSString *)HTMLRepresentation
