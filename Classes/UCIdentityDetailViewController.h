@@ -8,13 +8,23 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class URLCollectorContextIdentity;
+@class URLCollectorElement;
 
 @interface UCIdentityDetailViewController : NSViewController 
 {
-	URLCollectorContextIdentity *identity;
+	NSObject			*delegate;
+	URLCollectorElement *element;
 }
 
-- (id)initWithIdentity:(URLCollectorContextIdentity *)identity;
+@property (assign) NSObject *delegate;
+
+- (IBAction)close:(id)sender;
+- (id)initWithIdentity:(URLCollectorElement *)element;
+
+@end
+
+@interface NSObject(UCIdentityDetailViewControllerDelegate)
+
+- (void)identityDetailControllerShouldClose:(UCIdentityDetailViewController *)controller;
 
 @end

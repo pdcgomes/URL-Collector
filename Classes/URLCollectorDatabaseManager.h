@@ -27,6 +27,12 @@
 
 @end
 
+typedef enum {
+	NodeChangeTypeInsert = 0,
+	NodeChangeTypeUpdate,
+	NodeChangeTypeDelete,
+} NodeChangeType;
+
 @class GTMFileSystemKQueue;
 
 @interface URLCollectorDatabaseManager : NSObject 
@@ -37,6 +43,9 @@
 
 	NSInteger	state;
 	BOOL		syncEnabled;
+	
+	NSMutableArray										*changes;
+	NSMutableArray										*changeTypes;
 }
 
 @property (nonatomic, assign) NSObject<URLCollectorDatabaseManagerDelegate> *delegate;
@@ -52,5 +61,10 @@
 //
 //- (void)enableSyncing;
 //- (void)disableSyncing;
+
+// This records changes for a given object
+// 0 - insert
+// 1 - update
+// 2 - delete
 
 @end

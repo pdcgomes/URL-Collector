@@ -33,3 +33,4 @@ extern NSString *const URLCollectorContextIdentityNameKey;
 extern NSString *const URLCollectorContextIdentityURLKey;
 extern NSString *const URLCollectorContextIdentityEmailAddressKey;
 extern NSString *const URLCollectorContextIdentityImageKey;
+extern NSString *const URLCollectorContextIdentityABUID;

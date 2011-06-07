@@ -558,10 +558,9 @@ static NSString *defaultSeralizationPath(void)
 		return NSDragOperationNone;
 	}
 	
-//	if([info draggingDestinationWindow] != [outlineView window]) {
-//		TRACE(@"DRAGGED OUTSIDE THE WINDOW");
-//		return NSDragOperationDelete;
-//	}
+	if(self.predicate != nil) {
+		return NSDragOperationNone;
+	}
 	
 	NSData *draggedData = [[info draggingPasteboard] dataForType:NSPasteboardTypeURLCollectorElement];
 	NSArray *draggedIndexPaths = [NSKeyedUnarchiver unarchiveObjectWithData:draggedData];

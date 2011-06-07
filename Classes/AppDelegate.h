@@ -16,9 +16,9 @@
 	NSStatusItem	*statusItem;
 }
 
-@property (assign) IBOutlet NSWindow *window;
-@property (assign) IBOutlet NSPanel *collectorPanel;
-@property (assign) IBOutlet NSMenu *statusMenu;
-@property (assign) IBOutlet NSStatusItem *statusItem;
+@property (assign) IBOutlet NSWindow		*window;
+@property (assign) IBOutlet NSPanel			*collectorPanel;
+@property (assign) IBOutlet NSMenu			*statusMenu;
+@property (assign) IBOutlet NSStatusItem	*statusItem;
 
 @end

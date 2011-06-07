@@ -13,6 +13,7 @@ NSString *const URLCollectorContextIdentityNameKey			= @"identityName";
 NSString *const URLCollectorContextIdentityURLKey			= @"identityURL";
 NSString *const URLCollectorContextIdentityEmailAddressKey	= @"identityEmailAddress";
 NSString *const URLCollectorContextIdentityImageKey			= @"identityImageRepresentation";
+NSString *const URLCollectorContextIdentityABUID			= @"identityAddressBookUID";
 
 @implementation URLCollectorContextIdentity
 

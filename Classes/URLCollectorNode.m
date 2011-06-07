@@ -7,6 +7,7 @@
 //
 
 #import "URLCollectorNode.h"
+#import "NSDateAdditions.h"
 
 @implementation URLCollectorNode
 
@@ -22,6 +23,7 @@
 @synthesize predicate;
 @dynamic contentsHash;
 @dynamic numberOfChildren;
+@dynamic formattedDate;
 
 #pragma mark -
 #pragma mark Dealloc and Initialization
@@ -134,6 +136,11 @@
 	}
 	
 	return [NSMutableArray arrayWithArray:[children filteredArrayUsingPredicate:predicate]];
+}
+
+- (NSString *)formattedDate
+{
+	return [createDate formatRelativeTime];
 }
 
 #pragma -

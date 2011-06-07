@@ -31,7 +31,8 @@
 	[interactionTypeCell release];
 	[extraInfoCell release];
 	[identityButtonCell release];
-	[iconCell release];
+	[URLIconCell release];
+	[appIconCell release];
 	
 	[super dealloc];
 }
@@ -76,7 +77,8 @@
 	copy->interactionTypeCell = [interactionTypeCell copyWithZone:zone];
 	copy->identityButtonCell = [identityButtonCell copyWithZone:zone];
 	copy->extraInfoCell = [extraInfoCell copyWithZone:zone];
-	copy->iconCell = [iconCell copyWithZone:zone];
+	copy->URLIconCell = [URLIconCell copyWithZone:zone];
+	copy->appIconCell = [appIconCell copyWithZone:zone];
 	
 	return copy;
 	
@@ -100,48 +102,15 @@
 	[self reconfigureSubCellsWithCellFrame:cellFrame];
 	
 	[titleCell drawInteriorWithFrame:titleCellFrame inView:controlView];
-	[iconCell drawInteriorWithFrame:iconCellFrame inView:controlView];
+	[URLIconCell drawInteriorWithFrame:iconCellFrame inView:controlView];
 	[urlCell drawInteriorWithFrame:urlCellFrame inView:controlView];
 	[interactionTypeCell drawInteriorWithFrame:interactionCellFrame inView:controlView];
 	[identityButtonCell drawBezelWithFrame:identityButtonCellFrame inView:controlView];
 	[identityButtonCell drawInteriorWithFrame:identityButtonCellFrame inView:controlView];
 	[extraInfoCell drawInteriorWithFrame:extraInfoCellFrame inView:controlView];
+	
+	[appIconCell drawInteriorWithFrame:appIconCellFrame inView:controlView];
 }
-
-#define EXPANSION_FRAME_INSET_AMOUNT 2.0
-//- (void)drawWithExpansionFrame:(NSRect)cellFrame inView:(NSView *)view
-//{
-//	NSRect innerRect = NSInsetRect(cellFrame, EXPANSION_FRAME_INSET_AMOUNT, EXPANSION_FRAME_INSET_AMOUNT);
-//	[[urlCell title] drawAtPoint:innerRect.origin withAttributes:nil];
-//}
-//
-
-//- (NSRect)expansionFrameWithFrame:(NSRect)cellFrame inView:(NSView *)view
-//{
-//	CGEventRef event = CGEventCreate(NULL);
-//	CGPoint location = CGEventGetLocation(event); // global display coordinates (0,0) = top,left
-//	CFRelease(event);
-//	
-//	NSWindow *window = [view window];
-////	CGFloat displayHeight = NSHeight([[window screen] frame]);
-////	location.y = displayHeight - location.y; // we need convert the coordinate system, since convertScreenToBase assumes Screen coordinate system (0,0) = bottom,left
-//
-//	CGPoint point = [window convertScreenToBase:location];
-//	if([view isFlipped]) {
-//		point.y = NSHeight([view frame]) - point.y;
-//	}
-//	
-//	NSSize URLStringSize = [[urlCell title] sizeWithAttributes:nil];
-//	if(URLStringSize.width > cellFrame.size.width) {
-//		return NSInsetRect(NSMakeRect(point.x, point.y, URLStringSize.width, URLStringSize.height), -EXPANSION_FRAME_INSET_AMOUNT, -EXPANSION_FRAME_INSET_AMOUNT); // replace the hard coded size with the appropriate calculations
-//	}
-//	return NSZeroRect;
-//}
-
-//- (NSColor *)highlightColorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
-//{
-//	return RGBACOLOR(20, 20, 20, 0.8);
-//}
 
 #pragma mark -
 #pragma mark NSCell mouse tracking
@@ -236,10 +205,16 @@
 		[extraInfoCell setDrawsBackground:NO];
 		[extraInfoCell setTextColor:[NSColor whiteColor]];
 	}
-	if(!iconCell) {
-		iconCell = [[NSImageCell alloc] initImageCell:nil];
-		[iconCell setControlView:[self controlView]];
+	if(!URLIconCell) {
+		URLIconCell = [[NSImageCell alloc] initImageCell:nil];
+		[URLIconCell setControlView:[self controlView]];
 	}
+	if(!appIconCell) {
+		appIconCell = [[NSImageCell alloc] initImageCell:nil];
+		[appIconCell setControlView:[self controlView]];
+	}
+	
+	//
 }
 
 #define TITLE_LABEL_HEIGHT		18.0
@@ -289,20 +264,29 @@
 	////
 	[interactionTypeCell setTitle:SKSafeString(representedObject.context.interaction)];
 	[identityButtonCell setTitle:SKSafeString(representedObject.context.contextName)];
-	[extraInfoCell setTitle:SKStringWithFormat(@"(via %@)", representedObject.context.applicationName)];
+	[extraInfoCell setTitle:SKStringWithFormat(@"(via %@) %@", representedObject.context.applicationName, representedObject.formattedDate)];
 	
 	// Drawing
 	titleCellFrame	= NSMakeRect(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width, TITLE_LABEL_HEIGHT);
 	urlCellFrame	= NSOffsetRect(titleCellFrame, 0, TITLE_LABEL_HEIGHT + 2.0);
 	
 	if(representedObject.isIconLoaded) {
-		[iconCell setImage:representedObject.icon];
+		[URLIconCell setImage:representedObject.icon];
 		iconCellFrame = NSMakeRect(cellFrame.origin.x, NSMaxY(titleCellFrame) + 2.0, ICON_SIZE, ICON_SIZE);
 		urlCellFrame	= NSMakeRect(NSMaxX(iconCellFrame), NSMaxY(titleCellFrame) + 2.0, cellFrame.size.width - NSWidth(iconCellFrame), TITLE_LABEL_HEIGHT);
 	}
 	else {
-		[iconCell setImage:nil];
+		[URLIconCell setImage:nil];
 	}
+	
+//	NSImage *appIcon = representedObject.context.applicationIcon;
+//	if(appIcon) {
+//		[appIconCell setImage:appIcon];
+//		appIconCellFrame = NSMakeRect(cellFrame.origin.x, NSMaxY(titleCellFrame) + 2.0, ICON_SIZE, ICON_SIZE);
+//	}
+//	else {
+//		[appIconCell setImage:nil];
+//	}
 	
 	// Interaction type
 	NSDictionary *textAttributes	= [[NSDictionary alloc] initWithObjectsAndKeys:[interactionTypeCell font], NSFontAttributeName, nil];

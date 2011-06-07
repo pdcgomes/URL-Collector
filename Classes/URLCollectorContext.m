@@ -8,6 +8,10 @@
 
 #import "URLCollectorContext.h"
 
+NSString *const UCContextInteractionTypeKey			= @"UCContextInteractionType";
+NSString *const UCContextInteractionPrepositionKey	= @"UCContextInteractionPreposition";
+NSString *const UCContextIdentityKey				= @"UCContextIdentity";
+
 @implementation URLCollectorContext
 
 @synthesize contextName;
@@ -137,9 +141,11 @@
 
 - (NSImage *)applicationIcon
 {
-	NSNumber *pid = [contextApplication objectForKey:@"NSApplicationProcessIdentifier"];
-	NSRunningApplication *application = [NSRunningApplication runningApplicationWithProcessIdentifier:[pid integerValue]];
-	return [application icon];
+	return [[NSWorkspace sharedWorkspace] iconForFile:[contextApplication objectForKey:@"NSApplicationPath"]];
+	
+//	NSNumber *pid = [contextApplication objectForKey:@"NSApplicationProcessIdentifier"];
+//	NSRunningApplication *application = [NSRunningApplication runningApplicationWithProcessIdentifier:[pid integerValue]];
+//	return [application icon];
 }
 
 - (NSString *)contextInfoLine

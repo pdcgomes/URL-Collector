@@ -17,7 +17,8 @@
 	NSTextFieldCell	*interactionTypeCell;
 	NSTextFieldCell	*extraInfoCell;
 	NSButtonCell	*identityButtonCell;
-	NSImageCell		*iconCell;
+	NSImageCell		*URLIconCell;
+	NSImageCell		*appIconCell;
 	
 	NSRect			titleCellFrame;
 	NSRect			urlCellFrame;
@@ -25,6 +26,7 @@
 	NSRect			interactionCellFrame;
 	NSRect			extraInfoCellFrame;
 	NSRect			identityButtonCellFrame;
+	NSRect			appIconCellFrame;
 }
 
 @end

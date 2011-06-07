@@ -41,5 +41,6 @@
 @property (nonatomic, readonly) BOOL hasChanges;
 
 @property (nonatomic, retain) NSPredicate *predicate;
+@property (nonatomic, readonly) NSString *formattedDate;
 
 @end

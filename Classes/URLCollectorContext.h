@@ -41,3 +41,7 @@
 - (id)initWithIdentity:(NSDictionary *)identityInfo fromApplication:(NSDictionary *)applicationInfo;
 
 @end
+
+extern NSString *const UCContextInteractionTypeKey;
+extern NSString *const UCContextInteractionPrepositionKey;
+extern NSString *const UCContextIdentityKey;

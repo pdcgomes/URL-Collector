@@ -11,27 +11,41 @@
 
 @implementation UCIdentityDetailViewController
 
+@synthesize delegate;
+
 #pragma mark -
 #pragma mark Dealloc and Initialization
 
 - (void)dealloc
 {
-	[identity release];
+	self.delegate = nil;
+	
+	[element release];
 	[super dealloc];
 }
 
-- (id)initWithIdentity:(URLCollectorContextIdentity *)theIdentity
+- (id)initWithIdentity:(URLCollectorElement *)theElement
 {
-	if((self = [super initWithNibName:@"IdentityDetailView" bundle:nil])) {
-		[self setRepresentedObject:theIdentity];
-		identity = [theIdentity retain];
+	if((self = [super initWithNibName:@"IdentityDetailViewS" bundle:nil])) {
+		element = [theElement retain];
+		[self setRepresentedObject:theElement];
 	}
 	return self;
 }
 
 - (void)awakeFromNib
 {
-	
+	TRACEMARK;
+}
+
+#pragma mark -
+#pragma mark IBAction
+
+- (IBAction)close:(id)sender
+{
+	if([self.delegate respondsToSelector:@selector(identityDetailControllerShouldClose:)]) {
+		[self.delegate identityDetailControllerShouldClose:self];
+	}
 }
 
 @end

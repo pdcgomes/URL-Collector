@@ -13,6 +13,7 @@
 @class URLShortener;
 @class URLCollectorDataSource;
 @class URLCollectorOutlineView;
+@class UCIdentityDetailViewController;
 
 @interface AppController : NSObject <NSOutlineViewDelegate, NSWindowDelegate>
 {
@@ -28,9 +29,17 @@
 	IBOutlet URLCollectorOutlineView	*urlCollectorOutlineView;
 	IBOutlet URLCollectorDataSource		*urlCollectorDataSource;
 	
+	IBOutlet NSSearchField				*searchField;
+	
 	URLShortener						*urlShortener;
 	
 	NSMutableDictionary					*cachedOutlineViewRowHeights;
+	
+	@private
+	UCIdentityDetailViewController		*identityDetailViewController;
+	
+	BOOL								shouldDismissCollectorPanel;
+	NSMutableDictionary					*animationCompletionHandlers; // animation => animationDidEndSelector
 }
 
 @property (nonatomic, readonly) NSArray *shorteningServices;
@@ -53,6 +62,7 @@
 - (IBAction)showIdentity:(id)sender;
 
 - (IBAction)updateSearchFilter:(id)sender;
+- (IBAction)focusSearchField:(id)sender;
 
 - (void)sendToURLCollector:(NSPasteboard *)pasteboard userData:(NSString *)userData error:(NSString **)error;
 

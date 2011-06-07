@@ -20,6 +20,8 @@
 #import "URLCollectorDataSource.h"
 #import "URLCollectorOutlineView.h"
 
+#import "UCIdentityDetailViewController.h"
+
 #import "URLCollectorElementCell.h"
 #import "URLCollectorGroupCell.h"
 
@@ -37,8 +39,15 @@
 
 - (void)updateMenuItemKeyEquivalent:(NSMenuItem *)menuItem withRecorderControl:(SRRecorderControl *)recorderControl;
 
-- (void)fadeInCollectorWindow;
-- (void)fadeOutCollectorWindow;
+- (void)presentCollectorPane;
+- (void)dismissCollectorPane;
+
+- (void)presentIdentityPaneWithElement:(URLCollectorElement *)element;
+- (void)dismissIdentityPane;
+
+- (void)moveSelectedItemsToGroup:(URLCollectorGroup *)group;
+
+- (UCIdentityDetailViewController *)identityDetailViewController;
 
 @end
 
@@ -52,6 +61,8 @@
 	
 	[urlShortener release];
 	[cachedOutlineViewRowHeights release];
+	[identityDetailViewController release];
+	[animationCompletionHandlers release];
 	
 	[super dealloc];
 }
@@ -64,6 +75,7 @@
 	urlShortener.delegate = self;
 	
 	cachedOutlineViewRowHeights = [[NSMutableDictionary alloc] initWithCapacity:10];
+	animationCompletionHandlers = [[NSMutableDictionary alloc] initWithCapacity:1];
 	
 	[urlCollectorDataSource setOutlineView:urlCollectorOutlineView];
 	[pasteShortcutRecorder setDelegate:self];
@@ -153,12 +165,13 @@
 {
 	NSPanel *collectorPanel = [(AppDelegate *)[NSApplication sharedApplication].delegate collectorPanel];
 	if([collectorPanel isVisible]) {
-		[self fadeOutCollectorWindow];
-		[collectorPanel orderOut:self];
+		[self dismissCollectorPane];
 	}
 	else {
+		shouldDismissCollectorPanel = NO;
+		[collectorPanel setAlphaValue:0.0];
 		[collectorPanel makeKeyAndOrderFront:nil];
-		[self fadeInCollectorWindow];
+		[self presentCollectorPane];
 	}
 }
 
@@ -266,7 +279,7 @@
 
 - (IBAction)addGroup:(id)sender
 {
-	TRACE(@"");
+	TRACEMARK;
 	
 	URLCollectorGroup *group = [[URLCollectorGroup alloc] init];
 	group.name = NSLocalizedString(@"New group", @"");
@@ -274,6 +287,20 @@
 	[group release];
 
 	[urlCollectorOutlineView editColumn:0 row:[urlCollectorOutlineView numberOfRows] - 1 withEvent:nil select:YES];
+}
+
+- (IBAction)addGroupAndMoveSelectedItems:(id)sender
+{
+	TRACEMARK;
+	
+	URLCollectorGroup *group = [[URLCollectorGroup alloc] init];
+	group.name = NSLocalizedString(@"New group", @"");
+	[urlCollectorDataSource addGroup:group];
+	[self moveSelectedItemsToGroup:group];
+
+	NSInteger groupRowIndex = [urlCollectorOutlineView numberOfRows] - 1;
+	[urlCollectorOutlineView editColumn:0 row:[urlCollectorOutlineView numberOfRows] - 1 withEvent:nil select:YES];
+	[urlCollectorOutlineView expandItem:[urlCollectorOutlineView itemAtRow:groupRowIndex]];
 }
 
 - (IBAction)open:(id)sender
@@ -313,29 +340,14 @@
 - (IBAction)moveToGroup:(id)sender
 {
 	URLCollectorGroup *destinationGroup = [sender representedObject];
-	NSIndexSet *selectedRowIndexes = [urlCollectorOutlineView selectedRowIndexes];
-	NSInteger index = [selectedRowIndexes lastIndex];
-	while(NSNotFound != index) {
-		id representedObject = [[urlCollectorOutlineView itemAtRow:index] representedObject];
-		NSAssert([representedObject isKindOfClass:[URLCollectorElement class]], SKStringWithFormat(@"Attempting to move an unsupported type <%@> to a group. This is unsupported.", representedObject));
-		
-		[urlCollectorDataSource addElement:representedObject toGroup:destinationGroup];
-		index = [selectedRowIndexes indexLessThanIndex:index];
-	}
-	[urlCollectorOutlineView deselectAll:self];
-	
-	NSInteger groupIndex = [urlCollectorDataSource.urlCollectorElements indexOfObject:destinationGroup];
-	id groupItem = [urlCollectorOutlineView itemAtRow:groupIndex];
-	if(![urlCollectorOutlineView isItemExpanded:groupItem]) {
-		[urlCollectorOutlineView expandItem:[urlCollectorOutlineView itemAtRow:groupIndex]];
-	}
+	[self moveSelectedItemsToGroup:destinationGroup];
 }
 
 - (void)showIdentity:(id)sender
 {
 	// FIXME: This condition is here because of a weird issue that's causing the action on the cell to be called twice when clicked
 	if([sender isKindOfClass:[NSCell class]]) {
-		TRACE(@"***** TODO: PRESENT IDENTITY WINDOW");
+		[self presentIdentityPaneWithElement:[sender representedObject]];
 	}
 }
 
@@ -359,7 +371,7 @@
 	[pasteboard declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:self];
 	
 	if([pasteboard writeObjects:[NSArray arrayWithObject:textRepresentation]]) {
-		TRACE(@"***** WROTE SELECTED ITEMS TEXT REPRESENTATION TO PASTEBOARD *****");
+		TRACE(@"***** WROTE SELECTED ITEMS' TEXT REPRESENTATION TO PASTEBOARD *****");
 	}
 	else {
 		TRACE(@"***** UNABLE TO EXPORT SELECTED ITEMS TO PASTEBOARD! *****");
@@ -377,6 +389,11 @@
 	}
 
 	[urlCollectorDataSource setPredicate:[NSPredicate predicateWithFormat:@"URLName CONTAINS[cd] %@ OR URL CONTAINS[cd] %@ OR context.contextName CONTAINS[cd] %@", searchString, searchString, searchString]];
+}
+
+- (IBAction)focusSearchField:(id)sender
+{
+	[[[NSApp delegate] collectorPanel] makeFirstResponder:searchField];
 }
 
 #pragma mark -
@@ -493,6 +510,39 @@
 	}
 }
 
+- (void)moveSelectedItemsToGroup:(URLCollectorGroup *)destinationGroup
+{
+	NSIndexSet *selectedRowIndexes = [urlCollectorOutlineView selectedRowIndexes];
+	NSInteger index = [selectedRowIndexes lastIndex];
+	while(NSNotFound != index) {
+		id representedObject = [[urlCollectorOutlineView itemAtRow:index] representedObject];
+		NSAssert([representedObject isKindOfClass:[URLCollectorElement class]], SKStringWithFormat(@"Attempting to move an unsupported type <%@> to a group. This is unsupported.", representedObject));
+		
+		[urlCollectorDataSource addElement:representedObject toGroup:destinationGroup];
+		index = [selectedRowIndexes indexLessThanIndex:index];
+	}
+	[urlCollectorOutlineView deselectAll:self];
+	
+	NSInteger groupIndex = [urlCollectorDataSource.urlCollectorElements indexOfObject:destinationGroup];
+	id groupItem = [urlCollectorOutlineView itemAtRow:groupIndex];
+	if(![urlCollectorOutlineView isItemExpanded:groupItem]) {
+		[urlCollectorOutlineView expandItem:[urlCollectorOutlineView itemAtRow:groupIndex]];
+	}
+}
+
+- (UCIdentityDetailViewController *)identityDetailViewController
+{
+	if(nil == identityDetailViewController) {
+		identityDetailViewController = [[UCIdentityDetailViewController alloc] initWithNibName:@"IdentityDetailView" bundle:nil];
+		[identityDetailViewController setDelegate:self];
+		[identityDetailViewController.view setWantsLayer:YES];
+		[identityDetailViewController.view setAlphaValue:0.7];
+		[[identityDetailViewController.view layer] setBackgroundColor:CGColorGetConstantColor(kCGColorBlack)];
+		[[identityDetailViewController.view layer] setCornerRadius:5.0];
+	}
+	return identityDetailViewController;
+}
+
 #pragma mark -
 #pragma mark URLShortenerDelegate
 
@@ -603,17 +653,24 @@
 - (void)windowDidResignKey:(NSNotification *)notification
 {
 	TRACE(@"");
-	
 	if([notification object] == [(AppDelegate *)[NSApp delegate] window]) {
 		[[(AppDelegate *)[NSApp delegate] window] close];
 	}
 }
 
 #pragma mark -
-#pragma mark NSAnimationDelegate
+#pragma mark UCIdentityDetailViewControllerDelegate
+
+- (void)identityDetailControllerShouldClose:(UCIdentityDetailViewController *)controller
+{
+	[self dismissIdentityPane];
+}
+
+#pragma mark -
+#pragma mark Animations
 
 #define COLLECTOR_PANEL_FADE_ANIMATION_DURATION 0.2
-- (void)fadeInCollectorWindow
+- (void)presentCollectorPane
 {
 	NSDictionary *fadeInAnimationSettings = [[NSDictionary alloc] initWithObjectsAndKeys:
 											 [[NSApp delegate] collectorPanel], NSViewAnimationTargetKey, 
@@ -629,25 +686,121 @@
 	[animation release];
 }
 
-- (void)fadeOutCollectorWindow
+- (void)dismissCollectorPane
 {
+	// First check if the IdentityPane is visible
+	// If it is, run it's dismissal animation -- it's completion callback handler will call this method again
+	if(identityDetailViewController) {
+		shouldDismissCollectorPanel = YES;
+		[self dismissIdentityPane];
+		return;
+	}
+	
 	NSDictionary *fadeOutAnimationSettings = [[NSDictionary alloc] initWithObjectsAndKeys:
 											  [[NSApp delegate] collectorPanel], NSViewAnimationTargetKey, 
 											  NSViewAnimationFadeOutEffect, NSViewAnimationEffectKey,
 											  nil];
 	
 	NSViewAnimation *animation = [[NSViewAnimation alloc] initWithDuration:COLLECTOR_PANEL_FADE_ANIMATION_DURATION animationCurve:NSAnimationEaseIn];
-	[animation setDelegate:self];
 	[animation setViewAnimations:[NSArray arrayWithObject:fadeOutAnimationSettings]];
 	[animation startAnimation];
 	
 	[fadeOutAnimationSettings release];
 	[animation release];
+	
+	[[[NSApp delegate] collectorPanel] orderOut:self]; // test
+}
+
+- (void)presentIdentityPaneWithElement:(URLCollectorElement *)element
+{
+	if(identityDetailViewController) {
+		[identityDetailViewController setRepresentedObject:element];
+		return;
+	}
+	
+	NSPanel *collectorPanel = [[NSApp delegate] collectorPanel];
+	NSRect panelFrame = [collectorPanel frame];
+	NSRect childWindowRect = NSMakeRect(NSMaxX(panelFrame) - 360, panelFrame.origin.y, 360, panelFrame.size.height);
+	
+	NSWindow *childWindow = [[NSWindow alloc] initWithContentRect:childWindowRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+	[childWindow setBackgroundColor:[NSColor clearColor]];
+	[childWindow setOpaque:NO];
+	[childWindow setContentView:[[self identityDetailViewController] view]];
+	[[self identityDetailViewController] setRepresentedObject:element];
+	[[[NSApp delegate] collectorPanel] addChildWindow:childWindow ordered:NSWindowBelow];
+	
+	/// Setup "drawer" like slide out animation
+	NSRect slideAnimationStartFrame = childWindowRect;
+	NSRect slideAnimationEndFrame = NSMakeRect(slideAnimationStartFrame.origin.x + NSWidth(slideAnimationStartFrame), slideAnimationStartFrame.origin.y, 
+											   slideAnimationStartFrame.size.width, slideAnimationStartFrame.size.height);
+	NSDictionary *slideOutAnimation = [[NSDictionary alloc] initWithObjectsAndKeys:
+									   childWindow, NSViewAnimationTargetKey,
+									   [NSValue valueWithRect:slideAnimationStartFrame], NSViewAnimationStartFrameKey,
+									   [NSValue valueWithRect:slideAnimationEndFrame], NSViewAnimationEndFrameKey,
+									   nil];
+	NSViewAnimation *viewAnimation = [[NSViewAnimation alloc] initWithDuration:0.2 animationCurve:NSAnimationEaseIn];
+	[viewAnimation setViewAnimations:[NSArray arrayWithObject:slideOutAnimation]];
+	[slideOutAnimation release];
+	
+	[viewAnimation startAnimation];
+	[viewAnimation release];
+}
+
+- (void)dismissIdentityPane
+{
+	NSPanel *collectorPanel = [[NSApp delegate] collectorPanel];
+	NSWindow *childWindow = [[collectorPanel childWindows] lastObject];
+	NSRect childWindowRect = [childWindow frame];
+	
+	NSRect slideAnimationStartFrame = childWindowRect;
+	NSRect slideAnimationEndFrame = NSMakeRect(slideAnimationStartFrame.origin.x - NSWidth(slideAnimationStartFrame), slideAnimationStartFrame.origin.y, 
+											   slideAnimationStartFrame.size.width, slideAnimationStartFrame.size.height);
+	NSDictionary *slideOutAnimation = [[NSDictionary alloc] initWithObjectsAndKeys:
+									   childWindow, NSViewAnimationTargetKey,
+									   [NSValue valueWithRect:slideAnimationStartFrame], NSViewAnimationStartFrameKey,
+									   [NSValue valueWithRect:slideAnimationEndFrame], NSViewAnimationEndFrameKey,
+									   nil];
+	NSViewAnimation *viewAnimation = [[NSViewAnimation alloc] initWithDuration:0.2 animationCurve:NSAnimationEaseIn];
+	[viewAnimation setViewAnimations:[NSArray arrayWithObject:slideOutAnimation]];
+	[viewAnimation setDelegate:self];
+	[slideOutAnimation release];
+	
+	[animationCompletionHandlers setObject:viewAnimation forKey:NSStringFromSelector(@selector(handleDidEndIdentityPaneDismissalAnimation))];
+	
+	[viewAnimation startAnimation];
+	[viewAnimation release];
 }
 
 - (void)animationDidEnd:(NSAnimation *)animation
 {
+	if([[animationCompletionHandlers allKeysForObject:animation] count] == 0) {
+		return;
+	}
 	
+	NSString *completionHandlerSelectorString = [[animationCompletionHandlers allKeysForObject:animation] lastObject];
+	if(completionHandlerSelectorString) {
+		SEL completionHandler = NSSelectorFromString(completionHandlerSelectorString);
+		NSAssert([self respondsToSelector:completionHandler], @"Undefined completion handler <%@> for animation <%@>", completionHandlerSelectorString, animation);
+		
+		[self performSelector:completionHandler];
+	}
+}
+
+#pragma mark -
+#pragma mark Animation Completion Handlers
+
+- (void)handleDidEndIdentityPaneDismissalAnimation
+{
+	[identityDetailViewController release], identityDetailViewController = nil;
+
+	NSPanel *collectorPanel = [[NSApp delegate] collectorPanel];
+	NSWindow *childWindow = [[collectorPanel childWindows] lastObject];
+	[collectorPanel removeChildWindow:childWindow];
+	[childWindow close];
+	
+	if(shouldDismissCollectorPanel) {
+		[self dismissCollectorPane];
+	}
 }
 
 #pragma mark -
@@ -701,6 +854,12 @@
 		[groupsSubmenu addItem:groupMenuItem];
 		[groupMenuItem release];
 	}
+	[groupsSubmenu addItem:[NSMenuItem separatorItem]];
+	
+	NSMenuItem *addGroupMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"New...", @"") action:@selector(addGroupAndMoveSelectedItems:) keyEquivalent:@""];
+	[addGroupMenuItem setTarget:self];
+	[groupsSubmenu addItem:addGroupMenuItem];
+	[addGroupMenuItem release];
 }
 
 - (void)pasteboardChangeCountUpdated:(NSString *)keyPath ofObject:(id)target change:(NSDictionary *)change userInfo:(id)userInfo

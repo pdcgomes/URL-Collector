@@ -59,6 +59,7 @@ enum {
 	
 	[databaseFilePath release];
 	[databaseFileWatcher release];
+	[changes release];
 	[super dealloc];
 }
 
@@ -68,6 +69,8 @@ enum {
 		databaseFilePath = [theDatabaseFilePath copy];
 		syncEnabled = YES;
 		state = kURLCollectorDatabaseManagerStateIsIdle;
+		changes = [[NSMutableArray alloc] init];
+		changeTypes = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -83,6 +86,16 @@ enum {
 	NSArray *loadedObjects =  nil;
 	@try {
 		loadedObjects = [NSKeyedUnarchiver unarchiveObjectWithFile:databaseFilePath];
+		for(URLCollectorGroup *group in loadedObjects) {
+			NSMutableArray *badObjects = [[NSMutableArray alloc] initWithCapacity:1];
+			for(URLCollectorElement *child in group.children) {
+				if(!child.URL) {
+					[badObjects addObject:child];
+				}
+			}
+			[group.children removeObjectsInArray:badObjects];
+			[badObjects release];
+		}
 	}
 	@catch (NSException *e) {
 		WARN(@"Caught exception while trying to unarchive database. Database file is possibly corrupted.");
@@ -126,6 +139,15 @@ enum {
 	[self stopWatchingSyncFolderForChanges];
 	[self mergeChanges];
 	[self startWatchingSyncFolderForChanges];
+}
+
+- (void)recordChangeWithObject:(URLCollectorNode *)node changeType:(NodeChangeType)changeType
+{
+	// push these changes to the URLCollectorDatabaseSynchornizer (?)
+	[changes addObject:node];
+	[changeTypes addObject:[NSNumber numberWithInt:changeType]];
+	
+	// schedule writing of these changes to the filesystem
 }
 
 #pragma mark -
@@ -177,8 +199,8 @@ enum {
 		return;
 	}
 	
-	NSString *syncedDatabasePath = [defaultSyncPath() stringByAppendingPathComponent:@".urlcollector/database.db"];
-	databaseFileWatcher = [[GTMFileSystemKQueue alloc] initWithPath:syncedDatabasePath 
+//	NSString *syncedDatabasePath = [defaultSyncPath() stringByAppendingPathComponent:@".urlcollector/database.db"];
+	databaseFileWatcher = [[GTMFileSystemKQueue alloc] initWithPath:defaultSyncDatabasePath() 
 														  forEvents:kGTMFileSystemKQueueAllEvents 
 													  acrossReplace:NO 
 															 target:self 
