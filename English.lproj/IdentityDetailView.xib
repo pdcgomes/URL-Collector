@@ -168,8 +168,8 @@
 							<string key="NSContents"/>
 							<reference key="NSSupport" ref="580597312"/>
 							<reference key="NSControlView" ref="186499344"/>
-							<int key="NSButtonFlags">105136383</int>
-							<int key="NSButtonFlags2">134</int>
+							<int key="NSButtonFlags">-2041822977</int>
+							<int key="NSButtonFlags2">130</int>
 							<object class="NSCustomResource" key="NSNormalImage" id="718461068">
 								<string key="NSClassName">NSImage</string>
 								<string key="NSResourceName">NSStopProgressFreestandingTemplate</string>

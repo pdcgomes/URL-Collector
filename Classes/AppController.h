@@ -39,7 +39,7 @@
 	UCIdentityDetailViewController		*identityDetailViewController;
 	
 	BOOL								shouldDismissCollectorPanel;
-	NSMutableDictionary					*animationCompletionHandlers; // animation => animationDidEndSelector
+	NSMutableDictionary					*animationCompletionHandlers; // animationKey ([animation hash]) => animationDidEndSelector
 }
 
 @property (nonatomic, readonly) NSArray *shorteningServices;

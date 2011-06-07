@@ -779,8 +779,10 @@
 	[viewAnimation setViewAnimations:[NSArray arrayWithObject:slideOutAnimation]];
 	[viewAnimation setDelegate:self];
 	[slideOutAnimation release];
-	
-	[animationCompletionHandlers setObject:viewAnimation forKey:NSStringFromSelector(@selector(handleDidEndIdentityPaneDismissalAnimation))];
+
+	NSString *animationKey = SKStringWithFormat(@"%d", [viewAnimation hash]);
+	TRACE(@"animationKey <%@>", animationKey);
+	[animationCompletionHandlers setObject:NSStringFromSelector(@selector(handleDidEndIdentityPaneDismissalAnimation)) forKey:animationKey];
 	
 	[viewAnimation startAnimation];
 	[viewAnimation release];
@@ -791,11 +793,12 @@
 
 - (void)animationDidEnd:(NSAnimation *)animation
 {
-	if([[animationCompletionHandlers allKeysForObject:animation] count] == 0) {
+	NSString *animationKey = SKStringWithFormat(@"%d", [animation hash]);
+	if(![animationCompletionHandlers objectForKey:animationKey]) {
 		return;
 	}
 	
-	NSString *completionHandlerSelectorString = [[animationCompletionHandlers allKeysForObject:animation] lastObject];
+	NSString *completionHandlerSelectorString = [animationCompletionHandlers objectForKey:animationKey];
 	if(completionHandlerSelectorString) {
 		SEL completionHandler = NSSelectorFromString(completionHandlerSelectorString);
 		NSAssert([self respondsToSelector:completionHandler], @"Undefined completion handler <%@> for animation <%@>", completionHandlerSelectorString, animation);
