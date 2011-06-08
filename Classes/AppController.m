@@ -391,6 +391,17 @@
 	NSPredicate *searchPredicate = [[NSPredicate predicateWithFormat:@"URLName CONTAINS[cd] $searchString OR URL CONTAINS[cd] $searchString OR context.contextName CONTAINS[cd] $searchString OR context.applicationName CONTAINS[cd] $searchString"] 
 									predicateWithSubstitutionVariables:[NSDictionary dictionaryWithObject:searchString forKey:@"searchString"]];
 	[urlCollectorDataSource setPredicate:searchPredicate];
+	
+	// Automatically expand groups with search results
+	// TODO: find a more clean & elegant way to to this -- need a cleaner way to find the row for a given Group or element
+	NSArray *groupsWithMatches = [urlCollectorDataSource.urlCollectorElements filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"children[SIZE] > 0"]];
+	for(URLCollectorGroup *group in groupsWithMatches) {
+		for(int i = 0; i < [urlCollectorOutlineView numberOfRows]; ++i) {
+			if([[urlCollectorOutlineView itemAtRow:i] representedObject] == group) {
+				[urlCollectorOutlineView expandItem:[urlCollectorOutlineView itemAtRow:i]];
+			}
+		}
+	}
 }
 
 - (IBAction)focusSearchField:(id)sender
