@@ -9,9 +9,11 @@
 #import <Cocoa/Cocoa.h>
 #import "URLCollectorContextContentProvider.h"
 
+@class XcodeApplication;
+
 @interface XcodeContextContentProvider : URLCollectorContextContentProvider
 {
-
+	XcodeApplication *application;
 }
 
 @end

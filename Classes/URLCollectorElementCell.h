@@ -27,6 +27,10 @@
 	NSRect			extraInfoCellFrame;
 	NSRect			identityButtonCellFrame;
 	NSRect			appIconCellFrame;
+	
+	NSString		*searchExpression;
 }
+
+@property (nonatomic, copy) NSString *searchExpression;
 
 @end

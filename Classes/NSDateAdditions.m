@@ -208,11 +208,15 @@ NSLocale *AKCurrentLocale()
 	else if(elapsed < TT_DAY) {
 		int hours = (int)((elapsed+TT_HOUR/2)/TT_HOUR);
 		return [NSString stringWithFormat:NSLocalizedString(@"%d hours ago", @""), hours];
-		
 	}
 	else if(elapsed < ELAPSED_CUTOFF_THRESHOLD) {
 		int days = (int)((elapsed)/TT_DAY);
-		return [NSString stringWithFormat:NSLocalizedString(@"%d days ago", @""), days];
+		if(days > 1) {
+			return [NSString stringWithFormat:NSLocalizedString(@"%d days ago", @""), days];	
+		}
+		else {
+			return NSLocalizedString(@"yesterday", @"");
+		}
 	}
 	else {
 		return [self formatDateTime];

@@ -612,6 +612,7 @@
 		cell = [tableColumn dataCellForRow:[outlineView rowForItem:item]];
 		[cell setTarget:self];
 		[cell setAction:@selector(showIdentity:)];
+		[(URLCollectorElementCell *)cell setSearchExpression:[searchField stringValue]];
 	}
 	return cell;
 }

@@ -428,11 +428,6 @@ static NSString *defaultSeralizationPath(void)
 //	return filteredElements;
 }
 
-+ (NSArray *)keyPathsForValuesAffectingUrlCollectorElements
-{
-	return [NSArray arrayWithObject:@"predicate"];
-}
-
 #pragma mark -
 #pragma mark Private Methods - Database and sync
 
@@ -720,13 +715,16 @@ static NSString *defaultSeralizationPath(void)
 
 + (NSSet *)keyPathsForValuesAffectingHasPendingChanges
 {
-	TRACE(@"");
 	return [NSSet setWithObject:@"urlCollectorElements"];
+}
+
++ (NSArray *)keyPathsForValuesAffectingUrlCollectorElements
+{
+	return [NSArray arrayWithObject:@"predicate"];
 }
 
 - (void)urlCollectorElementsChanged:(NSString *)keyPath ofObject:(id)target change:(NSDictionary *)change userInfo:(id)userInfo
 {
-	TRACE(@"");
 	hasPendingChanges = YES;
 	[self saveChanges];
 }

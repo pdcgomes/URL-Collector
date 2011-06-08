@@ -21,6 +21,8 @@
 
 @implementation URLCollectorElementCell
 
+@synthesize searchExpression;
+
 #pragma mark -
 #pragma mark Dealloc and Initialization
 
@@ -33,6 +35,7 @@
 	[identityButtonCell release];
 	[URLIconCell release];
 	[appIconCell release];
+	[searchExpression release];
 	
 	[super dealloc];
 }
@@ -222,17 +225,41 @@
 #define CONTEXT_LABEL_HEIGHT	18.0
 #define ICON_SIZE				16.0
 
+#define HAS_SEARCH_EXPRESSION() ([searchExpression length] > 0)
+
 - (void)reconfigureSubCellsWithCellFrame:(NSRect)cellFrame
 {
 	URLCollectorElement *representedObject = [self representedObject];
+	NSString *titleString = nil;
 	if(![representedObject.URLName isEqualToString:representedObject.URL] || !IsEmptyString(representedObject.URLName)) {
-		[titleCell setTitle:representedObject.URLName];
+		titleString = representedObject.URLName;
 	}
 	else {
-		[titleCell setTitle:@"Link"];
+		titleString = @"Link";
 	}
 	
-	////
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	// Title
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	NSRange range = {NSNotFound, 0};
+	if(HAS_SEARCH_EXPRESSION()) {
+		range = [titleString rangeOfString:searchExpression options:NSCaseInsensitiveSearch];
+		if(range.location != NSNotFound) {
+			NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:titleString];
+			[attributedString addAttribute:NSFontAttributeName value:[titleCell font] range:(NSRange){0, [titleString length]}];
+			[attributedString addAttribute:NSForegroundColorAttributeName value:[NSColor whiteColor] range:(NSRange){0, [titleString length]}];
+			[attributedString addAttribute:NSBackgroundColorAttributeName value:[NSColor lightGrayColor] range:range];
+			[titleCell setAttributedStringValue:attributedString];
+			[attributedString release];
+		}
+	}
+	else if(range.location == NSNotFound){
+		[titleCell setTitle:titleString];
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	// URL
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 	NSString *URLString = [representedObject URL];
 	if(![[NSURL URLWithString:URLString] isFileURL]) {
 		NSString *host = [[NSURL URLWithString:URLString] host];
@@ -242,7 +269,7 @@
 		NSFont *font = [urlCell font];
 		NSColor *hostColor = [NSColor whiteColor];
 		NSColor *textColor = RGBCOLOR(190, 190, 190);
-		
+
 		NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
 		[paragraphStyle setParagraphStyle:[NSParagraphStyle defaultParagraphStyle]];
 		[paragraphStyle setLineBreakMode:[urlCell lineBreakMode]];
@@ -252,6 +279,12 @@
 		[attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:URLStringRange];
 		[attributedString addAttribute:NSForegroundColorAttributeName value:textColor range:URLStringRange];
 		[attributedString addAttribute:NSForegroundColorAttributeName value:hostColor range:hostRange];
+		if(HAS_SEARCH_EXPRESSION()) {
+			NSRange range = [URLString rangeOfString:searchExpression options:NSCaseInsensitiveSearch];
+			if(range.location != NSNotFound) {
+				[attributedString addAttribute:NSBackgroundColorAttributeName value:[NSColor lightGrayColor] range:range];
+			}
+		}
 		
 		[urlCell setAttributedStringValue:attributedString];
 		[attributedString release];
@@ -261,12 +294,37 @@
 		// image cleanup
 		[urlCell setTitle:SKSafeString(representedObject.URL)];
 	}
-	////
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	// Identity
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	if(HAS_SEARCH_EXPRESSION()) {
+		range = [representedObject.context.contextName rangeOfString:searchExpression options:NSCaseInsensitiveSearch];
+	}
+	if(range.location != NSNotFound) {
+		NSString *identity = representedObject.context.contextName;
+		NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:identity];
+		[attributedString addAttribute:NSFontAttributeName value:[identityButtonCell font] range:(NSRange){0, [identity length]}];
+		[attributedString addAttribute:NSBackgroundColorAttributeName value:[NSColor lightGrayColor] range:range];
+		[attributedString addAttribute:NSForegroundColorAttributeName value:[NSColor whiteColor] range:(NSRange){0, [identity length]}];
+		[identityButtonCell setAttributedTitle:attributedString];
+		[attributedString release];
+	}
+	else {
+		[identityButtonCell setTitle:SKSafeString(representedObject.context.contextName)];
+	}
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	// Misc
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 	[interactionTypeCell setTitle:SKSafeString(representedObject.context.interaction)];
-	[identityButtonCell setTitle:SKSafeString(representedObject.context.contextName)];
 	[extraInfoCell setTitle:SKStringWithFormat(@"(via %@) %@", representedObject.context.applicationName, representedObject.formattedDate)];
 	
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 	// Drawing
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 	titleCellFrame	= NSMakeRect(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width, TITLE_LABEL_HEIGHT);
 	urlCellFrame	= NSOffsetRect(titleCellFrame, 0, TITLE_LABEL_HEIGHT + 2.0);
 	
