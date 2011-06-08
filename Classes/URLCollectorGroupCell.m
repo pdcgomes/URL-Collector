@@ -63,6 +63,7 @@
 {
 	if((self = [super copyWithZone:zone])) {
 		self->numberOfChildrenCell = [numberOfChildrenCell copyWithZone:zone];
+		self->lockImageCell = [lockImageCell copyWithZone:zone];
 	}
 	return self;
 }
@@ -70,13 +71,14 @@
 #pragma mark -
 #pragma mark Drawing
 
+#define MAX_NUMBER_OF_CHILDREN 500
 - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
 	cellFrame = NSMakeRect(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width - 5.0, cellFrame.size.height);
 	
 	NSRect groupNameFrame, numberOfChildrenFrame;
 	NSUInteger numberOfChildren = [(URLCollectorGroup *)[self representedObject] numberOfChildren];
-	NSString *numberOfChildrenTitle = SKStringWithFormat(@"%d", numberOfChildren);
+	NSString *numberOfChildrenTitle = numberOfChildren <= MAX_NUMBER_OF_CHILDREN ? SKStringWithFormat(@"%d", numberOfChildren) : SKStringWithFormat(@"%d+", MAX_NUMBER_OF_CHILDREN);
 	[numberOfChildrenCell setTitle:numberOfChildrenTitle];
 	
 	NSDictionary *textAttributes	= [[NSDictionary alloc] initWithObjectsAndKeys:[numberOfChildrenCell font], NSFontAttributeName, nil];
@@ -87,6 +89,11 @@
 	[numberOfChildrenCell drawBezelWithFrame:numberOfChildrenFrame inView:controlView];
 	[numberOfChildrenCell drawInteriorWithFrame:numberOfChildrenFrame inView:controlView];
 	
+	if([[self representedObject] isLocked]) {
+		NSRect lockRect = NSMakeRect(NSMinX(numberOfChildrenFrame) - 2 - 16, cellFrame.origin.y + 1, 16.0, 16.0);
+		[lockImageCell setImage:[NSImage imageNamed:NSImageNameLockLockedTemplate]];
+		[lockImageCell drawInteriorWithFrame:lockRect inView:controlView];
+	}
 	[super drawInteriorWithFrame:groupNameFrame inView:controlView];
 }
 
@@ -99,6 +106,10 @@
 		numberOfChildrenCell = [[NSButtonCell alloc] init];
 		[numberOfChildrenCell setControlView:[self controlView]];
 		[numberOfChildrenCell setBezelStyle:NSRecessedBezelStyle];
+	}
+	if(!lockImageCell) {
+		lockImageCell = [[NSImageCell alloc] initImageCell:nil];
+		[lockImageCell setControlView:[self controlView]];
 	}
 }
 

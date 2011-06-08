@@ -326,7 +326,7 @@
 	NSInteger index = [selectedRowIndexes lastIndex];
 	while(NSNotFound != index) {
 		id representedObject = [[urlCollectorOutlineView itemAtRow:index] representedObject];
-		if([representedObject isKindOfClass:[URLCollectorGroup class]]) {
+		if([representedObject isKindOfClass:[URLCollectorGroup class]] && ![representedObject isLocked]) {
 			[urlCollectorDataSource removeGroup:representedObject removeChildren:NO];
 		}
 		else if([representedObject isKindOfClass:[URLCollectorElement class]]) {

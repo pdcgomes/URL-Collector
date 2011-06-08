@@ -11,6 +11,7 @@
 @interface URLCollectorGroupCell : NSTextFieldCell 
 {
 	NSButtonCell	*numberOfChildrenCell;
+	NSImageCell		*lockImageCell;
 }
 
 @end

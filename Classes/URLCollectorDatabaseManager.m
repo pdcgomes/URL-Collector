@@ -106,6 +106,7 @@ enum {
 	if(!loadedObjects || [loadedObjects count] == 0) {
 		URLCollectorGroup *inboxGroup = [[URLCollectorGroup alloc] init];
 		inboxGroup.name = defaultURLCollectorGroupName();
+		inboxGroup.isLocked = YES;
 		loadedObjects = [NSArray arrayWithObject:inboxGroup];
 		[inboxGroup release];
 	}

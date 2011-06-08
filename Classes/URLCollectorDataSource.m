@@ -101,6 +101,7 @@ static NSString *defaultSeralizationPath(void)
 		URLCollectorGroup *inboxGroup = [contextManager insertNewEntityForName:@"URLCollectorGroup"];
 		[inboxGroup setName:defaultURLCollectorGroupName()];
 		[inboxGroup setSortOrder:0];
+		[inboxGroup setIsLocked:YES];
 		[contextManager save];
 		
 		NSMutableDictionary *metadata = [[NSMutableDictionary alloc] initWithDictionary:[persistentStoreCoordinator metadataForPersistentStore:persistentStore]];
