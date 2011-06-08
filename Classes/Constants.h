@@ -10,6 +10,8 @@
 
 extern NSString *UserDefaults_ShorteningService;
 extern NSString *UserDefaults_URLCollectorDatabasePath;
+extern NSString *UserDefaults_iCloudSyncEnabled;
+extern NSString *UserDefaults_PreserveSyncedChanges;
 
 NSString *URLCollectorDatabaseFileName;
 

@@ -10,7 +10,8 @@
 
 NSString *UserDefaults_ShorteningService			= @"shorteningService";
 NSString *UserDefaults_URLCollectorDatabasePath		= @"URLCollectorDatabasePath";
-
+NSString *UserDefaults_iCloudSyncEnabled			= @"iCloudSyncEnabled";
+NSString *UserDefaults_PreserveSyncedChanges		= @"PreserveSyncedChanges";
 NSString *URLCollectorDatabaseFileName				= @"URLCollectorDatabase.db";
 
 // Notifications

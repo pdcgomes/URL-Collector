@@ -92,7 +92,7 @@
 
 - (void)sendToURLCollector:(NSPasteboard *)pasteboard userData:(NSString *)userData error:(NSString **)error
 {
-	TRACE(@"");
+	TRACEMARK;
 	[self collectURLFromPasteboard:pasteboard];
 }
 
@@ -101,7 +101,7 @@
 
 - (BOOL)shortcutRecorder:(SRRecorderControl *)aRecorder isKeyCode:(NSInteger)keyCode andFlagsTaken:(NSUInteger)flags reason:(NSString **)aReason
 {
-	TRACE(@"");
+	TRACEMARK;
 	NSMutableSet *shortcutRecorders = [[NSMutableSet alloc] initWithObjects:pasteShortcutRecorder, collectorShortcutRecorder, collectShortcutRecorder, nil];
 	[shortcutRecorders removeObject:aRecorder];
 	
@@ -212,6 +212,9 @@
 	else if([menuItem action] == @selector(exportAsText:)) { // Only allow exporting of elements
 		return [self hasSelectedRowsOfClass:[URLCollectorElement class]] || ![self hasSelectedRowsOfClass:[URLCollectorGroup class]];
 	}
+	else if([menuItem action] == @selector(toggleSyncSupport:)) {
+		return YES;
+	}
 	else {
 		return YES;
 	}
@@ -318,6 +321,10 @@
 	}
 }
 
+#define kRemoveContextGroupKey				@"GroupToRemove"
+#define kRemoveContextGroupIndexKey			@"IndexOfGroupToRemove"
+#define kRemoveContextInitialSelectionKey	@"InitialSelection"
+
 - (IBAction)removeRow:(id)sender
 {
 	NSIndexSet *selectedRowIndexes = [urlCollectorOutlineView selectedRowIndexes];
@@ -327,7 +334,23 @@
 	while(NSNotFound != index) {
 		id representedObject = [[urlCollectorOutlineView itemAtRow:index] representedObject];
 		if([representedObject isKindOfClass:[URLCollectorGroup class]] && ![representedObject isLocked]) {
-			[urlCollectorDataSource removeGroup:representedObject removeChildren:NO];
+			NSInteger numberOfChildren = [[representedObject children] count];
+			if(numberOfChildren > 0) {
+				
+				NSDictionary *contextInfo = [[NSDictionary alloc] initWithObjectsAndKeys:
+											 representedObject, kRemoveContextGroupKey, // stores the group the user asked to delete
+											 [NSIndexSet indexSetWithIndex:index], kRemoveContextGroupIndexKey, // stores the selection index of said group
+											 selectedRowIndexes, kRemoveContextInitialSelectionKey, // stores a snapshot of the currentSelection -- presenting the AlertSheet will cause the selection to be lost
+											 nil];
+				NSBeginAlertSheet(@"Removal on non-empty group", @"No", @"Yes", nil, 
+								  [[NSApp delegate] collectorPanel], 
+								  self, @selector(confirmGroupRemovalSheetDidEnd:returnCode:contextInfo:), nil, (void *)contextInfo,//(void *)representedObject, 
+								  SKStringWithFormat(@"The group \"%@\" contains %d elements. Are you sure you want to remove it?", [representedObject name], numberOfChildren));
+				break;
+			}
+			else {
+				[urlCollectorDataSource removeGroup:representedObject removeChildren:YES];
+			}
 		}
 		else if([representedObject isKindOfClass:[URLCollectorElement class]]) {
 			[urlCollectorDataSource removeElement:representedObject];
@@ -335,6 +358,22 @@
 		index = [selectedRowIndexes indexLessThanIndex:index];
 	}
 	[urlCollectorOutlineView deselectAll:self];
+}
+
+- (void)confirmGroupRemovalSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo
+{
+	NSDictionary *context = (NSDictionary *)contextInfo;
+	NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] initWithIndexSet:[context objectForKey:kRemoveContextInitialSelectionKey]];
+	[indexSet removeIndexes:[context objectForKey:kRemoveContextGroupIndexKey]]; // We should remove this group from the original selection
+	
+	URLCollectorGroup *group = [context objectForKey:kRemoveContextGroupKey];
+	if(returnCode == NSAlertAlternateReturn) {
+		[urlCollectorDataSource removeGroup:group removeChildren:YES];
+	}
+	[urlCollectorOutlineView selectRowIndexes:indexSet byExtendingSelection:NO];
+	[indexSet release];
+	[context release];
+	[self performSelector:@selector(removeRow:) withObject:nil afterDelay:0.3];
 }
 
 - (IBAction)moveToGroup:(id)sender
@@ -407,6 +446,20 @@
 - (IBAction)focusSearchField:(id)sender
 {
 	[[[NSApp delegate] collectorPanel] makeFirstResponder:searchField];
+}
+
+- (IBAction)toggleSyncSupport:(id)sender
+{
+	BOOL iCloudSyncEnabled = ![[NSUserDefaults standardUserDefaults] boolForKey:UserDefaults_iCloudSyncEnabled];
+	[[NSUserDefaults standardUserDefaults] setBool:iCloudSyncEnabled forKey:UserDefaults_iCloudSyncEnabled];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	
+	if(iCloudSyncEnabled) {
+		TRACE(@"USER ENABLED iCloud SYNC. DO NICE STUFF!");
+	}
+	else {
+		TRACE(@"USER DISABLED iCloud SYNC. DO SAD STUFF!");
+	}
 }
 
 #pragma mark -

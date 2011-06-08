@@ -64,6 +64,8 @@
 - (IBAction)updateSearchFilter:(id)sender;
 - (IBAction)focusSearchField:(id)sender;
 
+- (IBAction)toggleSyncSupport:(id)sender;
+
 - (void)sendToURLCollector:(NSPasteboard *)pasteboard userData:(NSString *)userData error:(NSString **)error;
 
 @end
