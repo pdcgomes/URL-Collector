@@ -244,16 +244,16 @@
 	NSRange range = {NSNotFound, 0};
 	if(HAS_SEARCH_EXPRESSION()) {
 		range = [titleString rangeOfString:searchExpression options:NSCaseInsensitiveSearch];
-		if(range.location != NSNotFound) {
-			NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:titleString];
-			[attributedString addAttribute:NSFontAttributeName value:[titleCell font] range:(NSRange){0, [titleString length]}];
-			[attributedString addAttribute:NSForegroundColorAttributeName value:[NSColor whiteColor] range:(NSRange){0, [titleString length]}];
-			[attributedString addAttribute:NSBackgroundColorAttributeName value:[NSColor lightGrayColor] range:range];
-			[titleCell setAttributedStringValue:attributedString];
-			[attributedString release];
-		}
 	}
-	else if(range.location == NSNotFound){
+	if(range.location != NSNotFound) {
+		NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:titleString];
+		[attributedString addAttribute:NSFontAttributeName value:[titleCell font] range:(NSRange){0, [titleString length]}];
+		[attributedString addAttribute:NSForegroundColorAttributeName value:[NSColor whiteColor] range:(NSRange){0, [titleString length]}];
+		[attributedString addAttribute:NSBackgroundColorAttributeName value:[NSColor lightGrayColor] range:range];
+		[titleCell setAttributedStringValue:attributedString];
+		[attributedString release];
+	}
+	else {
 		[titleCell setTitle:titleString];
 	}
 	
@@ -298,6 +298,7 @@
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	// Identity
 	///////////////////////////////////////////////////////////////////////////////////////////////////
+	range = (NSRange){NSNotFound, 0};
 	if(HAS_SEARCH_EXPRESSION()) {
 		range = [representedObject.context.contextName rangeOfString:searchExpression options:NSCaseInsensitiveSearch];
 	}
@@ -320,7 +321,24 @@
 	// Misc
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	[interactionTypeCell setTitle:SKSafeString(representedObject.context.interaction)];
-	[extraInfoCell setTitle:SKStringWithFormat(@"(via %@) %@", representedObject.context.applicationName, representedObject.formattedDate)];
+	
+	NSString *extraInfoString = SKStringWithFormat(@"(via %@) %@", representedObject.context.applicationName, representedObject.formattedDate);
+	range = (NSRange){NSNotFound, 0};
+	if(HAS_SEARCH_EXPRESSION()) {
+		range = [extraInfoString rangeOfString:searchExpression options:NSCaseInsensitiveSearch];
+	}
+	
+	if(range.location != NSNotFound) {
+		NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:extraInfoString];
+		[attributedString addAttribute:NSFontAttributeName value:[extraInfoCell font] range:(NSRange){0, [extraInfoString length]}];
+		[attributedString addAttribute:NSBackgroundColorAttributeName value:[NSColor lightGrayColor] range:range];
+		[attributedString addAttribute:NSForegroundColorAttributeName value:[NSColor whiteColor] range:(NSRange){0, [extraInfoString length]}];
+		[extraInfoCell setAttributedStringValue:attributedString];
+		[attributedString release];
+	}
+	else {
+		[extraInfoCell setTitle:extraInfoString];
+	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	// Drawing
