@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D15DE03139D075100FEF2F3 /* NSDateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D15DE01139D075100FEF2F3 /* NSDateAdditions.m */; };
 		0D164914134F282900BA1F60 /* menubar-icon-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D164913134F282900BA1F60 /* menubar-icon-selected.png */; };
 		0D21C3C61320129400A0B8BB /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D21C3C51320129400A0B8BB /* ShortcutRecorder.framework */; };
 		0D21C3D2132012D600A0B8BB /* ShortcutRecorder.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0D21C3C51320129400A0B8BB /* ShortcutRecorder.framework */; };
@@ -69,7 +70,8 @@
 		0D231E0D133CE20D0011B219 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D231E0A133CE20D0011B219 /* XPathQuery.m */; };
 		0D2321391340E6220011B219 /* NSBezierPath+AMShading.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2321381340E6220011B219 /* NSBezierPath+AMShading.m */; };
 		0D2322251341E4C00011B219 /* UCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2322241341E4C00011B219 /* UCNavigationController.m */; };
-		0D8BCEDA1332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */; };
+		0D27FD50139D2B8A00B54188 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D27FD4F139D2B8A00B54188 /* AddressBook.framework */; };
+		0D27FD8B139D347000B54188 /* IdentityDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D27FD8A139D347000B54188 /* IdentityDetailView.xib */; };
 		0D8BCEDF1332A3750079E647 /* URLCollectorDatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8BCEDE1332A3750079E647 /* URLCollectorDatabaseManager.m */; };
 		0DA2903A13436ECF000FC202 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA2903913436ECF000FC202 /* Sparkle.framework */; };
 		0DA2907B13436EDD000FC202 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA2903913436ECF000FC202 /* Sparkle.framework */; };
@@ -77,7 +79,6 @@
 		0DA292991343990C000FC202 /* UCIdentityDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA292981343990C000FC202 /* UCIdentityDetailViewController.m */; };
 		0DA2929C13439922000FC202 /* UCURLDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA2929B13439922000FC202 /* UCURLDetailViewController.m */; };
 		0DA292FA13448769000FC202 /* URLDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DA292F913448769000FC202 /* URLDetailView.xib */; };
-		0DA292FC13448773000FC202 /* IdentityDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DA292FB13448773000FC202 /* IdentityDetailView.xib */; };
 		0DA294201344E507000FC202 /* ChromeContextContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA2941F1344E507000FC202 /* ChromeContextContentProvider.m */; };
 		0DA294BE1345DBBD000FC202 /* menubar-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA294BD1345DBBD000FC202 /* menubar-icon.png */; };
 		0DA295E013462717000FC202 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA295DF13462717000FC202 /* NSString+Additions.m */; };
@@ -106,6 +107,8 @@
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0D15DE01139D075100FEF2F3 /* NSDateAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateAdditions.m; sourceTree = "<group>"; };
+		0D15DE02139D075100FEF2F3 /* NSDateAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDateAdditions.h; sourceTree = "<group>"; };
 		0D164913134F282900BA1F60 /* menubar-icon-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-icon-selected.png"; sourceTree = "<group>"; };
 		0D21C3C51320129400A0B8BB /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShortcutRecorder.framework; path = Frameworks/ShortcutRecorder.framework; sourceTree = "<group>"; };
 		0D21C3EA1320130D00A0B8BB /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -235,8 +238,8 @@
 		0D2321381340E6220011B219 /* NSBezierPath+AMShading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBezierPath+AMShading.m"; sourceTree = "<group>"; };
 		0D2322231341E4C00011B219 /* UCNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UCNavigationController.h; sourceTree = "<group>"; };
 		0D2322241341E4C00011B219 /* UCNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UCNavigationController.m; sourceTree = "<group>"; };
-		0D8BCED81332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorDatabaseSynchronizer.h; sourceTree = "<group>"; };
-		0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorDatabaseSynchronizer.m; sourceTree = "<group>"; };
+		0D27FD4F139D2B8A00B54188 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		0D27FD88139D346A00B54188 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/IdentityDetailView.xib; sourceTree = "<group>"; };
 		0D8BCEDD1332A3750079E647 /* URLCollectorDatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCollectorDatabaseManager.h; sourceTree = "<group>"; };
 		0D8BCEDE1332A3750079E647 /* URLCollectorDatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCollectorDatabaseManager.m; sourceTree = "<group>"; };
 		0DA2903913436ECF000FC202 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
@@ -246,7 +249,6 @@
 		0DA2929A13439922000FC202 /* UCURLDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UCURLDetailViewController.h; sourceTree = "<group>"; };
 		0DA2929B13439922000FC202 /* UCURLDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UCURLDetailViewController.m; sourceTree = "<group>"; };
 		0DA292F913448769000FC202 /* URLDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = URLDetailView.xib; sourceTree = "<group>"; };
-		0DA292FB13448773000FC202 /* IdentityDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IdentityDetailView.xib; sourceTree = "<group>"; };
 		0DA2941C1344E481000FC202 /* Chrome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Chrome.h; path = ../../Projects/SAPOPuny/ScriptingBridge/Chrome.h; sourceTree = SOURCE_ROOT; };
 		0DA2941E1344E507000FC202 /* ChromeContextContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChromeContextContentProvider.h; sourceTree = "<group>"; };
 		0DA2941F1344E507000FC202 /* ChromeContextContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChromeContextContentProvider.m; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				0D230506132FD1C10011B219 /* BWToolkitFramework.framework in Frameworks */,
 				0D2305A4132FE0F70011B219 /* ScriptingBridge.framework in Frameworks */,
 				0DA2903A13436ECF000FC202 /* Sparkle.framework in Frameworks */,
+				0D27FD50139D2B8A00B54188 /* AddressBook.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,19 +300,10 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		0D164962134F4C6300BA1F60 /* Sync */ = {
-			isa = PBXGroup;
-			children = (
-				0D8BCED81332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.h */,
-				0D8BCED91332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m */,
-			);
-			name = Sync;
-			sourceTree = "<group>";
-		};
 		0D21C35F13200CFE00A0B8BB /* NIB */ = {
 			isa = PBXGroup;
 			children = (
-				0DA292FB13448773000FC202 /* IdentityDetailView.xib */,
+				0D27FD8A139D347000B54188 /* IdentityDetailView.xib */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 				0DA292F913448769000FC202 /* URLDetailView.xib */,
 			);
@@ -487,6 +481,8 @@
 		0D2304C7132FD1B10011B219 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				0D15DE01139D075100FEF2F3 /* NSDateAdditions.m */,
+				0D15DE02139D075100FEF2F3 /* NSDateAdditions.h */,
 				0D2304C8132FD1B10011B219 /* Additions.h */,
 				0D2304C9132FD1B10011B219 /* Constants.h */,
 				0D2304CA132FD1B10011B219 /* Constants.m */,
@@ -534,7 +530,6 @@
 				0D231CCD133BAC2E0011B219 /* Content Classifier */,
 				0D2304E0132FD1B10011B219 /* Context Recognizer */,
 				0D2304E3132FD1B10011B219 /* Persistence */,
-				0D164962134F4C6300BA1F60 /* Sync */,
 				0D2304E6132FD1B10011B219 /* URLCollectorDataSource.h */,
 				0D2304E7132FD1B10011B219 /* URLCollectorDataSource.m */,
 			);
@@ -710,6 +705,7 @@
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				0D21C3EA1320130D00A0B8BB /* Carbon.framework */,
 				0D2305A3132FE0F70011B219 /* ScriptingBridge.framework */,
+				0D27FD4F139D2B8A00B54188 /* AddressBook.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -835,9 +831,9 @@
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				0DA2909E1343702A000FC202 /* dsa_pub.pem in Resources */,
 				0DA292FA13448769000FC202 /* URLDetailView.xib in Resources */,
-				0DA292FC13448773000FC202 /* IdentityDetailView.xib in Resources */,
 				0DA294BE1345DBBD000FC202 /* menubar-icon.png in Resources */,
 				0D164914134F282900BA1F60 /* menubar-icon-selected.png in Resources */,
+				0D27FD8B139D347000B54188 /* IdentityDetailView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -924,7 +920,6 @@
 				0D23059A132FDC7F0011B219 /* URLCollectorContextIdentity.m in Sources */,
 				0D2305B4132FE25D0011B219 /* URLCollectorContextContentProvider.m in Sources */,
 				0D230D1C133280870011B219 /* GTMFileSystemKQueue.m in Sources */,
-				0D8BCEDA1332A2EB0079E647 /* URLCollectorDatabaseSynchronizer.m in Sources */,
 				0D8BCEDF1332A3750079E647 /* URLCollectorDatabaseManager.m in Sources */,
 				0D2310321337762F0011B219 /* StatusItemDraggingDestinationView.m in Sources */,
 				0D2311931337A6A80011B219 /* URLCollectorElementCell.m in Sources */,
@@ -942,6 +937,7 @@
 				0DA294201344E507000FC202 /* ChromeContextContentProvider.m in Sources */,
 				0DA295E013462717000FC202 /* NSString+Additions.m in Sources */,
 				0DA296CC1349D4B2000FC202 /* UCImageLoader.m in Sources */,
+				0D15DE03139D075100FEF2F3 /* NSDateAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -954,6 +950,14 @@
 				089C165DFE840E0CC02AAC07 /* English */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		0D27FD8A139D347000B54188 /* IdentityDetailView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0D27FD88139D346A00B54188 /* English */,
+			);
+			name = IdentityDetailView.xib;
 			sourceTree = "<group>";
 		};
 		1DDD58140DA1D0A300B32029 /* MainMenu.xib */ = {
