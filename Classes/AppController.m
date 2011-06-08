@@ -388,7 +388,9 @@
 		return;
 	}
 
-	[urlCollectorDataSource setPredicate:[NSPredicate predicateWithFormat:@"URLName CONTAINS[cd] %@ OR URL CONTAINS[cd] %@ OR context.contextName CONTAINS[cd] %@", searchString, searchString, searchString]];
+	NSPredicate *searchPredicate = [[NSPredicate predicateWithFormat:@"URLName CONTAINS[cd] $searchString OR URL CONTAINS[cd] $searchString OR context.contextName CONTAINS[cd] $searchString OR context.applicationName CONTAINS[cd] $searchString"] 
+									predicateWithSubstitutionVariables:[NSDictionary dictionaryWithObject:searchString forKey:@"searchString"]];
+	[urlCollectorDataSource setPredicate:searchPredicate];
 }
 
 - (IBAction)focusSearchField:(id)sender
