@@ -7,6 +7,7 @@
 //
 
 #import <ShortcutRecorder/ShortcutRecorder.h>
+#import <Quartz/Quartz.h>
 #import "AppController.h"
 #import "AppDelegate.h"
 
@@ -244,7 +245,7 @@
 
 - (IBAction)collector:(id)sender
 {
-	[self presentWindow:[(AppDelegate *)[NSApplication sharedApplication].delegate collectorPanel]];
+	[self collectorHotKeyPressed:nil]; // we should rename this method
 }
 
 - (IBAction)shortenURL:(id)sender
@@ -336,7 +337,6 @@
 		if([representedObject isKindOfClass:[URLCollectorGroup class]] && ![representedObject isLocked]) {
 			NSInteger numberOfChildren = [[representedObject children] count];
 			if(numberOfChildren > 0) {
-				
 				NSDictionary *contextInfo = [[NSDictionary alloc] initWithObjectsAndKeys:
 											 representedObject, kRemoveContextGroupKey, // stores the group the user asked to delete
 											 [NSIndexSet indexSetWithIndex:index], kRemoveContextGroupIndexKey, // stores the selection index of said group
@@ -796,10 +796,27 @@
 		return;
 	}
 	
-	
 	NSPanel *collectorPanel = [[NSApp delegate] collectorPanel];
 	NSRect panelFrame = [collectorPanel frame];
 	NSRect childWindowRect = NSMakeRect(NSMaxX(panelFrame) - 360, panelFrame.origin.y, 360, panelFrame.size.height);
+	
+	// Find out if there's enough room on the window's display to present the collector pane + identity pane
+	// if there isn't, move the collector pane to the side just enough to make room (sort of what modal alert sheets do to their parent windows)
+	
+	NSRect screenFrame = [[collectorPanel screen] frame];
+	
+	// in case the collector pane's width is large enough that there's no room to accommodate it and the identity pane on the current screen
+	// we could attempt to reduce the width of the collector pane
+	BOOL shouldRepositionCollectorPaneToMakeRoom = ((NSWidth(panelFrame) + NSWidth(childWindowRect) <= NSWidth(screenFrame)) && // ensure there's actually room to accommodate both elements
+													(NSMaxX(panelFrame) + NSWidth(childWindowRect) > NSWidth(screenFrame)));
+	if(shouldRepositionCollectorPaneToMakeRoom) {
+		// find out by how much
+		CGFloat xOffset = ((NSMaxX(panelFrame) + NSWidth(childWindowRect)) - NSWidth(screenFrame));
+		// offset the childwindow
+		childWindowRect = NSOffsetRect(childWindowRect, -xOffset, 0);
+		// offset the panel
+		[collectorPanel setFrame:NSOffsetRect(panelFrame, -xOffset, 0) display:YES animate:YES]; // or maybe add to the animation below...?
+	}
 	
 	NSWindow *childWindow = [[NSWindow alloc] initWithContentRect:childWindowRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
 	[childWindow setBackgroundColor:[NSColor clearColor]];
@@ -876,6 +893,11 @@
 
 #pragma mark -
 #pragma mark Animation Completion Handlers
+
+- (void)handleDidEndCollectorPanePresentationAnimation
+{
+	
+}
 
 - (void)handleDidEndIdentityPaneDismissalAnimation
 {
