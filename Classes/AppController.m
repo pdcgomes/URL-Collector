@@ -703,7 +703,7 @@
 
 - (void)windowDidBecomeKey:(NSNotification *)notification
 {
-	TRACE(@"");
+	TRACEMARK;
 	if([notification object] == [(AppDelegate *)[NSApp delegate] window]) {
 		
 	}
@@ -711,7 +711,7 @@
 
 - (void)windowWillClose:(NSNotification *)notification
 {
-	TRACE(@"");
+	TRACEMARK;
 	if([notification object] == [(AppDelegate *)[NSApp delegate] window]) {
 
 	}
@@ -719,7 +719,7 @@
 
 - (void)windowDidResignKey:(NSNotification *)notification
 {
-	TRACE(@"");
+	TRACEMARK;
 	if([notification object] == [(AppDelegate *)[NSApp delegate] window]) {
 		[[(AppDelegate *)[NSApp delegate] window] close];
 	}
@@ -789,6 +789,7 @@
 	[[[NSApp delegate] collectorPanel] orderOut:self]; // test
 }
 
+#define kIdentityPaneWidth 360
 - (void)presentIdentityPaneWithElement:(URLCollectorElement *)element
 {
 	if(identityDetailViewController) {
@@ -798,7 +799,7 @@
 	
 	NSPanel *collectorPanel = [[NSApp delegate] collectorPanel];
 	NSRect panelFrame = [collectorPanel frame];
-	NSRect childWindowRect = NSMakeRect(NSMaxX(panelFrame) - 360, panelFrame.origin.y, 360, panelFrame.size.height);
+	NSRect childWindowRect = NSMakeRect(NSMaxX(panelFrame) - kIdentityPaneWidth, panelFrame.origin.y, kIdentityPaneWidth, panelFrame.size.height);
 	
 	// Find out if there's enough room on the window's display to present the collector pane + identity pane
 	// if there isn't, move the collector pane to the side just enough to make room (sort of what modal alert sheets do to their parent windows)

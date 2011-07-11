@@ -24,6 +24,7 @@
 @dynamic contentsHash;
 @dynamic numberOfChildren;
 @dynamic formattedDate;
+@dynamic formattedNumberOfChildren;
 
 #pragma mark -
 #pragma mark Dealloc and Initialization
@@ -141,6 +142,12 @@
 - (NSString *)formattedDate
 {
 	return [createDate formatRelativeTime];
+}
+
+#define MAX_NUMBER_OF_CHILDREN	500
+- (NSString *)formattedNumberOfChildren
+{
+	return self.numberOfChildren <= MAX_NUMBER_OF_CHILDREN ? SKStringWithFormat(@"%d", self.numberOfChildren) : SKStringWithFormat(@"%d+", MAX_NUMBER_OF_CHILDREN);
 }
 
 #pragma -

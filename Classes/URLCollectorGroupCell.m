@@ -71,18 +71,18 @@
 #pragma mark -
 #pragma mark Drawing
 
-#define MAX_NUMBER_OF_CHILDREN 500
+#define kLockImageWidth			16.0
+#define kLockImageHeight		16.0
 - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
 	cellFrame = NSMakeRect(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width - 5.0, cellFrame.size.height);
 	
 	NSRect groupNameFrame, numberOfChildrenFrame;
-	NSUInteger numberOfChildren = [(URLCollectorGroup *)[self representedObject] numberOfChildren];
-	NSString *numberOfChildrenTitle = numberOfChildren <= MAX_NUMBER_OF_CHILDREN ? SKStringWithFormat(@"%d", numberOfChildren) : SKStringWithFormat(@"%d+", MAX_NUMBER_OF_CHILDREN);
-	[numberOfChildrenCell setTitle:numberOfChildrenTitle];
+	NSString *numberOfChildren = [(URLCollectorGroup *)[self representedObject] formattedNumberOfChildren];
+	[numberOfChildrenCell setTitle:numberOfChildren];
 	
 	NSDictionary *textAttributes	= [[NSDictionary alloc] initWithObjectsAndKeys:[numberOfChildrenCell font], NSFontAttributeName, nil];
-	NSSize titleSize				= [numberOfChildrenTitle sizeWithAttributes:textAttributes];
+	NSSize titleSize				= [numberOfChildren sizeWithAttributes:textAttributes];
 	[textAttributes release];
 
 	NSDivideRect(cellFrame, &numberOfChildrenFrame, &groupNameFrame, (titleSize.width + 15.0), NSMaxXEdge);
@@ -90,7 +90,7 @@
 	[numberOfChildrenCell drawInteriorWithFrame:numberOfChildrenFrame inView:controlView];
 	
 	if([[self representedObject] isLocked]) {
-		NSRect lockRect = NSMakeRect(NSMinX(numberOfChildrenFrame) - 2 - 16, cellFrame.origin.y + 1, 16.0, 16.0);
+		NSRect lockRect = NSMakeRect(NSMinX(numberOfChildrenFrame) - 2 - kLockImageWidth, cellFrame.origin.y + 1, kLockImageWidth, kLockImageHeight);
 		[lockImageCell setImage:[NSImage imageNamed:NSImageNameLockLockedTemplate]];
 		[lockImageCell drawInteriorWithFrame:lockRect inView:controlView];
 	}

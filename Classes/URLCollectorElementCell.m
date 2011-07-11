@@ -282,6 +282,7 @@
 		if(HAS_SEARCH_EXPRESSION()) {
 			NSRange range = [URLString rangeOfString:searchExpression options:NSCaseInsensitiveSearch];
 			if(range.location != NSNotFound) {
+				[attributedString addAttribute:NSForegroundColorAttributeName value:[NSColor whiteColor] range:range];
 				[attributedString addAttribute:NSBackgroundColorAttributeName value:[NSColor lightGrayColor] range:range];
 			}
 		}
@@ -318,7 +319,7 @@
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	// Misc
+	// Extra Info
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	[interactionTypeCell setTitle:SKSafeString(representedObject.context.interaction)];
 	

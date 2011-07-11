@@ -42,5 +42,6 @@
 
 @property (nonatomic, retain) NSPredicate *predicate;
 @property (nonatomic, readonly) NSString *formattedDate;
+@property (nonatomic, readonly) NSString *formattedNumberOfChildren;
 
 @end

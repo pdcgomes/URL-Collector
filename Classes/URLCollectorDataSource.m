@@ -46,6 +46,8 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 - (void)loadIconForElementIfNeeded:(URLCollectorElement *)element;
 //- (void)fetchContextForElement:(URLCollectorElement *)element;
 
+- (void)fetchContextFromApp:(NSDictionary *)activeApp andApplyToElements:(NSArray *)elements;
+
 @end
 
 @implementation URLCollectorDataSource
@@ -214,21 +216,7 @@ static NSString *defaultSeralizationPath(void)
 	[elements addObject:element];
 	[element release];
 	
-	// TODO: rethink this approach...
-	// Consider refactoring the context loading routine into URLCollectorElement itself (like we did with the icon loading)
-	// This promotes reusability and it's an overall cleaner design
-	void (^fetchContextBlock)(void) = ^{
-		URLCollectorContext *context = [[[URLCollectorContextRecognizer sharedInstance] guessContextFromApplication:activeApp] retain];
-		[elements makeObjectsPerformSelector:@selector(setContext:) withObject:context];
-		[context release];
-		
-		[outlineView_ performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES]; // kind of bruteforce, but should be enough for now
-	};
-	
-	NSBlockOperation *operation = [[NSBlockOperation alloc] init];
-	[operation addExecutionBlock:fetchContextBlock];
-	[operationQueue addOperation:operation];
-	[operation release];
+	[self fetchContextFromApp:activeApp andApplyToElements:elements];
 	[elements release];
 }
 
@@ -489,6 +477,22 @@ static NSString *defaultSeralizationPath(void)
 	}
 }
 
+- (void)fetchContextFromApp:(NSDictionary *)activeApp andApplyToElements:(NSArray *)elements
+{
+	void (^fetchContextBlock)(void) = ^{
+		URLCollectorContext *context = [[[URLCollectorContextRecognizer sharedInstance] guessContextFromApplication:activeApp] retain];
+		[elements makeObjectsPerformSelector:@selector(setContext:) withObject:context];
+		[context release];
+		
+		[outlineView_ performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+	};
+	
+	NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+	[operation addExecutionBlock:fetchContextBlock];
+	[operationQueue addOperation:operation];
+	[operation release];
+}
+
 #pragma mark -
 #pragma mark NSOutlineViewDataSource
 
@@ -600,20 +604,7 @@ static NSString *defaultSeralizationPath(void)
 			[element release];
 		}
 
-		// FIXME: rethink this approach...
-		void (^fetchContextBlock)(void) = ^{
-			URLCollectorContext *context = [[[URLCollectorContextRecognizer sharedInstance] guessContextFromApplication:activeApp] retain];
-			[elements makeObjectsPerformSelector:@selector(setContext:) withObject:context];
-			[context release];
-			
-			[outlineView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES]; // kind of bruteforce, but should be enough for now
-		};
-		
-		NSBlockOperation *operation = [[NSBlockOperation alloc] init];
-		[operation addExecutionBlock:fetchContextBlock];
-		[operationQueue addOperation:operation];
-		[operation release];
-		// END TODO
+		[self fetchContextFromApp:activeApp andApplyToElements:elements];
 		[elements release];
 	}
 	else if([info draggingSource] == outlineView) {
