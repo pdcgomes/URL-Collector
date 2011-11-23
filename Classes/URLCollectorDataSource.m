@@ -58,7 +58,7 @@ NSString *const NSPasteboardTypeURLCollectorElement = @"NSPasteboardTypeURLColle
 @synthesize selectedElements;
 @synthesize predicate;
 
-static NSString *defaultSeralizationPath(void)
+static NSString *DefaultDatabasePath(void)
 {
 	return [[[NSBundle mainBundle] applicationSupportPath] stringByAppendingPathComponent:@"database.db"];
 }
@@ -116,7 +116,7 @@ static NSString *defaultSeralizationPath(void)
 - (void)initializeDatabaseIfNeeded
 {
 	if(!databaseManager) {
-		databaseManager = [[URLCollectorDatabaseManager alloc] initWithDatabaseFilePath:defaultSeralizationPath()];
+		databaseManager = [[URLCollectorDatabaseManager alloc] initWithDatabaseFilePath:DefaultDatabasePath()];
 		databaseManager.delegate = self;
 	}
 	[self reloadLocalDatabase];
@@ -329,7 +329,7 @@ static NSString *defaultSeralizationPath(void)
 {
 	[element removeObserver:self keyPath:@"isIconLoaded" selector:@selector(iconForElementHasChanged:ofObject:change:userInfo:)];
 
-	// FIXME: this may cause trouble when there are async operations for elements being removed here	
+	// FIXME: we could get in trouble if we attempt to remove an element for which there's an async operations running (context grabbing, classification, icon loading, etc.)
 	
 	[self willChangeValueForKey:@"urlCollectorElements"];
 	[(URLCollectorGroup *)element.parent remove:element];

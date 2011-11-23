@@ -98,7 +98,7 @@ enum {
 		}
 	}
 	@catch (NSException *e) {
-		WARN(@"Caught exception while trying to unarchive database. Database file is possibly corrupted.");
+		WARN(@"Caught exception while trying to unarchive database. The database file could be corrupted.");
 		if([[NSFileManager defaultManager] fileExistsAtPath:databaseFilePath]) {
 			[[NSFileManager defaultManager] removeItemAtPath:databaseFilePath error:nil];
 		}
